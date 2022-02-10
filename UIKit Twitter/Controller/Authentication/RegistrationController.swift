@@ -7,10 +7,12 @@
 
 import UIKit
 import SwiftUI
+import Firebase
 
 class RegistrationController : UIViewController{
     
     // MARK: Properties
+    private var profileImage:UIImage?
     private let imagePicker : UIImagePickerController = {
         let imagePicker = UIImagePickerController()
         return imagePicker
@@ -61,7 +63,7 @@ class RegistrationController : UIViewController{
     private let emailTextField : UITextField = {
         let textField = Utilities.textField(placeholder: "Email")
         return textField
-
+        
     }()
     private let passwordTextField : UITextField = {
         
@@ -99,7 +101,7 @@ class RegistrationController : UIViewController{
         button.heightAnchor.constraint(equalToConstant: 50).isActive=true
         button.addTarget(self, action: #selector(handelSignup), for: .touchUpInside)
         return button
-  
+        
     }()
     
     private let donotHaveAnAccountButton : UIButton = {
@@ -112,7 +114,7 @@ class RegistrationController : UIViewController{
     override func viewDidLoad() {
         super.viewDidLoad()
         configureUI()
-       
+        
     }
     
     
@@ -123,14 +125,30 @@ class RegistrationController : UIViewController{
     }
     
     @objc func handelSignup(){
+        guard let email    = emailTextField.text else {return}
+        guard let password = passwordTextField.text else {return}
+        guard let fullName = fullNameTextField.text else {return}
+        guard let userName = UserNameTextField.text else {return}
+        guard let profileImage = self.profileImage else {
+            print("Please select a profile image")
+            return}
         
-        print("handelSignup")
+        let credentials = AuthCredentials(email: email, password: password, fullName: fullName, userName: userName, profileImage: profileImage)
+        
+        AuthService.shared.creatUser(credentials: credentials){ error in
+            
+            if error != nil {print("handel error")
+                return
+            }
+            
+            self.navigationController?.pushViewController(FeedController(), animated: true)
+        }
+        
         
     }
-    
     @objc func handelShowLogin(){
-                navigationController?.popViewController(animated: true)
-   
+        navigationController?.popViewController(animated: true)
+        
         
     }
     // MARK: Helpers
@@ -140,11 +158,11 @@ class RegistrationController : UIViewController{
         imagePicker.allowsEditing = true
         view.backgroundColor = .twitterBlue
         view.addSubview(addAvatarImageButton)
-
+        
         addAvatarImageButton.centerX(inView: view, topAnchor: view.safeAreaLayoutGuide.topAnchor, paddingTop: 32)
         addAvatarImageButton.setDimensions(width: 150, height: 150)
         
-
+        
         let stack = UIStackView(arrangedSubviews: [emailContainerView,passwordContainerView,fullNameContainerView,UserNameContainerView,signupButton])
         stack.axis = .vertical
         stack.distribution = .fillEqually
@@ -166,15 +184,15 @@ struct RegistrationPreview: PreviewProvider {
     static var previews: some View {
         ContainerView().edgesIgnoringSafeArea(.all)
     }
-
+    
     struct ContainerView: UIViewControllerRepresentable {
-
+        
         func makeUIViewController(context: UIViewControllerRepresentableContext<RegistrationPreview.ContainerView>) -> UIViewController {
             return RegistrationController()
         }
-
+        
         func updateUIViewController(_ uiViewController: RegistrationPreview.ContainerView.UIViewControllerType, context: UIViewControllerRepresentableContext<RegistrationPreview.ContainerView>) {
-
+            
         }
     }
 }
@@ -186,6 +204,7 @@ extension RegistrationController : UIImagePickerControllerDelegate,UINavigationC
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         
         guard let profileImage = info[.editedImage] as? UIImage else {return}
+        self.profileImage = profileImage
         addAvatarImageButton.layer.cornerRadius = 150 / 2
         addAvatarImageButton.layer.masksToBounds = true
         addAvatarImageButton.imageView?.contentMode = .scaleAspectFill
@@ -194,7 +213,8 @@ extension RegistrationController : UIImagePickerControllerDelegate,UINavigationC
         addAvatarImageButton.layer.borderColor = UIColor.white.cgColor
         
         addAvatarImageButton.setImage(profileImage.withRenderingMode(.alwaysOriginal)
-                                , for: .normal)
+                                      , for: .normal)
+        
         
         dismiss(animated: true, completion: nil)
     }
@@ -202,3 +222,4 @@ extension RegistrationController : UIImagePickerControllerDelegate,UINavigationC
     
     
 }
+

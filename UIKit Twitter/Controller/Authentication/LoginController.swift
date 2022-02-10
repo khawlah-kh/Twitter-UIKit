@@ -7,6 +7,7 @@
 
 import UIKit
 import SwiftUI
+import Firebase
 
 class LoginController : UIViewController{
     
@@ -88,6 +89,7 @@ class LoginController : UIViewController{
     // MARK: Selectores (Handler Actions)
     @objc func handelLogin(){
         
+        print(Auth.auth().currentUser?.email)
         print("💜")
         
     }
