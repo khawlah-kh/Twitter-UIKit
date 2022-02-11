@@ -110,4 +110,37 @@ class AuthService{
         
     }
     
+    
+    func logUserIn (email : String , password : String,completion:@escaping((Error?)->())){
+        
+        
+        
+        Auth.auth().signIn(withEmail: email, password: password) { result, error in
+            
+            if let error = error {
+              
+                completion(error)
+                return
+            }
+           
+            print("Hello 💜",result?.user.uid)
+            completion(nil)
+            
+            
+        }
+    
+}
+    
+    func signUserOut(){
+        
+        do{
+           try Auth.auth().signOut()
+        }
+        catch let error{
+            print("Faild to sign user out with error \(error.localizedDescription)")
+            
+        }
+        
+        
+    }
 }

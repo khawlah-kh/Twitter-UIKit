@@ -7,6 +7,7 @@
 
 import UIKit
 import SwiftUI
+import Firebase
 
 class MainTabViewController: UITabBarController {
 
@@ -23,14 +24,37 @@ class MainTabViewController: UITabBarController {
     }()
     
     // MARK: = Lifecycle
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        configureViewControllers()
-        configureUI()
+        //AuthService.shared.signUserOut()
+        view.backgroundColor = .twitterBlue
+        authenticateUserAndConfigureUI()
+       
        
     }
     
+    // MARK: API
+    func authenticateUserAndConfigureUI(){
+   
+        if Auth.auth().currentUser == nil {
+            DispatchQueue.main.async {
+                let nav = UINavigationController(rootViewController: LoginController())
+                nav.modalPresentationStyle = .fullScreen
+                self.present(nav, animated: true, completion: nil)
+            }
+       
+           
+        }
+        else{
+            configureViewControllers()
+            configureUI()
+            print("🤍",Auth.auth().currentUser?.uid)
+            
+        }
+   
+    }
+
     // MARK: Selectors (Action Handlers)
     @objc func actionButonTapped(){
         

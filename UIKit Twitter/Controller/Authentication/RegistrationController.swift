@@ -140,8 +140,20 @@ class RegistrationController : UIViewController{
             if error != nil {print("handel error")
                 return
             }
-            
-            self.navigationController?.pushViewController(FeedController(), animated: true)
+            else {
+                
+              
+
+                    // to return MainTabViewController, so we can call the functions
+                    guard let window = UIApplication.shared.windows.first(where:{ $0.isKeyWindow})else {return}
+                    guard let tab = window.rootViewController as? MainTabViewController
+                    else{return}
+                    tab.authenticateUserAndConfigureUI()
+                self.dismiss(animated: true, completion: nil)
+
+                
+            }
+           
         }
         
         

@@ -88,10 +88,36 @@ class LoginController : UIViewController{
     
     // MARK: Selectores (Handler Actions)
     @objc func handelLogin(){
+        guard let email = emailTextField.text else {return}
+        guard let password = passwordTextField.text else {return}
+
         
-        print(Auth.auth().currentUser?.email)
-        print("💜")
-        
+        AuthService.shared.logUserIn(email: email, password: password){ error in
+            if let error = error {
+                print("Field to login",error.localizedDescription)
+                return
+            }
+
+
+                    // to return MainTabViewController, so we can call the functions
+                    guard let window = UIApplication.shared.windows.first(where:{ $0.isKeyWindow})else {return}
+                    guard let tab = window.rootViewController as? MainTabViewController
+                    else{return}
+                    tab.authenticateUserAndConfigureUI()
+                    self.dismiss(animated: true, completion: nil)
+
+                
+            
+                
+              
+            
+            
+            
+            
+        }
+//        print(Auth.auth().currentUser?.email)
+//        print("💜")
+//
     }
     @objc func handeShowingSignUp(){
         let registrationController = RegistrationController()
