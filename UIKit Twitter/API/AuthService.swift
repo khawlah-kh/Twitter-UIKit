@@ -21,6 +21,8 @@ struct AuthCredentials{
 class AuthService{
     
     static let shared = AuthService()
+
+    var user : User? = nil
     func creatUser(credentials:AuthCredentials, completion:@escaping ((Error?)->())){
         
         var userData : [String:String] = [User.email:credentials.email
@@ -112,29 +114,24 @@ class AuthService{
     
     
     func logUserIn (email : String , password : String,completion:@escaping((Error?)->())){
-        
-        
-        
         Auth.auth().signIn(withEmail: email, password: password) { result, error in
-            
             if let error = error {
-              
                 completion(error)
                 return
             }
-           
+            
             print("Hello 💜",result?.user.uid)
             completion(nil)
             
             
         }
-    
-}
+        
+    }
     
     func signUserOut(){
         
         do{
-           try Auth.auth().signOut()
+            try Auth.auth().signOut()
         }
         catch let error{
             print("Faild to sign user out with error \(error.localizedDescription)")
@@ -143,4 +140,31 @@ class AuthService{
         
         
     }
+    
+    
+    func fetchUser(completion:@escaping((User)->())){
+        guard let uid = Auth.auth().currentUser?.uid else {return}
+        COLECTION_USERS.document(uid).getDocument { snapshot, error in
+            
+            guard let userData = snapshot?.data() else {return}
+            let user =  User(data: userData, id: uid)
+            self.user = user
+            completion(user)
+            print("Hiii 💜\(self.user?.userName)")
+            
+            
+            
+            
+        }
+        
+        
+        
+        
+    }
+    
+    
+    
+    
+    
+    
 }

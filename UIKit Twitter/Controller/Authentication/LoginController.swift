@@ -104,6 +104,7 @@ class LoginController : UIViewController{
                     guard let tab = window.rootViewController as? MainTabViewController
                     else{return}
                     tab.authenticateUserAndConfigureUI()
+                   // AuthService.shared.fetchUser()
                     self.dismiss(animated: true, completion: nil)
 
                 

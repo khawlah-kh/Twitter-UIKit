@@ -14,6 +14,14 @@ class MainTabViewController: UITabBarController {
     
     
     // MARK: - Properties
+    var user : User? {
+        
+        didSet{
+            guard let nav = viewControllers?[0] as? UINavigationController else {return}
+            guard let feed = nav.viewControllers.first as? FeedController else {return}
+            feed.user = self.user
+        }
+    }
     let actionButton : UIButton = {
         let button = UIButton(type: .system)
         button.tintColor = .white
@@ -47,9 +55,13 @@ class MainTabViewController: UITabBarController {
            
         }
         else{
-            configureViewControllers()
-            configureUI()
-            print("🤍",Auth.auth().currentUser?.uid)
+               fetchUser()
+                self.configureViewControllers()
+                self.configureUI()
+                
+                print("🤍",Auth.auth().currentUser?.uid)
+
+            
             
         }
    
@@ -70,9 +82,7 @@ class MainTabViewController: UITabBarController {
         actionButton.anchor(bottom:view.safeAreaLayoutGuide.bottomAnchor, right:view.rightAnchor,  paddingBottom: 64, paddingRight: 16, width: 56, height: 56)
         actionButton.layer.cornerRadius = 56 / 2
     }
-    
 
-    
     func configureViewControllers(){
 
         
@@ -114,9 +124,15 @@ class MainTabViewController: UITabBarController {
         
         
     }
+    
+    func fetchUser(){
+        AuthService.shared.fetchUser { user in
+            self.user = user
+        }
+        
+        
+    }
 }
-
-
 
 
 

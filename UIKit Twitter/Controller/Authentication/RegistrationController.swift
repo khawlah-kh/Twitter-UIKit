@@ -142,13 +142,12 @@ class RegistrationController : UIViewController{
             }
             else {
                 
-              
-
                     // to return MainTabViewController, so we can call the functions
                     guard let window = UIApplication.shared.windows.first(where:{ $0.isKeyWindow})else {return}
                     guard let tab = window.rootViewController as? MainTabViewController
                     else{return}
                     tab.authenticateUserAndConfigureUI()
+                   // AuthService.shared.fetchUser()
                 self.dismiss(animated: true, completion: nil)
 
                 

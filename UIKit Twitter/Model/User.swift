@@ -14,7 +14,7 @@ struct User : Identifiable{
     let email : String
     let fullName : String
     let userName : String
-    let profileImageUrl : String
+    let profileImageUrl : URL
 
     
     init(data:[String:Any],id:String){
@@ -28,8 +28,8 @@ struct User : Identifiable{
         
         self.userName = data[User.userName]  as? String ?? "N/A"
         
-        
-        self.profileImageUrl = data[User.profileImageUrl]  as? String ?? "N/A"
+        let profileImageUrlAsString = data[User.profileImageUrl]  as? String ?? "N/A"
+        self.profileImageUrl = URL(string: profileImageUrlAsString)!
         
        
     }
@@ -47,7 +47,7 @@ struct User : Identifiable{
         
         data[User.userName] = self.userName
         
-        data[User.profileImageUrl] = self.profileImageUrl
+        data[User.profileImageUrl] = self.profileImageUrl.description
         
         return data
         
