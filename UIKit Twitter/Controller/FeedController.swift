@@ -8,7 +8,7 @@
 import UIKit
 import SDWebImage
 
-class FeedController : UIViewController{
+class FeedController : UICollectionViewController{
     
 
     // MARK: - Properties
@@ -24,9 +24,25 @@ class FeedController : UIViewController{
         super.viewDidLoad()
         configureLeftBarButton()
         configureUI()
+        fetchTweets ()
 
     }
     
+    // MARK: API
+    func fetchTweets (){
+        TweetService.shared.fetchTweeets { tweets, error in
+            
+            if let error = error {
+                print("Something went wrong!\(error.localizedDescription)")
+                return
+            }
+            print("💕")
+            print(tweets?.count)
+        }
+        
+        
+        
+    }
     // MARK: - Helper Functions
     
     func configureUI(){
@@ -34,6 +50,7 @@ class FeedController : UIViewController{
         view.backgroundColor = UIColor.systemBackground
         let imageView = UIImageView(image: UIImage(named: "logo"))
         imageView.contentMode = .scaleAspectFit
+        imageView.setDimensions(width: 44, height: 44)
         navigationItem.titleView = imageView
 
        
@@ -52,7 +69,6 @@ class FeedController : UIViewController{
         userImgeView.layer.masksToBounds = true
         let imageURL = user.profileImageUrl
         userImgeView.sd_setImage(with: imageURL,completed: nil)
- 
  
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: userImgeView)
 

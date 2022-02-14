@@ -58,9 +58,7 @@ class MainTabViewController: UITabBarController {
                fetchUser()
                 self.configureViewControllers()
                 self.configureUI()
-                
-                print("🤍",Auth.auth().currentUser?.uid)
-
+          
             
             
         }
@@ -69,8 +67,9 @@ class MainTabViewController: UITabBarController {
 
     // MARK: Selectors (Action Handlers)
     @objc func actionButonTapped(){
-        
-        print("Action Button Tappedr")
+        guard let user = user else {return}
+        let nav = UINavigationController(rootViewController:  UploadTweetController(user: user))
+        present(nav , animated: true, completion: nil)
         
     }
     
