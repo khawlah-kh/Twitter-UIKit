@@ -85,7 +85,7 @@ class MainTabViewController: UITabBarController {
     func configureViewControllers(){
 
         
-        let feed = FeedController()
+        let feed = FeedController(collectionViewLayout: UICollectionViewFlowLayout())
         let nav1 = templateNavigationController(imageName: "house.fill", title: "Home", rootViewController: feed)
 
         let explore = ExploreController()

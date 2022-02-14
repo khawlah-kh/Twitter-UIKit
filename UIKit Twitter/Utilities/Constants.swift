@@ -9,3 +9,4 @@ import Foundation
 import Firebase
 let COLECTION_USERS = Firestore.firestore().collection("Users")
 let COLECTION_TWEETS = Firestore.firestore().collection("Tweets")
+let reusableCellId = "tweetId"

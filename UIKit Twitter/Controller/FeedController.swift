@@ -25,6 +25,7 @@ class FeedController : UICollectionViewController{
         configureLeftBarButton()
         configureUI()
         fetchTweets ()
+       
 
     }
     
@@ -47,6 +48,7 @@ class FeedController : UICollectionViewController{
     
     func configureUI(){
         
+        collectionView.register(TweetCell.self,forCellWithReuseIdentifier: reusableCellId)
         view.backgroundColor = UIColor.systemBackground
         let imageView = UIImageView(image: UIImage(named: "logo"))
         imageView.contentMode = .scaleAspectFit
@@ -73,4 +75,36 @@ class FeedController : UICollectionViewController{
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: userImgeView)
 
     }
+}
+
+
+
+extension FeedController {
+    
+    
+    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return 20
+    }
+    
+    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reusableCellId, for: indexPath) as! TweetCell
+        
+        return cell
+    }
+}
+
+
+extension FeedController : UICollectionViewDelegateFlowLayout {
+    
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        
+        return CGSize(width: view.frame.width, height: 120)
+        
+        
+        
+    }
+    
+    
 }

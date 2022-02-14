@@ -25,6 +25,7 @@
 		903A2B4027B8CED00037B592 /* CaptionTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 903A2B3F27B8CED00037B592 /* CaptionTextView.swift */; };
 		90906FFC27BA05760058F254 /* TweetService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90906FFB27BA05760058F254 /* TweetService.swift */; };
 		90906FFE27BA05990058F254 /* Tweet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90906FFD27BA05990058F254 /* Tweet.swift */; };
+		9090700027BA37440058F254 /* TweetCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90906FFF27BA37440058F254 /* TweetCell.swift */; };
 		90A55FDD27B4D5C100B02DC5 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 90A55FDC27B4D5C100B02DC5 /* FirebaseAuth */; };
 		90A55FDF27B4D5C100B02DC5 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 90A55FDE27B4D5C100B02DC5 /* FirebaseFirestore */; };
 		90A55FE127B4D5C100B02DC5 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 90A55FE027B4D5C100B02DC5 /* FirebaseStorage */; };
@@ -56,6 +57,7 @@
 		903A2B3F27B8CED00037B592 /* CaptionTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptionTextView.swift; sourceTree = "<group>"; };
 		90906FFB27BA05760058F254 /* TweetService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TweetService.swift; sourceTree = "<group>"; };
 		90906FFD27BA05990058F254 /* Tweet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tweet.swift; sourceTree = "<group>"; };
+		90906FFF27BA37440058F254 /* TweetCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TweetCell.swift; sourceTree = "<group>"; };
 		90A55FE227B4D84800B02DC5 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		90A55FE627B4DFE600B02DC5 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		90A55FE827B4E40900B02DC5 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
@@ -135,6 +137,7 @@
 			isa = PBXGroup;
 			children = (
 				903A2B3F27B8CED00037B592 /* CaptionTextView.swift */,
+				90906FFF27BA37440058F254 /* TweetCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -278,6 +281,7 @@
 				90A55FEB27B4F5EE00B02DC5 /* AuthService.swift in Sources */,
 				900861A027AF9B9C00C2D8F9 /* RegistrationController.swift in Sources */,
 				903A2B4027B8CED00037B592 /* CaptionTextView.swift in Sources */,
+				9090700027BA37440058F254 /* TweetCell.swift in Sources */,
 				903388E427AE7AEC00D63F2A /* MainTabViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
