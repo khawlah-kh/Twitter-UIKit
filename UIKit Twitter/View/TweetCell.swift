@@ -9,6 +9,12 @@ import UIKit
 import SwiftUI
 
 
+protocol TweetCellDelegate :class {
+    
+    func handelProfileImageTapped(_ cell : TweetCell)
+   
+}
+
 class TweetCell:UICollectionViewCell {
 
     var tweet : Tweet?{
@@ -18,14 +24,21 @@ class TweetCell:UICollectionViewCell {
         }
     }
     
+    weak var delegat : TweetCellDelegate?
+    
     // MARK: Properties
-     var userImage : UIImageView = {
+     lazy var userImage : UIImageView = {
         let image = UIImageView()
         image.backgroundColor = .blue
         image.contentMode = .scaleAspectFill
         image.setDimensions(width: 48, height: 48)
         image.layer.masksToBounds = true
         image.layer.cornerRadius = 48/2
+         
+         let tap = UITapGestureRecognizer(target: self, action:#selector(handelProfileImageTapped) )
+         image.addGestureRecognizer(tap)
+         image.isUserInteractionEnabled = true
+         
         return image
         
         
@@ -134,6 +147,13 @@ class TweetCell:UICollectionViewCell {
   
     }
     
+    
+    @objc func handelProfileImageTapped(){
+        
+        self.delegat?.handelProfileImageTapped(self)
+
+    }
+    
     // MARK: Helpers
     
     func configureUI(){
@@ -173,10 +193,19 @@ class TweetCell:UICollectionViewCell {
         actonButtonStack.centerX(inView: self)
         actonButtonStack.anchor(bottom: bottomAnchor,paddingBottom: 8)
         
-        
-        
+
         
     }
     
+    
+}
+
+
+extension FeedController : TweetCellDelegate{
+    func handelProfileImageTapped(_ cell: TweetCell) {
+        let controller = ProfileViewController(collectionViewLayout: UICollectionViewFlowLayout())
+        navigationController?.pushViewController(controller, animated: true)
+    }
+   
     
 }

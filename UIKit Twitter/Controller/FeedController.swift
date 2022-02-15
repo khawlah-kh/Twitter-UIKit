@@ -104,8 +104,17 @@ extension FeedController {
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reusableCellId, for: indexPath) as! TweetCell
+        cell.delegat = self
         cell.tweet = tweets[indexPath.row]
         return cell
+    }
+    
+    
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+         
+//        let controller = ProfileViewController(collectionViewLayout: UICollectionViewFlowLayout())
+//        navigationController?.pushViewController(controller, animated: true)
+        
     }
 }
 
