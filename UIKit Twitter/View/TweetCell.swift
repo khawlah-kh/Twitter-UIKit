@@ -10,50 +10,46 @@ import SwiftUI
 
 
 class TweetCell:UICollectionViewCell {
-    
+
+    var tweet : Tweet?{
+        
+        didSet{
+            configureUI()
+        }
+    }
     
     // MARK: Properties
-    lazy var userImage : UIImageView = {
+     var userImage : UIImageView = {
         let image = UIImageView()
         image.backgroundColor = .blue
         image.contentMode = .scaleAspectFill
-        //image.clipsToBounds = true
         image.setDimensions(width: 48, height: 48)
         image.layer.masksToBounds = true
         image.layer.cornerRadius = 48/2
-        //image.sd_setImage(with: imageURL, completed: nil)
-        
-        
         return image
         
         
     }()
     
-    var captionLabel : UILabel = {
+    lazy var captionLabel : UILabel = {
         let label = UILabel()
-        label.text = "Test Test Test Test Test Test Test Test "
+        label.text = tweet?.caption ?? ""
         label.font=UIFont.systemFont(ofSize: 14)
         label.numberOfLines = 0
         return label
-        
-        
+   
     }()
     
-    var infoLabel : UILabel = {
+    lazy var infoLabel : UILabel = {
         
         let label = UILabel()
-        label.text = "Khawlah @khawlah34"
-        label.font=UIFont.systemFont(ofSize: 14)
-      
         return label
-        
-        
+  
     }()
     
     var divider : UIView = {
         let divider = UIView()
         divider.backgroundColor = .systemGroupedBackground
-
         return divider
         
     }()
@@ -105,28 +101,7 @@ class TweetCell:UICollectionViewCell {
     // MARK: Lifecycle
     override init(frame: CGRect) {
         super.init(frame: frame)
-        backgroundColor = .systemBackground
-        addSubview(userImage)
-        userImage.anchor(top:topAnchor, left: leftAnchor,  paddingTop: 8, paddingLeft: 8)
-        
-        let stack = UIStackView(arrangedSubviews: [infoLabel,captionLabel])
-        stack.axis = .vertical
-        addSubview(stack)
-        stack.anchor(top: userImage.topAnchor, left: userImage.rightAnchor,right: rightAnchor  ,paddingLeft: 12, paddingRight: 12)
-        stack.distribution = .fillProportionally
-        stack.spacing = 4
-        
-       addSubview(divider)
-       divider.anchor( left:leftAnchor, bottom: bottomAnchor,right:rightAnchor,height: 1)
-        
-        let actonButtonStack = UIStackView (arrangedSubviews: [commentButton,retweetButton,likeButton,shareButton])
-        actonButtonStack.axis = .horizontal
-        actonButtonStack.distribution = .fillEqually
-        actonButtonStack.spacing = 72
-        
-        addSubview(actonButtonStack)
-        actonButtonStack.centerX(inView: self)
-        actonButtonStack.anchor(bottom: bottomAnchor,paddingBottom: 8)
+       
     }
     
     required init?(coder: NSCoder) {
@@ -161,7 +136,47 @@ class TweetCell:UICollectionViewCell {
     
     // MARK: Helpers
     
-    
+    func configureUI(){
+        
+        
+        
+        guard let tweet = tweet else {
+            return
+        }
+        
+        let viewModel = TweetViewModel(tweet: tweet)
+        userImage.sd_setImage(with: viewModel.profileImageUrl, completed: nil)
+        infoLabel.attributedText = viewModel.userInfoText
+
+
+        
+        backgroundColor = .systemBackground
+        addSubview(userImage)
+        userImage.anchor(top:topAnchor, left: leftAnchor,  paddingTop: 8, paddingLeft: 8)
+        
+        let stack = UIStackView(arrangedSubviews: [infoLabel,captionLabel])
+        stack.axis = .vertical
+        addSubview(stack)
+        stack.anchor(top: userImage.topAnchor, left: userImage.rightAnchor,right: rightAnchor  ,paddingLeft: 12, paddingRight: 12)
+        stack.distribution = .fillProportionally
+        stack.spacing = 4
+        
+       addSubview(divider)
+       divider.anchor( left:leftAnchor, bottom: bottomAnchor,right:rightAnchor,height: 1)
+        
+        let actonButtonStack = UIStackView (arrangedSubviews: [commentButton,retweetButton,likeButton,shareButton])
+        actonButtonStack.axis = .horizontal
+        actonButtonStack.distribution = .fillEqually
+        actonButtonStack.spacing = 72
+        
+        addSubview(actonButtonStack)
+        actonButtonStack.centerX(inView: self)
+        actonButtonStack.anchor(bottom: bottomAnchor,paddingBottom: 8)
+        
+        
+        
+        
+    }
     
     
 }

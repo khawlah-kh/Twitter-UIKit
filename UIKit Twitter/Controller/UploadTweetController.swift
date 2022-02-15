@@ -80,6 +80,9 @@ class UploadTweetController: UIViewController {
         
     }
     @objc func handleUploadTweet(){
+        guard captionTextView.text != ""  else{
+            print("Please, type something ")
+            return}
         guard let caption = captionTextView.text else {
             print("Please, type something ")
             return}

@@ -11,6 +11,13 @@ import SDWebImage
 class FeedController : UICollectionViewController{
     
 
+    var tweets : [Tweet]=[]{
+        didSet{
+            print("????")
+            print(tweets.count)
+            collectionView.reloadData()
+        }
+    }
     // MARK: - Properties
     var user : User? {
         didSet{
@@ -18,7 +25,6 @@ class FeedController : UICollectionViewController{
         }
     }
    
-
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,17 +34,27 @@ class FeedController : UICollectionViewController{
        
 
     }
+
+    
+    
+    
     
     // MARK: API
-    func fetchTweets (){
+    func fetchTweets(){
         TweetService.shared.fetchTweeets { tweets, error in
             
             if let error = error {
                 print("Something went wrong!\(error.localizedDescription)")
                 return
             }
+            guard let tweets = tweets else {
+                return
+            }
+
+            self.tweets = tweets
             print("💕")
-            print(tweets?.count)
+            print(tweets.count)
+        
         }
         
         
@@ -47,18 +63,17 @@ class FeedController : UICollectionViewController{
     // MARK: - Helper Functions
     
     func configureUI(){
-        
-        collectionView.register(TweetCell.self,forCellWithReuseIdentifier: reusableCellId)
+
+        configureCollectionView()
         view.backgroundColor = UIColor.systemBackground
         let imageView = UIImageView(image: UIImage(named: "logo"))
         imageView.contentMode = .scaleAspectFit
         imageView.setDimensions(width: 44, height: 44)
         navigationItem.titleView = imageView
-
-       
-      
-        
-        
+    }
+    
+    func configureCollectionView(){
+        collectionView.register(TweetCell.self,forCellWithReuseIdentifier: reusableCellId)
     }
     
     
@@ -83,13 +98,13 @@ extension FeedController {
     
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 20
+        return tweets.count
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reusableCellId, for: indexPath) as! TweetCell
-        
+        cell.tweet = tweets[indexPath.row]
         return cell
     }
 }

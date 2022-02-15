@@ -20,12 +20,15 @@ struct Tweet{
     var retweet : Int
     let uid: String
     let timestamp: Timestamp
+    let user : User
     
     //var replyingTo: String?
         
-    init(tweetId:String="",dictionary: [String: Any]) {
+    init(tweetId:String="",user:User,dictionary: [String: Any]) {
      
         self.tweetId = tweetId
+        self.user = user
+        
         //self.username = dictionary["username"] as? String ?? ""
        // self.profileImageUrl = dictionary["profileImageUrl"] as? String ?? ""
         self.caption = dictionary["caption"] as? String ?? ""
@@ -41,10 +44,10 @@ struct Tweet{
         var data:[String:Any] = [:]
         data["tweetId"] = self.tweetId
         data["caption"] = self.caption
-        data["likes"] = self.likes
         data["retweet"] = self.retweet
         data["uid"] = self.uid
         data["timestamp"] = self.timestamp
+    
         
         
         return data

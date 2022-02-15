@@ -27,7 +27,7 @@ class AuthService{
         
         var userData : [String:String] = [User.email:credentials.email
                                           ,User.fullName:credentials.fullName
-                                          ,User.userName:credentials.userName
+                                          ,User.userName:credentials.userName.lowercased()
                                           ,User.profileImageUrl:""]
         
         Auth.auth().createUser(withEmail: credentials.email, password: credentials.password) { result, error in
@@ -151,14 +151,23 @@ class AuthService{
             self.user = user
             completion(user)
             print("Hiii 💜\(self.user?.userName)")
-            
-            
-            
-            
+    
         }
+
         
-        
-        
+    }
+    
+    func fetchtUser(withId:String,completion:@escaping((User)->())){
+        COLECTION_USERS.document(withId).getDocument { snapshot, error in
+            
+            guard let userData = snapshot?.data() else {return}
+            let user =  User(data: userData, id: withId)
+           
+            completion(user)
+          
+    
+        }
+
         
     }
     
