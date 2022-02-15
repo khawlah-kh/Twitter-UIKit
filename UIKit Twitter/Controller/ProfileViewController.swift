@@ -9,21 +9,91 @@ import UIKit
 
 class ProfileViewController: UICollectionViewController {
 
+    
+    
+    // MARK: Properties
+    // MARK: Lifecycle
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        collectionView.backgroundColor = .blue
+        configureCollectionView()
         // Do any additional setup after loading the view.
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.navigationBar.isHidden = true
     }
-    */
+    
+    // MARK: Selectors
+    
+    // MARK: API
+    
+    // MARK: Helpers
+    func configureCollectionView(){
+        collectionView.contentInsetAdjustmentBehavior = .never
+        collectionView.register(TweetCell.self,forCellWithReuseIdentifier: reusableCellId)
+        
+        collectionView.register(ProfileHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: headerId)
+        
+    }
+    
+}
 
+
+// MARK: UICollectionViewDataSource
+
+extension ProfileViewController{
+    
+    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+      
+        return 10
+    }
+    
+    
+    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reusableCellId, for: indexPath) as! TweetCell
+//        cell.delegat = self
+        cell.tweet = Tweet.MockData
+        return cell
+    }
+    
+    
+}
+// MARK: Collection View UICollectionViewDelegateFlowLayout
+
+
+extension ProfileViewController:UICollectionViewDelegateFlowLayout {
+    
+    
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+        
+        return CGSize(width: view.frame.width, height: view.frame.height / 3)
+    }
+
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+
+        return CGSize(width: view.frame.width, height: 120)
+
+
+        
+    }
+
+
+}
+
+
+// MARK: CollectionViewDelegate  (Header Function)
+
+extension ProfileViewController {
+    
+    
+    override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        
+        let header = collectionView.dequeueReusableSupplementaryView(ofKind:kind, withReuseIdentifier: headerId, for: indexPath) as! ProfileHeader
+    
+    return header
+}
 }

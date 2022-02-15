@@ -11,6 +11,9 @@ import Firebase
 
 struct Tweet{
     
+    
+    static let MockData = Tweet(user: User(data: ["fullName" : "Khalid","userName":"kkhh"], id: "12345"), dictionary: ["caption" : "test test test"])
+    
     var tweetId: String = ""
    // let username: String
     //let profileImageUrl: String
