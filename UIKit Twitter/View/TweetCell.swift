@@ -203,7 +203,10 @@ class TweetCell:UICollectionViewCell {
 
 extension FeedController : TweetCellDelegate{
     func handelProfileImageTapped(_ cell: TweetCell) {
-        let controller = ProfileViewController(collectionViewLayout: UICollectionViewFlowLayout())
+        let user = cell.tweet?.user
+        print(user?.fullName)
+        guard let user = user else {return}
+        let controller = ProfileViewController(user: user)
         navigationController?.pushViewController(controller, animated: true)
     }
    
