@@ -51,6 +51,15 @@ struct ProfileHeaderViewModel{
         return user.profileImageUrl
     }
     
+    var fullName : String {
+        
+        user.fullName
+    }
+    
+    var username : String {
+        
+        "@\(user.userName)"
+    }
     var followingString:NSAttributedString {
         
         

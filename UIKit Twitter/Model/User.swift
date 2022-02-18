@@ -19,7 +19,6 @@ struct User : Identifiable{
     
     var isCurrentUser : Bool {
         Auth.auth().currentUser?.uid == self.id
-        
     }
 
     

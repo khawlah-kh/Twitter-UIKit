@@ -13,8 +13,6 @@ class FeedController : UICollectionViewController{
 
     var tweets : [Tweet]=[]{
         didSet{
-            print("????")
-            print(tweets.count)
             collectionView.reloadData()
         }
     }

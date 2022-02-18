@@ -20,6 +20,11 @@ class ProfileViewController: UICollectionViewController {
         super.init(collectionViewLayout: UICollectionViewFlowLayout())
     }
     
+    var userTweets : [Tweet]=[]{
+        didSet{
+            collectionView.reloadData()
+        }
+    }
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -27,7 +32,8 @@ class ProfileViewController: UICollectionViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureCollectionView()
-        // Do any additional setup after loading the view.
+        fetchTweets()
+
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -39,6 +45,11 @@ class ProfileViewController: UICollectionViewController {
     // MARK: Selectors
     
     // MARK: API
+    func fetchTweets(){
+        TweetService.shared.fetchTweeets(user: user) { tweets in
+            self.userTweets = tweets
+        }
+    }
     
     // MARK: Helpers
     func configureCollectionView(){
@@ -58,7 +69,7 @@ extension ProfileViewController{
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
       
-        return 10
+        return userTweets.count
     }
     
     
@@ -66,8 +77,12 @@ extension ProfileViewController{
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reusableCellId, for: indexPath) as! TweetCell
 //        cell.delegat = self
-        cell.tweet = Tweet.MockData
+       // if self.userTweets.isEmpty {return cell}
+        cell.tweet = self.userTweets[indexPath.row]
         return cell
+        
+        
+
     }
     
     
@@ -118,10 +133,5 @@ extension ProfileViewController : ProfileHeaderDelegate{
     func handelDismissal() {
         navigationController?.popViewController(animated: true)
     }
-    
-    
-    
-    
-    
-    
+ 
 }

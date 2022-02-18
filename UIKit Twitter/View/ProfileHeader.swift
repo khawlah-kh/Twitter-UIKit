@@ -83,7 +83,6 @@ class ProfileHeader : UICollectionReusableView {
     
     var fullNameLabel : UILabel = {
         let label = UILabel()
-        label.text = "Sara Khalid"
         label.font = UIFont.boldSystemFont(ofSize: 20)
         label.textColor = .label
         
@@ -93,7 +92,6 @@ class ProfileHeader : UICollectionReusableView {
     
     var usernameLabel : UILabel = {
         let label = UILabel()
-        label.text = "@sara"
         label.font = UIFont.systemFont(ofSize: 16)
         label.textColor = .lightGray
         
@@ -184,6 +182,8 @@ class ProfileHeader : UICollectionReusableView {
         editProfileFollowButton.anchor(top: containerView.bottomAnchor, right: rightAnchor, paddingTop: 16, paddingRight: 16)
         
         
+        fullNameLabel.text = viewModel.fullName
+        usernameLabel.text = viewModel.username
         let userInfoStack = UIStackView(arrangedSubviews: [fullNameLabel,usernameLabel,bioLabel])
         userInfoStack.axis = .vertical
         userInfoStack.distribution = .fillProportionally
