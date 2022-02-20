@@ -23,6 +23,8 @@
 		9033AA8F27B0DB0900A296B3 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9033AA8E27B0DB0900A296B3 /* Utilities.swift */; };
 		903A2B3E27B8B8AA0037B592 /* UploadTweetController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 903A2B3D27B8B8AA0037B592 /* UploadTweetController.swift */; };
 		903A2B4027B8CED00037B592 /* CaptionTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 903A2B3F27B8CED00037B592 /* CaptionTextView.swift */; };
+		905EC1C327C0B98100BD1CB2 /* UserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 905EC1C227C0B98100BD1CB2 /* UserCell.swift */; };
+		905EC1C527C0C60E00BD1CB2 /* UserService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 905EC1C427C0C60E00BD1CB2 /* UserService.swift */; };
 		906D338127BB6D810085A91F /* TweetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 906D338027BB6D810085A91F /* TweetViewModel.swift */; };
 		906D338327BBCDE10085A91F /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 906D338227BBCDE10085A91F /* ProfileViewController.swift */; };
 		906D338627BBEA040085A91F /* ProfileHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 906D338527BBEA040085A91F /* ProfileHeader.swift */; };
@@ -61,6 +63,8 @@
 		9033AA8E27B0DB0900A296B3 /* Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		903A2B3D27B8B8AA0037B592 /* UploadTweetController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadTweetController.swift; sourceTree = "<group>"; };
 		903A2B3F27B8CED00037B592 /* CaptionTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptionTextView.swift; sourceTree = "<group>"; };
+		905EC1C227C0B98100BD1CB2 /* UserCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserCell.swift; sourceTree = "<group>"; };
+		905EC1C427C0C60E00BD1CB2 /* UserService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserService.swift; sourceTree = "<group>"; };
 		906D338027BB6D810085A91F /* TweetViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TweetViewModel.swift; sourceTree = "<group>"; };
 		906D338227BBCDE10085A91F /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		906D338527BBEA040085A91F /* ProfileHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileHeader.swift; sourceTree = "<group>"; };
@@ -153,6 +157,7 @@
 				90906FFF27BA37440058F254 /* TweetCell.swift */,
 				906D338527BBEA040085A91F /* ProfileHeader.swift */,
 				908DE4CE27BCE58F00B7407A /* ProfileFilterView.swift */,
+				905EC1C227C0B98100BD1CB2 /* UserCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -182,6 +187,7 @@
 			children = (
 				90A55FEA27B4F5EE00B02DC5 /* AuthService.swift */,
 				90906FFB27BA05760058F254 /* TweetService.swift */,
+				905EC1C427C0C60E00BD1CB2 /* UserService.swift */,
 			);
 			path = API;
 			sourceTree = "<group>";
@@ -292,6 +298,7 @@
 			files = (
 				90A55FE727B4DFE600B02DC5 /* User.swift in Sources */,
 				903388EA27AE7F9000D63F2A /* NotificationController.swift in Sources */,
+				905EC1C527C0C60E00BD1CB2 /* UserService.swift in Sources */,
 				903388CA27AE745900D63F2A /* AppDelegate.swift in Sources */,
 				90906FFE27BA05990058F254 /* Tweet.swift in Sources */,
 				9033AA8F27B0DB0900A296B3 /* Utilities.swift in Sources */,
@@ -304,6 +311,7 @@
 				906D338627BBEA040085A91F /* ProfileHeader.swift in Sources */,
 				903388CC27AE745900D63F2A /* SceneDelegate.swift in Sources */,
 				903388E627AE7E5400D63F2A /* FeedController.swift in Sources */,
+				905EC1C327C0B98100BD1CB2 /* UserCell.swift in Sources */,
 				903388EC27AE7FC200D63F2A /* ConversationController.swift in Sources */,
 				908DE4CF27BCE58F00B7407A /* ProfileFilterView.swift in Sources */,
 				90A55FE927B4E40900B02DC5 /* Constants.swift in Sources */,
