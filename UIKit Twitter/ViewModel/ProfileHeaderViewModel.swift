@@ -33,7 +33,8 @@ enum ProfileHeaderOptions : Int , CaseIterable{
 }
 
 enum FollowingFollowers : String {
-    case Following,Followers
+    case Following,Followers,Follow
+    case EditProfile = "Edit Profile"
 }
 
 
@@ -63,24 +64,28 @@ struct ProfileHeaderViewModel{
     var followingString:NSAttributedString {
         
         
-        attributedText(value: 2, text: FollowingFollowers.Following.rawValue)
+        attributedText(value: user.stats.following, text: FollowingFollowers.Following.rawValue)
         
     }
     
     var followersString:NSAttributedString {
         
         
-        attributedText(value: 2, text: FollowingFollowers.Followers.rawValue)
+        attributedText(value: user.stats.followers, text: FollowingFollowers.Followers.rawValue)
         
     }
     
     var actionButtonTitle : String? {
 
         if user.isCurrentUser {
-            return "Edit Profile"
+            return FollowingFollowers.EditProfile.rawValue
         }
-        else {
-            return "Follow"
+
+        else if user.isFollowed{
+            return FollowingFollowers.Following.rawValue
+        }
+        else{
+            return FollowingFollowers.Follow.rawValue
         }
         
     }

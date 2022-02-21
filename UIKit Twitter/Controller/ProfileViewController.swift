@@ -12,7 +12,7 @@ class ProfileViewController: UICollectionViewController {
     
     
     // MARK: Properties
-    private let user : User
+    private var user : User
     // MARK: Lifecycle
     init(user:User){
         
@@ -25,6 +25,8 @@ class ProfileViewController: UICollectionViewController {
             collectionView.reloadData()
         }
     }
+    
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -33,6 +35,8 @@ class ProfileViewController: UICollectionViewController {
         super.viewDidLoad()
         configureCollectionView()
         fetchTweets()
+        checkIfUserIsFolowed()
+        getUserStates()
 
     }
     
@@ -49,6 +53,25 @@ class ProfileViewController: UICollectionViewController {
         TweetService.shared.fetchTweeets(user: user) { tweets in
             self.userTweets = tweets
         }
+    }
+    
+    func checkIfUserIsFolowed(){
+        
+        UserService.shared.checkIfuserIsFollowed(uid: user.id) { isFollowed in
+            self.user.isFollowed = isFollowed
+            self.collectionView.reloadData()
+        }
+        
+        
+    }
+    
+   func getUserStates(){
+       UserService.shared.fetchUserStats(uid: user.id) {stats in
+           
+           self.user.stats = stats
+           
+           self.collectionView.reloadData()
+       }
     }
     
     // MARK: Helpers
@@ -130,8 +153,45 @@ extension ProfileViewController {
 
 // MARK: ProfileHeaderDelegate
 extension ProfileViewController : ProfileHeaderDelegate{
+
+    
     func handelDismissal() {
         navigationController?.popViewController(animated: true)
     }
- 
-}
+    func handelEditProfileFollow(_ sender: ProfileHeader) {
+        
+        
+        if user.isCurrentUser  {
+            print("Show Edit Profile Page")
+            return
+        }
+
+        
+        let uid = self.user.id
+
+         
+            if user.isFollowed{
+        
+                UserService.shared.unFollow(uid: uid){
+                    
+                    self.user.isFollowed = false
+                    self.user.stats.followers -= 1
+                    self.collectionView.reloadData()
+                    
+                }
+      
+            }
+            else {UserService.shared.follow(uid: uid){
+                
+                self.user.isFollowed = true
+                self.user.stats.followers += 1
+                self.collectionView.reloadData()
+    
+            }}
+            
+        }
+        
+        
+    }
+
+

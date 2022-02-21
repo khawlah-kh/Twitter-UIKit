@@ -16,6 +16,8 @@ struct User : Identifiable{
     let fullName : String
     let userName : String
     let profileImageUrl : URL
+    var isFollowed = false
+    var stats = UserStats()
     
     var isCurrentUser : Bool {
         Auth.auth().currentUser?.uid == self.id
@@ -68,3 +70,12 @@ struct User : Identifiable{
     
 }
 
+
+struct UserStats{
+    
+    
+    var followers : Int = 0
+    var following : Int = 0
+    
+    
+}
