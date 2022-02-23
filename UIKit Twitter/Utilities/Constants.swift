@@ -25,3 +25,4 @@ let userCellId = "userCellId"
 
 let userFollowingSubCollection = "user-following"
 let userFollowersSubCollection = "user-followers"
+let tweetDetailsHeaderId = "TweetDetailsViewHeader"

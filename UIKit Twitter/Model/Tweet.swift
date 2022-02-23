@@ -19,11 +19,13 @@ struct Tweet{
     //let profileImageUrl: String
     //let fullname: String
     let caption: String
-    var likes: Int
+    //var likes: Int
     var retweet : Int
     let uid: String
     let timestamp: Timestamp
     let user : User
+    var retweetCount = 0
+    var likesCount = 0
     
     //var replyingTo: String?
         
@@ -36,7 +38,7 @@ struct Tweet{
        // self.profileImageUrl = dictionary["profileImageUrl"] as? String ?? ""
         self.caption = dictionary["caption"] as? String ?? ""
        // self.fullname = dictionary["fullName"] as? String ?? ""
-        self.likes = dictionary["likes"] as? Int ?? 0
+       // self.likes = dictionary["likes"] as? Int ?? 0
         self.retweet = dictionary["retweet"] as? Int ?? 0
         self.uid = dictionary["uid"] as? String ?? ""
         self.timestamp = dictionary["timestamp"] as? Timestamp ?? Timestamp(date: Date())

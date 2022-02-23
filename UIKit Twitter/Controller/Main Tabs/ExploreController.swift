@@ -28,6 +28,7 @@ class ExploreController : UITableViewController{
     var inSearchMode : Bool{
         searchController.isActive && !searchController.searchBar.text!.isEmpty
     }
+    
     private var searchController =  UISearchController(searchResultsController: nil)
     
     // MARK: - Lifecycle

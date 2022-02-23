@@ -115,8 +115,9 @@ extension FeedController {
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
          
-//        let controller = ProfileViewController(collectionViewLayout: UICollectionViewFlowLayout())
-//        navigationController?.pushViewController(controller, animated: true)
+        let controller = TweetDetailsViewController(tweet:tweets[indexPath.row])
+        controller.navigationItem.title = "Tweet"
+        navigationController?.pushViewController(controller, animated: true)
         
     }
 }
@@ -127,10 +128,39 @@ extension FeedController : UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
-        return CGSize(width: view.frame.width, height: 120)
+        
+        let tweet = tweets[indexPath.row]
+        let viewmodel = TweetViewModel(tweet: tweet)
+        let height = viewmodel.size( forWidth: view.frame.width).height
+        return CGSize(width: view.frame.width, height: height+90)
         
         
         
+    }
+    
+    
+}
+
+
+// MARK: - TweetCellDelegate
+extension FeedController : TweetCellDelegate{
+  
+    func handelProfileImageTapped(_ cell: TweetCell) {
+        let user = cell.tweet?.user
+        guard let user = user else {return}
+        let controller = ProfileViewController(user: user)
+        navigationController?.pushViewController(controller, animated: true)
+    }
+    func handelRetweetTapped(_ cell: TweetCell) {
+        
+     
+        guard let tweet = cell.tweet else {return}
+        let controller = UploadTweetController(user: tweet.user, config: .reply(tweet))
+        let nav = UINavigationController(rootViewController: controller)
+        nav.modalPresentationStyle = .fullScreen
+        present(nav, animated: true, completion: nil)
+        
+        //navigationController?.pushViewController(controller, animated: true)
     }
     
     

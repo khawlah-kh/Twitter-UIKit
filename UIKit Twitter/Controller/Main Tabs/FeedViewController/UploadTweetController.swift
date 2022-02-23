@@ -7,17 +7,23 @@
 
 import UIKit
 
+
+
+
 class UploadTweetController: UIViewController {
     
     
     // MARK: Properties
 
     var user : User
+    let config : UploadTweetConfigration
+    lazy var viewModel = UploadReplyViewController(config: self.config)
+
+    
     lazy var  tweetButton : UIButton={
         
         let button = UIButton(type: .system)
-        
-        button.setTitle("tweet", for: .normal)
+        button.setTitle(viewModel.actionButtonTitle, for: .normal)
         button.titleLabel?.textAlignment = .center
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
         button.setTitleColor(.white, for: .normal)
@@ -46,18 +52,26 @@ class UploadTweetController: UIViewController {
         
     }()
     
-     var captionTextView : UITextView = {
+     lazy var captionTextView : UITextView = {
         let textView = CaptionTextView()
-         textView.placeholderLabel.text = "What's happining?"
+         textView.placeholderLabel.text = viewModel.placeholder
         
         return textView
     }()
     
+    lazy var replyLabel : UILabel = {
+        let label = UILabel()
+        label.textColor = .systemGray
+        label.attributedText = viewModel.replyText ?? NSAttributedString(string: "", attributes: nil)
+        return label
+        
+    }()
     
     
     // MARK: Lifecycle
-    init(user:User){
+    init(user:User,config:UploadTweetConfigration){
         self.user = user
+        self.config = config
         super.init(nibName: nil, bundle: nil)
        
     }
@@ -103,16 +117,29 @@ class UploadTweetController: UIViewController {
     // MARK: API
     // MARK: Helpers
     func confugureUI(){
-        view.backgroundColor = UIColor.systemBackground
         
+        
+        
+        view.backgroundColor = UIColor.systemBackground
         confugureNavigationBar()
-        let stack = UIStackView(arrangedSubviews: [userImage,captionTextView])
-        stack.axis = .horizontal
-        stack.spacing = 8
+
+        
+        let imageCaptionstack = UIStackView(arrangedSubviews: [userImage,captionTextView])
+        imageCaptionstack.axis = .horizontal
+        imageCaptionstack.spacing = 8
+        imageCaptionstack.alignment = .leading
+        //view.addSubview(imageCaptionstack)
+        
+        let stack = UIStackView(arrangedSubviews: [replyLabel,imageCaptionstack])
+        stack.axis = .vertical
+        stack.alignment = .fill
+        stack.spacing = 12
+
         view.addSubview(stack)
-    
         stack.anchor(top: view.safeAreaLayoutGuide.topAnchor,left: view.safeAreaLayoutGuide.leftAnchor, right: view.safeAreaLayoutGuide.rightAnchor, paddingTop: 16, paddingLeft: 16,paddingRight: 16)
        
+        replyLabel.isHidden = !viewModel.shouldShowReplyLabel
+        
       
     }
     

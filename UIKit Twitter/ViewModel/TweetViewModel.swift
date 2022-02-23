@@ -53,4 +53,18 @@ struct TweetViewModel {
         return formatter.string(from: tweet.timestamp.dateValue())
     }
     
+    
+    func size (forWidth width : CGFloat)->CGSize{
+        let measurmentLabel = UILabel()
+        measurmentLabel.text = tweet.caption
+        measurmentLabel.numberOfLines = 0
+        measurmentLabel.lineBreakMode = .byWordWrapping
+        measurmentLabel.translatesAutoresizingMaskIntoConstraints = false
+        measurmentLabel.widthAnchor.constraint(equalToConstant: width).isActive = true
+        let size = measurmentLabel.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
+        return size
+  
+    }
+    
+    
 }

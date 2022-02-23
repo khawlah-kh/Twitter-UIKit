@@ -68,7 +68,7 @@ class MainTabViewController: UITabBarController {
     // MARK: Selectors (Action Handlers)
     @objc func actionButonTapped(){
         guard let user = user else {return}
-        let nav = UINavigationController(rootViewController:  UploadTweetController(user: user))
+        let nav = UINavigationController(rootViewController:  UploadTweetController(user: user, config: .tweet))
         present(nav , animated: true, completion: nil)
         
     }
