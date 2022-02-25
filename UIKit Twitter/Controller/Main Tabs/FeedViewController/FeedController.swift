@@ -107,8 +107,9 @@ extension FeedController {
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reusableCellId, for: indexPath) as! TweetCell
-        cell.delegat = self
         cell.tweet = tweets[indexPath.row]
+        cell.delegat = self
+
         return cell
     }
     
@@ -116,6 +117,7 @@ extension FeedController {
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
          
         let controller = TweetDetailsViewController(tweet:tweets[indexPath.row])
+
         controller.navigationItem.title = "Tweet"
         navigationController?.pushViewController(controller, animated: true)
         
@@ -159,7 +161,10 @@ extension FeedController : TweetCellDelegate{
         let nav = UINavigationController(rootViewController: controller)
         nav.modalPresentationStyle = .fullScreen
         present(nav, animated: true, completion: nil)
-        
+//        TweetService.shared.sendTweet(caption: "", config: .reply(<#T##Tweet#>)) { error in
+//            <#code#>
+//        }
+//        
         //navigationController?.pushViewController(controller, animated: true)
     }
     

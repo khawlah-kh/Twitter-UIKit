@@ -7,16 +7,16 @@
 
 import UIKit
 
-enum UploadTweetConfigration {
+enum UploadTweetConfiguration {
     
     case tweet
     case reply(Tweet)
 }
 struct UploadReplyViewController{
     
-    let config : UploadTweetConfigration
+    let config : UploadTweetConfiguration
     
-    init(config : UploadTweetConfigration){
+    init(config : UploadTweetConfiguration){
         
         self.config=config
         switch config {

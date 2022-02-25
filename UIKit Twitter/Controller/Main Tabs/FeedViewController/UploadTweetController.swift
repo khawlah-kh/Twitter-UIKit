@@ -16,7 +16,7 @@ class UploadTweetController: UIViewController {
     // MARK: Properties
 
     var user : User
-    let config : UploadTweetConfigration
+    let config : UploadTweetConfiguration
     lazy var viewModel = UploadReplyViewController(config: self.config)
 
     
@@ -69,7 +69,7 @@ class UploadTweetController: UIViewController {
     
     
     // MARK: Lifecycle
-    init(user:User,config:UploadTweetConfigration){
+    init(user:User,config:UploadTweetConfiguration){
         self.user = user
         self.config = config
         super.init(nibName: nil, bundle: nil)
@@ -100,7 +100,7 @@ class UploadTweetController: UIViewController {
         guard let caption = captionTextView.text else {
             print("Please, type something ")
             return}
-        TweetService.shared.sendTweet(caption: caption){ error in
+        TweetService.shared.sendTweet(caption: caption, config: config){ error in
             if let error = error {
                 print("Something went wrong \(error.localizedDescription)")
             }

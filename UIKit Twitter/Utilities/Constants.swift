@@ -13,6 +13,7 @@ let COLECTION_USER_TWEETS = Firestore.firestore().collection("User_Tweets")
 
 let COLECTION_FOLLOWERS = Firestore.firestore().collection("followers")
 let COLECTION_FOLLOWING = Firestore.firestore().collection("following")
+let COLECTION_TWEET_REPLIES = Firestore.firestore().collection("tweet-replies")
 
 
 
@@ -21,6 +22,7 @@ let reusableCellId = "tweetId"
 let headerId = "ProfileHeaderId"
 let filterButtonCellId = "filterButtonCellId"
 let tweetsCollection = "tweets"
+let repliesCollection = "tweet-replies"
 let userCellId = "userCellId"
 
 let userFollowingSubCollection = "user-following"

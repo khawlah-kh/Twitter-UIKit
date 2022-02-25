@@ -56,14 +56,14 @@ struct TweetDetailsViewModel{
     var retweetString:NSAttributedString {
         
         
-        attributedText(value: tweet.retweetCount, text: "Retweets")
+        attributedText(value: tweet.retweet, text: "Retweets")
         
     }
     
     var likesString:NSAttributedString {
         
         
-        attributedText(value: tweet.likesCount, text: "Likes")
+        attributedText(value: tweet.likes, text: "Likes")
         
     }
     

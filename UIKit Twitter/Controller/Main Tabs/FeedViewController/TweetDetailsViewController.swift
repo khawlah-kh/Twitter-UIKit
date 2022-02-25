@@ -14,7 +14,12 @@ class TweetDetailsViewController: UICollectionViewController {
     // MARK: - Properties
     
     let tweet : Tweet
-    let replies : [Tweet] = [Tweet.MockData,Tweet.MockData,Tweet.MockData]
+    var replies : [Tweet]=[]{
+        didSet{
+            collectionView.reloadData()
+    
+        }
+    }
     
     // MARK: - Lifcycles
     
@@ -41,8 +46,22 @@ class TweetDetailsViewController: UICollectionViewController {
         
         collectionView.register(TweetDetailsViewHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: tweetDetailsHeaderId)
         collectionView.register(TweetCell.self,forCellWithReuseIdentifier: reusableCellId)
+        fetchReplies()
     }
 
+    //MARK: API
+    func fetchReplies (){
+        
+        TweetService.shared.fetchReplies(for: tweet.tweetId) { replies, error in
+            guard let replies = replies else {
+                return
+            }
+
+            self.replies = replies
+        }
+        
+        
+    }
 
 }
 
@@ -53,7 +72,7 @@ extension TweetDetailsViewController{
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
       
-        return 3
+        return replies.count
     }
     
     
