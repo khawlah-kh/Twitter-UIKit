@@ -14,28 +14,28 @@ struct TweetDetailsViewModel{
     
     // MARK: - Prroperties
     let tweet : Tweet
-    let user : User
+  //  let user : User
     init(tweet:Tweet){
         
         
         self.tweet = tweet
-        self.user = tweet.user
+      //  self.user = tweet.user
     }
     
     
     
     var profileImageUrl : URL {
-        return user.profileImageUrl
+        return tweet.profileImageUrl
     }
     
     
     var fullName:String{
-        user.fullName
+        tweet.fullname
     }
     
     
     var username:String{
-       "@\(user.userName)"
+       "@\(tweet.username)"
     }
     
     var caption :String{

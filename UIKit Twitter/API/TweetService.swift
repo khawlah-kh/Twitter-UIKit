@@ -16,13 +16,17 @@ class TweetService {
         
         guard let uid = Auth.auth().currentUser?.uid else {return}
         var tweetData :  [String : Any] = [:]
-        tweetData["caption"] = caption
-        tweetData["uid"] = uid
+        tweetData[Tweet.caption] = caption
+        tweetData[Tweet.uid] = uid
        
         guard let currentUser = AuthService.shared.user else {return}
-        let tweetOrReply = Tweet(user: currentUser, dictionary: tweetData)
-        
+       
+        tweetData[Tweet.username] = currentUser.userName
+        tweetData[Tweet.fullname] = currentUser.fullName
+        tweetData[Tweet.profileImageUrl] = currentUser.profileImageUrl.description
 
+        let tweetOrReply = Tweet( dictionary: tweetData)
+        
         switch config {
         case .tweet:
             uploadTweet()
@@ -35,7 +39,7 @@ class TweetService {
         func uploadTweet(){
             let document =   COLECTION_TWEETS.document()
             document.setData(tweetOrReply.getData()) { error in
-            
+                print(" Uploading 🔴")
                 if let error = error {completion(error)
                     return
                 }
@@ -77,21 +81,16 @@ class TweetService {
 
             changes.forEach { change in
                 let tweetData = change.document.data()
-                guard let tweetUserId  = tweetData["uid"] as? String else {return}
-              
-                AuthService.shared.fetchtUser(withId: tweetUserId){ user in
-                    tweets.append(Tweet(tweetId: change.document.documentID, user: user,dictionary: tweetData))
-                    tweets = tweets.sorted (by: {$0.timestamp.dateValue() > $1.timestamp.dateValue()})
-                    completion(tweets,nil)
-                   
-                }
-             
+                tweets.append(Tweet(tweetId: change.document.documentID,  dictionary: tweetData))
              
             }
+            tweets = tweets.sorted (by: {$0.timestamp.dateValue() > $1.timestamp.dateValue()})
+            completion(tweets,nil)
+
          
            
+        
         }
-      
         
     }
     
@@ -112,7 +111,7 @@ class TweetService {
                 COLECTION_TWEETS.document(tweetId).getDocument { snapshot, error in
                     
                     guard let tweetData = snapshot?.data() else {return}
-                    let tweet = Tweet(tweetId: tweetId, user: user, dictionary: tweetData)
+                    let tweet = Tweet(tweetId: tweetId, dictionary: tweetData)
                     tweets.append(tweet)
                     completion(tweets)
                     
@@ -149,7 +148,7 @@ class TweetService {
                 guard let tweetUserId  = tweetData["uid"] as? String else {return}
               
                 AuthService.shared.fetchtUser(withId: tweetUserId){ user in
-                    tweets.append(Tweet(tweetId: change.document.documentID, user: user,dictionary: tweetData))
+                    tweets.append(Tweet(tweetId: change.document.documentID,dictionary: tweetData))
                     tweets = tweets.sorted (by: {$0.timestamp.dateValue() > $1.timestamp.dateValue()})
                     completion(tweets,nil)
                    
@@ -209,7 +208,7 @@ class TweetService {
                 guard let tweetUserId  = tweetData["uid"] as? String else {return}
                 
                   AuthService.shared.fetchtUser(withId: tweetUserId){ user in
-                      replies.append(Tweet(tweetId:tweet.documentID, user: user,dictionary: tweetData))
+                      replies.append(Tweet(tweetId:tweet.documentID,dictionary: tweetData))
                       replies = replies.sorted (by: {$0.timestamp.dateValue() > $1.timestamp.dateValue()})
                       completion(replies,nil)
                      

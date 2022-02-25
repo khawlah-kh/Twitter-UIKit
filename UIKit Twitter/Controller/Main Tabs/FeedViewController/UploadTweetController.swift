@@ -7,7 +7,10 @@
 
 import UIKit
 
-
+protocol UploadTweetDelegate : class{
+    
+    func handleAfterUploading ()
+}
 
 
 class UploadTweetController: UIViewController {
@@ -18,6 +21,8 @@ class UploadTweetController: UIViewController {
     var user : User
     let config : UploadTweetConfiguration
     lazy var viewModel = UploadReplyViewController(config: self.config)
+
+    weak var delegat : UploadTweetDelegate?
 
     
     lazy var  tweetButton : UIButton={
@@ -105,7 +110,10 @@ class UploadTweetController: UIViewController {
                 print("Something went wrong \(error.localizedDescription)")
             }
             else{
-                self.dismiss(animated: true) 
+                    self.delegat?.handleAfterUploading()
+                    self.dismiss(animated: true)
+                
+                
             
             }
         }

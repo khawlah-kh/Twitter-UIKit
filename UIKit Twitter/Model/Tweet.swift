@@ -12,7 +12,11 @@ import Firebase
 struct Tweet{
     
     
-    static let MockData = Tweet(user: User(data: ["fullName" : "Khalid","userName":"kkhh"], id: "12345"), dictionary: ["caption" : "test test test"])
+    static let MockData = Tweet(dictionary: ["fullName" : "Khalid",
+                                             "userName":"kkhh",
+                                             "uid": "12345",
+                                             "caption" : "test test test"
+                                            ])
     
     var tweetId: String = ""
     let caption: String
@@ -20,46 +24,43 @@ struct Tweet{
     var retweet : Int
     let uid: String
     let timestamp: Timestamp
-    let user : User
     
-    // let username: String
-     //let profileImageUrl: String
-     //let fullname: String
-//    var retweetCount : Int
-//    var likesCount : Int
-//
-    //var replyingTo: String?
+    let username: String
+    let profileImageUrl: URL
+    let fullname: String
+
         
-    init(tweetId:String="",user:User,dictionary: [String: Any]) {
+    init(tweetId:String="",dictionary: [String: Any]) {
      
         self.tweetId = tweetId
-        self.user = user
         self.caption = dictionary["caption"] as? String ?? ""
         self.likes = dictionary["likes"] as? Int ?? 0
-       self.retweet = dictionary["retweet"] as? Int ?? 0
+        self.retweet = dictionary["retweet"] as? Int ?? 0
         self.uid = dictionary["uid"] as? String ?? ""
         self.timestamp = dictionary["timestamp"] as? Timestamp ?? Timestamp(date: Date())
         
-        //self.username = dictionary["username"] as? String ?? ""
-       // self.profileImageUrl = dictionary["profileImageUrl"] as? String ?? ""
-        //self.retweetCount = dictionary["retweetCount"] as? Int ?? 0
-        // self.fullname = dictionary["fullName"] as? String ?? ""
+        self.username = dictionary["username"] as? String ?? ""
+        self.fullname = dictionary["fullname"] as? String ?? ""
 
+        let profileImageUrlAsString = dictionary[User.profileImageUrl]  as? String ?? "N/A"
+        self.profileImageUrl = URL(string: profileImageUrlAsString)!
 
-     
     }
     
     func getData ()->[String:Any]{
         var data:[String:Any] = [:]
-        data["tweetId"] = self.tweetId
-        data["caption"] = self.caption
-        data["retweet"] = self.retweet
-        data["likes"] = self.likes
-        data["uid"] = self.uid
-        data["timestamp"] = self.timestamp
+        data[Tweet.tweetId] = self.tweetId
+        data[Tweet.caption] = self.caption
+        data[Tweet.retweet] = self.retweet
+        data[Tweet.likes] = self.likes
+        data[Tweet.uid] = self.uid
+        data[Tweet.timestamp] = self.timestamp
     
+        data[Tweet.fullname] = self.fullname
+        data[Tweet.username] = self.username
+        data[Tweet.profileImageUrl] = self.profileImageUrl.description
         
-        
+         
         return data
         
         
@@ -67,7 +68,15 @@ struct Tweet{
     
     
     
-    
+    static let tweetId = "tweetId"
+    static let caption = "caption"
+    static let retweet = "retweet"
+    static let likes = "likes"
+    static let uid = "uid"
+    static let timestamp = "timestamp"
+    static let username = "username"
+    static let fullname = "fullname"
+    static let profileImageUrl = "profileImageUrl"
     
     
     

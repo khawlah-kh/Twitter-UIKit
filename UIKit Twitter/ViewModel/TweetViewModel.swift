@@ -13,22 +13,22 @@ import Firebase
 struct TweetViewModel {
     
     let tweet : Tweet
-    let user : User
+   // let user : User
     
     init(tweet:Tweet){
         self.tweet = tweet
-        self.user = tweet.user
+      //  self.user = tweet.user
     }
     
     var profileImageUrl : URL {
-        return tweet.user.profileImageUrl
+        return tweet.profileImageUrl
     }
     
     var userInfoText : NSAttributedString {
         
-        let title = NSMutableAttributedString(string: user.fullName, attributes: [.font : UIFont.boldSystemFont(ofSize: 14)])
+        let title = NSMutableAttributedString(string: tweet.fullname, attributes: [.font : UIFont.boldSystemFont(ofSize: 14)])
         
-        title.append(NSAttributedString(string: " @\(user.userName)", attributes: [.font : UIFont.systemFont(ofSize: 14)
+        title.append(NSAttributedString(string: " @\(tweet.username)", attributes: [.font : UIFont.systemFont(ofSize: 14)
                                                                                    ,.foregroundColor: UIColor.lightGray]))
         
         title.append(NSAttributedString(string: " • \(timestampString)", attributes: [.font : UIFont.systemFont(ofSize: 14)

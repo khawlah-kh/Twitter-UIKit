@@ -22,20 +22,20 @@ class MainTabViewController: UITabBarController {
             feed.user = self.user
         }
     }
-    let actionButton : UIButton = {
-        let button = UIButton(type: .system)
-        button.tintColor = .white
-        button.backgroundColor = .twitterBlue
-        button.setImage(UIImage(systemName: "rectangle.and.pencil.and.ellipsis"), for: .normal)
-        button.addTarget(self, action: #selector(actionButonTapped), for: .touchUpInside)
-        return button
-    }()
+//    let actionButton : UIButton = {
+//        let button = UIButton(type: .system)
+//        button.tintColor = .white
+//        button.backgroundColor = .twitterBlue
+//        button.setImage(UIImage(systemName: "rectangle.and.pencil.and.ellipsis"), for: .normal)
+//        button.addTarget(self, action: #selector(actionButonTapped), for: .touchUpInside)
+//        return button
+//    }()
     
     // MARK: = Lifecycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        AuthService.shared.signUserOut()
+       // AuthService.shared.signUserOut()
         view.backgroundColor = .twitterBlue
         authenticateUserAndConfigureUI()
        
@@ -68,7 +68,13 @@ class MainTabViewController: UITabBarController {
     // MARK: Selectors (Action Handlers)
     @objc func actionButonTapped(){
         guard let user = user else {return}
-        let nav = UINavigationController(rootViewController:  UploadTweetController(user: user, config: .tweet))
+        let controller =  UploadTweetController(user: user, config: .tweet)
+        
+//        guard let feedNav = viewControllers?[0] as? UINavigationController else {return}
+//        guard let feed = feedNav.viewControllers.first as? FeedController else {return}
+//        controller.delegat = feed
+        let nav = UINavigationController(rootViewController:controller )
+        
         present(nav , animated: true, completion: nil)
         
     }
@@ -76,10 +82,10 @@ class MainTabViewController: UITabBarController {
    // MARK: - Helper Functions
     
     func configureUI(){
-        view.addSubview(actionButton)
-
-        actionButton.anchor(bottom:view.safeAreaLayoutGuide.bottomAnchor, right:view.rightAnchor,  paddingBottom: 64, paddingRight: 16, width: 56, height: 56)
-        actionButton.layer.cornerRadius = 56 / 2
+//        view.addSubview(actionButton)
+//
+//        actionButton.anchor(bottom:view.safeAreaLayoutGuide.bottomAnchor, right:view.rightAnchor,  paddingBottom: 64, paddingRight: 16, width: 56, height: 56)
+//        actionButton.layer.cornerRadius = 56 / 2
     }
 
     func configureViewControllers(){
@@ -154,3 +160,5 @@ struct MainPreview: PreviewProvider {
         }
     }
 }
+
+
