@@ -14,6 +14,15 @@ class TweetDetailsViewController: UICollectionViewController {
     // MARK: - Properties
     
     let tweet : Tweet
+    var user : User? {
+        didSet{
+            guard let user = user else {
+                return
+            }
+            actionSheetLauncher=ActionSheetLauncher(user: user)
+        }
+    }
+    var actionSheetLauncher : ActionSheetLauncher?
     var replies : [Tweet]=[]{
         didSet{
             collectionView.reloadData()
@@ -26,6 +35,7 @@ class TweetDetailsViewController: UICollectionViewController {
     init (tweet:Tweet){
         
         self.tweet = tweet
+        //self.actionSheet = ActionSheetLauncher(user: <#T##User#>)
         super.init(collectionViewLayout: UICollectionViewFlowLayout())
     }
     
@@ -37,6 +47,7 @@ class TweetDetailsViewController: UICollectionViewController {
         super.viewDidLoad()
       
         configureCollectionView()
+        fetchUser()
         
     }
     
@@ -61,6 +72,14 @@ class TweetDetailsViewController: UICollectionViewController {
         }
         
         
+    }
+    
+    func fetchUser(){
+        AuthService.shared.fetchtUser(withId: tweet.uid) { tweetUser in
+           // guard let user = tweetUser else {return}
+            self.user = tweetUser
+            
+        }
     }
 
 }
@@ -99,6 +118,7 @@ extension TweetDetailsViewController {
         let header = collectionView.dequeueReusableSupplementaryView(ofKind:kind, withReuseIdentifier: tweetDetailsHeaderId, for: indexPath) as! TweetDetailsViewHeader
 
         header.tweet = tweet
+        header.delegate = self
        
     return header
 }
@@ -132,4 +152,16 @@ extension TweetDetailsViewController:UICollectionViewDelegateFlowLayout {
     
     
     
+}
+
+
+
+// MARK: - TweetDetailsViewHeaderDelegaate
+
+extension TweetDetailsViewController : TweetDetailsViewHeaderDelegaate {
+    func handelShowActionSheet() {
+        
+        actionSheetLauncher?.show()
+    }
+     
 }

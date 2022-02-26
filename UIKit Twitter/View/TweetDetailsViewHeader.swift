@@ -7,9 +7,16 @@
 
 import UIKit
 
+protocol TweetDetailsViewHeaderDelegaate : class {
+    
+    func handelShowActionSheet ()
+    
+}
+
 class TweetDetailsViewHeader: UICollectionReusableView {
     
     // MARK: - Prperties
+    weak var delegate : TweetDetailsViewHeaderDelegaate?
     var tweet : Tweet? {
         didSet{
             configureUI()
@@ -182,7 +189,11 @@ class TweetDetailsViewHeader: UICollectionReusableView {
     //MARK: - Selectors
     @objc func handelProfileImageTapped(){}
     
-    @objc func showActionSheet(){}
+    @objc func showActionSheet(){
+        
+        self.delegate?.handelShowActionSheet()
+        
+    }
     
     // MARK: - Helpers
     func configureUI(){

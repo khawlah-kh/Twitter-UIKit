@@ -24,6 +24,7 @@ let filterButtonCellId = "filterButtonCellId"
 let tweetsCollection = "tweets"
 let repliesCollection = "tweet-replies"
 let userCellId = "userCellId"
+let actionSheetCellId = "actionSheetCellId"
 
 let userFollowingSubCollection = "user-following"
 let userFollowersSubCollection = "user-followers"
