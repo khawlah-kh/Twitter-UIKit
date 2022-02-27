@@ -10,6 +10,14 @@ import UIKit
 class ActionSheetCell: UITableViewCell {
 
     
+    var option : ActionSheetOption? {
+        
+        didSet{
+            configureUI()
+            
+            
+        }
+    }
     
     
     // MARK: - Properties
@@ -52,6 +60,7 @@ class ActionSheetCell: UITableViewCell {
         optionImageView.setDimensions(width: 36, height: 36)
       
         addSubview(titleLabel)
+       titleLabel.text = option?.description
        titleLabel.centerY(inView: self)
        titleLabel.anchor( left: optionImageView.rightAnchor ,paddingLeft: 16)
       
