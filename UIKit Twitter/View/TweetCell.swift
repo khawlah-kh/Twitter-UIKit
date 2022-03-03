@@ -11,6 +11,7 @@ import SwiftUI
 
 protocol TweetCellDelegate :class {
     
+    func handelLikeTweet(_ cell : TweetCell)
     func handelProfileImageTapped(_ cell : TweetCell)
     func handelRetweetTapped(_ cell : TweetCell)
    
@@ -136,8 +137,9 @@ class TweetCell:UICollectionViewCell {
     }
     
     @objc func handellike(){
-        print("handellike")
-  
+ 
+        delegat?.handelLikeTweet(self)
+
     }
     
     @objc func handelretweet(){
@@ -195,6 +197,9 @@ class TweetCell:UICollectionViewCell {
         addSubview(actonButtonStack)
         actonButtonStack.centerX(inView: self)
         actonButtonStack.anchor(bottom: bottomAnchor,paddingBottom: 8)
+        
+        likeButton.tintColor = viewModel.likeButtonTintColor
+        likeButton.setImage(viewModel.likeButtonImage, for: .normal)
         
 
         

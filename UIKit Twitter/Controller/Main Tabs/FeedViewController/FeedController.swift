@@ -7,6 +7,7 @@
 
 import UIKit
 import SDWebImage
+import CoreMIDI
 
 class FeedController : UICollectionViewController{
     
@@ -77,9 +78,16 @@ class FeedController : UICollectionViewController{
             }
 
             self.tweets = tweets
-            print("💕")
-            print(tweets.count)
-        
+            
+            // Check Liked Tweet
+            for (index , tweet) in tweets.enumerated(){
+                
+                TweetService.shared.checkIfTweetIsLiked(tweet: tweet) { isLiked in
+                    guard isLiked == true else {return}
+                    self.tweets[index].didLike = isLiked
+                }
+                
+            }
         }
         
         
@@ -142,7 +150,7 @@ extension FeedController {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reusableCellId, for: indexPath) as! TweetCell
 
         DispatchQueue.main.async {
-       // let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reusableCellId, for: indexPath) as! TweetCell
+
             cell.tweet = self.tweets[indexPath.row]
             print("Reloading 👍🏻 \(self.tweets[indexPath.row].caption)")
         cell.delegat = self
@@ -184,6 +192,35 @@ extension FeedController : UICollectionViewDelegateFlowLayout {
 
 // MARK: - TweetCellDelegate
 extension FeedController : TweetCellDelegate{
+ 
+    func handelLikeTweet(_ cell: TweetCell) {
+        guard let  tweet = cell.tweet else {
+                return
+            }
+        print(tweet.didLike,"🔴")
+            if tweet.didLike {
+                TweetService.shared.unLikeTweet(tweet:tweet) {
+                    cell.tweet?.didLike = false
+                    print(cell.tweet?.didLike,"🔴🔴")
+                    let likes = tweet.likes - 1
+                    cell.tweet?.likes = likes
+                }
+                
+            }
+            else{
+                TweetService.shared.likeTweet(tweet:tweet) {
+                    cell.tweet?.didLike = true
+                    print( cell.tweet?.didLike,"🔴🔴")
+                    let likes = tweet.likes + 1
+                    cell.tweet?.likes = likes
+
+               
+            }
+            }
+        
+        
+    }
+    
   
     func handelProfileImageTapped(_ cell: TweetCell) {
         //let user = cell.tweet?.user

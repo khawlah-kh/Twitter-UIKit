@@ -15,6 +15,9 @@ let COLECTION_FOLLOWERS = Firestore.firestore().collection("followers")
 let COLECTION_FOLLOWING = Firestore.firestore().collection("following")
 let COLECTION_TWEET_REPLIES = Firestore.firestore().collection("tweet-replies")
 
+let COLECTION_USER_LIKES = Firestore.firestore().collection("user-likes")
+let COLECTION_TWEET_LIKES = Firestore.firestore().collection("tweet-likes")
+
 
 
 
@@ -29,3 +32,6 @@ let actionSheetCellId = "actionSheetCellId"
 let userFollowingSubCollection = "user-following"
 let userFollowersSubCollection = "user-followers"
 let tweetDetailsHeaderId = "TweetDetailsViewHeader"
+
+let userLikesTweetCollection = "user-likes"
+let tweetLikesTweetCollection = "tweet-likes"

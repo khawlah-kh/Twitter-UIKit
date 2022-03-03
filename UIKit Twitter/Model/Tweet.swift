@@ -24,6 +24,7 @@ struct Tweet{
     var retweet : Int
     let uid: String
     let timestamp: Timestamp
+    var didLike = false
     
     let username: String
     let profileImageUrl: URL

@@ -66,5 +66,24 @@ struct TweetViewModel {
   
     }
     
+    var likeButtonTintColor : UIColor {
+        
+        return tweet.didLike ? .red : .gray
+        
+    }
+    
+    var likeButtonImage : UIImage {
+        
+        if tweet.didLike{
+            return UIImage(systemName: "suit.heart.fill")!
+        }
+        else{
+            return UIImage(systemName: "heart")!
+        }
+        
+    }
+    
+
+
     
 }

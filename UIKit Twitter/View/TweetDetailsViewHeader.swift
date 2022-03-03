@@ -17,6 +17,7 @@ class TweetDetailsViewHeader: UICollectionReusableView {
     
     // MARK: - Prperties
     weak var delegate : TweetDetailsViewHeaderDelegaate?
+    
     var tweet : Tweet? {
         didSet{
             configureUI()
@@ -240,6 +241,9 @@ class TweetDetailsViewHeader: UICollectionReusableView {
         actonButtonStack.distribution = .fillEqually
         actonButtonStack.alignment = .center
         actonButtonStack.spacing = 72
+        
+        likeButton.tintColor = viewModel.likeButtonTintColor
+        likeButton.setImage(viewModel.likeButtonImage, for: .normal)
         
         
         

@@ -67,6 +67,24 @@ struct TweetDetailsViewModel{
         
     }
     
+    var likeButtonTintColor : UIColor {
+        
+        return tweet.didLike ? .red : .gray
+        
+    }
+    
+    var likeButtonImage : UIImage {
+        
+        if tweet.didLike{
+            return UIImage(systemName: "suit.heart.fill")!
+        }
+        else{
+            return UIImage(systemName: "heart")!
+        }
+        
+    }
+    
+    
     // MARK: - Helpers
     func attributedText(value:Int,text:String)->NSAttributedString{
         

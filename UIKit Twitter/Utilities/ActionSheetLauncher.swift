@@ -11,11 +11,11 @@ import UIKit
 class ActionSheetLauncher :NSObject{
     
     //MARK: - Properties
-    let user : User
+    var user : User
     let tableView = UITableView()
     var window : UIWindow?
     lazy var viewModel = ActionSheetViewModel(user: user)
-    
+
     lazy var blackView : UIView = {
         
         let view = UIView()
@@ -63,6 +63,8 @@ class ActionSheetLauncher :NSObject{
         self.user = user
         super.init()
         configreTableView()
+        checkIfUserIsFolowed()
+        
 
     }
     
@@ -73,6 +75,7 @@ class ActionSheetLauncher :NSObject{
             self.blackView.alpha = 0
             self.tableView.frame.origin.y += 300
         }
+        tableView.reloadData()
     }
     
     
@@ -114,6 +117,17 @@ class ActionSheetLauncher :NSObject{
         tableView.register(ActionSheetCell.self, forCellReuseIdentifier: actionSheetCellId)
         
     }
+    // MARK: API
+    func checkIfUserIsFolowed(){
+        
+        UserService.shared.checkIfuserIsFollowed(uid: user.id) { isFollowed in
+            self.user.isFollowed = isFollowed
+           
+        }
+        
+        
+    }
+
 
 }
 
@@ -128,6 +142,17 @@ extension ActionSheetLauncher : UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         return footerView
+    }
+    
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        let selection = viewModel.options[indexPath.row]
+        viewModel.performAction(selection: selection){
+            
+            self.handelDismissal()
+        }
+       
     }
 }
 
@@ -146,7 +171,5 @@ extension ActionSheetLauncher : UITableViewDataSource {
         return cell
     }
     
-    
-    
-    
+  
 }

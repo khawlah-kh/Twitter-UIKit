@@ -48,6 +48,7 @@
 		90A55FE727B4DFE600B02DC5 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90A55FE627B4DFE600B02DC5 /* User.swift */; };
 		90A55FE927B4E40900B02DC5 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90A55FE827B4E40900B02DC5 /* Constants.swift */; };
 		90A55FEB27B4F5EE00B02DC5 /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90A55FEA27B4F5EE00B02DC5 /* AuthService.swift */; };
+		90A8686727D08536000445A9 /* Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90A8686627D08536000445A9 /* Notification.swift */; };
 		90D13A7827B7951F003A2595 /* SDWebImage in Frameworks */ = {isa = PBXBuildFile; productRef = 90D13A7727B7951F003A2595 /* SDWebImage */; };
 /* End PBXBuildFile section */
 
@@ -92,6 +93,7 @@
 		90A55FE627B4DFE600B02DC5 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		90A55FE827B4E40900B02DC5 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		90A55FEA27B4F5EE00B02DC5 /* AuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
+		90A8686627D08536000445A9 /* Notification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notification.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -169,6 +171,7 @@
 			children = (
 				90A55FE627B4DFE600B02DC5 /* User.swift */,
 				90906FFD27BA05990058F254 /* Tweet.swift */,
+				90A8686627D08536000445A9 /* Notification.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -191,11 +194,11 @@
 		903388DF27AE755700D63F2A /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
+				9066FF4B27CB3E5E0004583B /* ActionSheetViewModel.swift */,
 				902D48C027C352EB00B9192B /* TweetDetailsViewModel.swift */,
 				906D338027BB6D810085A91F /* TweetViewModel.swift */,
 				908DE4D227BD3ACC00B7407A /* ProfileHeaderViewModel.swift */,
 				906D204227C4CADB009A5C68 /* UploadReplyViewController.swift */,
-				9066FF4B27CB3E5E0004583B /* ActionSheetViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -356,6 +359,7 @@
 				906D338327BBCDE10085A91F /* ProfileViewController.swift in Sources */,
 				9090700027BA37440058F254 /* TweetCell.swift in Sources */,
 				906105D327C9EADD0084AF95 /* ActionSheetLauncher.swift in Sources */,
+				90A8686727D08536000445A9 /* Notification.swift in Sources */,
 				902D48BD27C3484400B9192B /* TweetDetailsViewController.swift in Sources */,
 				9066FF4C27CB3E5E0004583B /* ActionSheetViewModel.swift in Sources */,
 				903388E427AE7AEC00D63F2A /* MainTabViewController.swift in Sources */,

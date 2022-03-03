@@ -160,32 +160,7 @@ class TweetService {
            
         }
       
-        
-        
-//        var tweets = [Tweet]()
-//        COLECTION_TWEETS.getDocuments { snapshot, error in
-//            if let error = error {
-//                completion(nil,error)
-//                return
-//            }
-//
-//            guard let snapshot = snapshot else {return }
-//
-//            snapshot.documents.forEach { tweet in
-//                let tweetData = tweet.data()
-//                guard let tweetUserId  = tweetData["uid"] as? String else {return}
-//                AuthService.shared.fetchtUser(withId: tweetUserId){ user in
-//                    tweets.append(Tweet(tweetId: tweet.documentID, user: user,dictionary: tweetData))
-//                    tweets = tweets.sorted (by: {$0.timestamp.dateValue() > $1.timestamp.dateValue()})
-//                    completion(tweets,nil)
-//
-//                }
-//
-//            }
-//
-//        }
-     
-        
+
         
         
      
@@ -224,8 +199,79 @@ class TweetService {
         
         
         
+    
+    
+    func likeTweet(tweet : Tweet , completion : @escaping ()->Void){
         
         
+        guard let uid = Auth.auth().currentUser?.uid else {return}
+        
+        let likes = tweet.likes + 1
+        
+        //1
+        COLECTION_TWEETS.document(tweet.tweetId).updateData(["likes" : likes]){_ in
+        
+        //2
+        COLECTION_USER_LIKES.document(uid).collection(userLikesTweetCollection).document(tweet.tweetId).setData([:]){ _ in
+        
+        //3
+            COLECTION_TWEET_LIKES.document(tweet.tweetId).collection(tweetLikesTweetCollection).document(uid).setData([:]){ _ in
+                
+                
+                
+                completion()
+            }
+        
+        }
+        
+    }
+    }
+    
+    func unLikeTweet(tweet : Tweet , completion : @escaping ()->Void){
+        
+        
+        guard let uid = Auth.auth().currentUser?.uid else {return}
+        
+        let likes = tweet.likes - 1
+        
+        //1
+        COLECTION_TWEETS.document(tweet.tweetId).updateData(["likes" : likes]){_ in
+        
+        //2
+        COLECTION_USER_LIKES.document(uid).collection(userLikesTweetCollection).document(tweet.tweetId).delete{ _ in
+            
+            //3
+            COLECTION_TWEET_LIKES.document(tweet.tweetId).collection(tweetLikesTweetCollection).document(uid).delete
+            {_ in
+                completion()
+            }
+        }
+        
+       
+        }
+        
+        
+    }
+        
+    
+    
+    func checkIfTweetIsLiked(tweet : Tweet , completion : @escaping (Bool)->Void){
+        
+        guard let uid = Auth.auth().currentUser?.uid else {return }
+
+        let likesRef = COLECTION_USER_LIKES.document(uid).collection(userLikesTweetCollection)
+        
+        likesRef.document(tweet.tweetId).getDocument { snapshot, _ in
+            
+            guard let didLike = snapshot?.exists else {return }
+            
+            print(didLike,"🤍")
+            completion(didLike)
+            
+        }
+    }
+    
+    
     }
 
 

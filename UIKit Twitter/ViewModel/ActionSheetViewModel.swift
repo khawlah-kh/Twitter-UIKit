@@ -32,14 +32,15 @@ enum ActionSheetOption  {
     
 }
 
-struct ActionSheetViewModel {
+class ActionSheetViewModel {
     
     
-    let user : User
+    var user : User
     init(user:User){
         self.user = user
     }
-    
+
+    //weak var delegate : ActionSheetLauncherDelegate?
     
     var options : [ActionSheetOption] {
         
@@ -58,6 +59,40 @@ struct ActionSheetViewModel {
         
         return result
     }
+    
+    
+    func performAction (selection : ActionSheetOption,completion:@escaping(()->Void))
+    {
+        switch selection {
+        case .follow(let user):
+            UserService.shared.follow(uid: user.id) {
+                self.user.isFollowed = true
+                completion()
+            }
+            print("follow")
+        case .unfollow(let user):
+            UserService.shared.unFollow(uid: user.id) {
+                self.user.isFollowed = false
+                completion()
+            }
+            print("unfollow")
+        case .delete_tweet:
+            print("delete_tweet")
+            completion()
+
+        case .report_tweet:
+            print("report_tweet")
+            completion()
+
+        }
+        
+        
+        
+        
+        
+        
+    }
+
    
 }
 
