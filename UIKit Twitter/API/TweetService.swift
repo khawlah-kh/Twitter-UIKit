@@ -54,8 +54,10 @@ class TweetService {
         func uploadReply(tweet : Tweet){
             let document =   COLECTION_TWEET_REPLIES.document(tweet.tweetId)
             document.collection(repliesCollection).document().setData(tweetOrReply.getData()){ error in
-                print("\(tweetOrReply.caption)🌹")
                 completion(error)
+                
+                //upload reply notification
+                NotificationService.shared.uploadeNotification(type: .reply, tweet: tweet)
             }
             
             
@@ -108,13 +110,9 @@ class TweetService {
             }
             snapshot.documents.forEach { doc in
                 let tweetId = doc.documentID
-                COLECTION_TWEETS.document(tweetId).getDocument { snapshot, error in
-                    
-                    guard let tweetData = snapshot?.data() else {return}
-                    let tweet = Tweet(tweetId: tweetId, dictionary: tweetData)
+                self.fetchtTweet(withId: tweetId) { tweet in
                     tweets.append(tweet)
                     completion(tweets)
-                    
                 }
                 
             }
@@ -125,49 +123,21 @@ class TweetService {
         
     }
     
-
+    func fetchtTweet(withId:String,completion:@escaping((Tweet)->())){
+        COLECTION_TWEETS.document(withId).getDocument { snapshot, error in
+            
+            guard let tweetData = snapshot?.data() else {return}
+            let tweet = Tweet(tweetId: withId, dictionary: tweetData)
+            completion(tweet)
+          
     
-    
-// For test
-    func fetchTweeets2(completion:@escaping completion){
-        
-        var tweetsID = [String]()
-        
-        var tweets = [Tweet]()
-        
-        COLECTION_TWEETS.addSnapshotListener { snapshot, error in
-            if let error = error {
-                completion(nil,error)
-                return
-            }
-            guard let changes = snapshot?.documentChanges.filter({ $0.type == .added
-            }) else {return}
-
-            changes.forEach { change in
-                let tweetData = change.document.data()
-                guard let tweetUserId  = tweetData["uid"] as? String else {return}
-              
-                AuthService.shared.fetchtUser(withId: tweetUserId){ user in
-                    tweets.append(Tweet(tweetId: change.document.documentID,dictionary: tweetData))
-                    tweets = tweets.sorted (by: {$0.timestamp.dateValue() > $1.timestamp.dateValue()})
-                    completion(tweets,nil)
-                   
-                }
-             
-             
-            }
-         
-           
         }
-      
 
-        
-        
-     
-      
         
     }
+
     
+ 
     
     
     
@@ -269,6 +239,49 @@ class TweetService {
             completion(didLike)
             
         }
+    }
+    
+
+    
+    
+// For test
+    func fetchTweeets2(completion:@escaping completion){
+        
+        var tweetsID = [String]()
+        
+        var tweets = [Tweet]()
+        
+        COLECTION_TWEETS.addSnapshotListener { snapshot, error in
+            if let error = error {
+                completion(nil,error)
+                return
+            }
+            guard let changes = snapshot?.documentChanges.filter({ $0.type == .added
+            }) else {return}
+
+            changes.forEach { change in
+                let tweetData = change.document.data()
+                guard let tweetUserId  = tweetData["uid"] as? String else {return}
+              
+                AuthService.shared.fetchtUser(withId: tweetUserId){ user in
+                    tweets.append(Tweet(tweetId: change.document.documentID,dictionary: tweetData))
+                    tweets = tweets.sorted (by: {$0.timestamp.dateValue() > $1.timestamp.dateValue()})
+                    completion(tweets,nil)
+                   
+                }
+             
+             
+            }
+         
+           
+        }
+      
+
+        
+        
+     
+      
+        
     }
     
     

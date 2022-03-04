@@ -189,8 +189,14 @@ extension ProfileViewController : ProfileHeaderDelegate{
                 self.user.isFollowed = true
                 self.user.stats.followers += 1
                 self.collectionView.reloadData()
+                NotificationService.shared.uploadeNotification(type: .follow, tweet: nil, userId:uid)
     
-            }}
+            }
+                
+                
+                
+                
+            }
             
         }
         

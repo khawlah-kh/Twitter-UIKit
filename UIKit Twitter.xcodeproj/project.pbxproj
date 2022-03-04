@@ -26,6 +26,8 @@
 		9033AA8F27B0DB0900A296B3 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9033AA8E27B0DB0900A296B3 /* Utilities.swift */; };
 		903A2B3E27B8B8AA0037B592 /* UploadTweetController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 903A2B3D27B8B8AA0037B592 /* UploadTweetController.swift */; };
 		903A2B4027B8CED00037B592 /* CaptionTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 903A2B3F27B8CED00037B592 /* CaptionTextView.swift */; };
+		904D5E6D27D1CF00000F44DC /* NotificationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 904D5E6C27D1CF00000F44DC /* NotificationCell.swift */; };
+		904D5E6F27D1DF37000F44DC /* NotificationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 904D5E6E27D1DF37000F44DC /* NotificationViewModel.swift */; };
 		905EC1C327C0B98100BD1CB2 /* UserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 905EC1C227C0B98100BD1CB2 /* UserCell.swift */; };
 		905EC1C527C0C60E00BD1CB2 /* UserService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 905EC1C427C0C60E00BD1CB2 /* UserService.swift */; };
 		906105D327C9EADD0084AF95 /* ActionSheetLauncher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 906105D227C9EADD0084AF95 /* ActionSheetLauncher.swift */; };
@@ -49,6 +51,7 @@
 		90A55FE927B4E40900B02DC5 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90A55FE827B4E40900B02DC5 /* Constants.swift */; };
 		90A55FEB27B4F5EE00B02DC5 /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90A55FEA27B4F5EE00B02DC5 /* AuthService.swift */; };
 		90A8686727D08536000445A9 /* Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90A8686627D08536000445A9 /* Notification.swift */; };
+		90A8686927D089DA000445A9 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90A8686827D089DA000445A9 /* NotificationService.swift */; };
 		90D13A7827B7951F003A2595 /* SDWebImage in Frameworks */ = {isa = PBXBuildFile; productRef = 90D13A7727B7951F003A2595 /* SDWebImage */; };
 /* End PBXBuildFile section */
 
@@ -74,6 +77,8 @@
 		9033AA8E27B0DB0900A296B3 /* Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		903A2B3D27B8B8AA0037B592 /* UploadTweetController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadTweetController.swift; sourceTree = "<group>"; };
 		903A2B3F27B8CED00037B592 /* CaptionTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptionTextView.swift; sourceTree = "<group>"; };
+		904D5E6C27D1CF00000F44DC /* NotificationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationCell.swift; sourceTree = "<group>"; };
+		904D5E6E27D1DF37000F44DC /* NotificationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationViewModel.swift; sourceTree = "<group>"; };
 		905EC1C227C0B98100BD1CB2 /* UserCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserCell.swift; sourceTree = "<group>"; };
 		905EC1C427C0C60E00BD1CB2 /* UserService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserService.swift; sourceTree = "<group>"; };
 		906105D227C9EADD0084AF95 /* ActionSheetLauncher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionSheetLauncher.swift; sourceTree = "<group>"; };
@@ -94,6 +99,7 @@
 		90A55FE827B4E40900B02DC5 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		90A55FEA27B4F5EE00B02DC5 /* AuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
 		90A8686627D08536000445A9 /* Notification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notification.swift; sourceTree = "<group>"; };
+		90A8686827D089DA000445A9 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -179,6 +185,7 @@
 		903388DE27AE754000D63F2A /* View */ = {
 			isa = PBXGroup;
 			children = (
+				904D5E6C27D1CF00000F44DC /* NotificationCell.swift */,
 				906105D427C9FD700084AF95 /* ActionSheetCell.swift */,
 				902D48BE27C34AE800B9192B /* TweetDetailsViewHeader.swift */,
 				908DE4D027BCEACA00B7407A /* ProfileFilterCell.swift */,
@@ -194,6 +201,7 @@
 		903388DF27AE755700D63F2A /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
+				904D5E6E27D1DF37000F44DC /* NotificationViewModel.swift */,
 				9066FF4B27CB3E5E0004583B /* ActionSheetViewModel.swift */,
 				902D48C027C352EB00B9192B /* TweetDetailsViewModel.swift */,
 				906D338027BB6D810085A91F /* TweetViewModel.swift */,
@@ -219,6 +227,7 @@
 				90A55FEA27B4F5EE00B02DC5 /* AuthService.swift */,
 				90906FFB27BA05760058F254 /* TweetService.swift */,
 				905EC1C427C0C60E00BD1CB2 /* UserService.swift */,
+				90A8686827D089DA000445A9 /* NotificationService.swift */,
 			);
 			path = API;
 			sourceTree = "<group>";
@@ -332,6 +341,7 @@
 				903388EA27AE7F9000D63F2A /* NotificationController.swift in Sources */,
 				905EC1C527C0C60E00BD1CB2 /* UserService.swift in Sources */,
 				903388CA27AE745900D63F2A /* AppDelegate.swift in Sources */,
+				90A8686927D089DA000445A9 /* NotificationService.swift in Sources */,
 				90906FFE27BA05990058F254 /* Tweet.swift in Sources */,
 				9033AA8F27B0DB0900A296B3 /* Utilities.swift in Sources */,
 				902D48BF27C34AE800B9192B /* TweetDetailsViewHeader.swift in Sources */,
@@ -361,8 +371,10 @@
 				906105D327C9EADD0084AF95 /* ActionSheetLauncher.swift in Sources */,
 				90A8686727D08536000445A9 /* Notification.swift in Sources */,
 				902D48BD27C3484400B9192B /* TweetDetailsViewController.swift in Sources */,
+				904D5E6D27D1CF00000F44DC /* NotificationCell.swift in Sources */,
 				9066FF4C27CB3E5E0004583B /* ActionSheetViewModel.swift in Sources */,
 				903388E427AE7AEC00D63F2A /* MainTabViewController.swift in Sources */,
+				904D5E6F27D1DF37000F44DC /* NotificationViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

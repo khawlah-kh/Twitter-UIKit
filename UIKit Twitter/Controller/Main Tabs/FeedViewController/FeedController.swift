@@ -152,8 +152,7 @@ extension FeedController {
         DispatchQueue.main.async {
 
             cell.tweet = self.tweets[indexPath.row]
-            print("Reloading 👍🏻 \(self.tweets[indexPath.row].caption)")
-        cell.delegat = self
+            cell.delegat = self
         }
         return cell
     }
@@ -213,6 +212,10 @@ extension FeedController : TweetCellDelegate{
                     print( cell.tweet?.didLike,"🔴🔴")
                     let likes = tweet.likes + 1
                     cell.tweet?.likes = likes
+                    
+                    guard let tweet = cell.tweet else {return}
+                    guard tweet.didLike else {return}
+                    NotificationService.shared.uploadeNotification(type: .like, tweet: tweet)
 
                
             }
@@ -223,12 +226,10 @@ extension FeedController : TweetCellDelegate{
     
   
     func handelProfileImageTapped(_ cell: TweetCell) {
-        //let user = cell.tweet?.user
         guard let  userID = cell.tweet?.uid else {
             return
         }
         AuthService.shared.fetchtUser(withId: userID) { tweetUser in
-           // guard let user = tweetUser else {return}
             let controller = ProfileViewController(user: tweetUser)
             self.navigationController?.pushViewController(controller, animated: true)
         }
@@ -243,11 +244,7 @@ extension FeedController : TweetCellDelegate{
         let nav = UINavigationController(rootViewController: controller)
         nav.modalPresentationStyle = .fullScreen
         present(nav, animated: true, completion: nil)
-//        TweetService.shared.sendTweet(caption: "", config: .reply(<#T##Tweet#>)) { error in
-//            <#code#>
-//        }
-//        
-        //navigationController?.pushViewController(controller, animated: true)
+
     }
     
     
