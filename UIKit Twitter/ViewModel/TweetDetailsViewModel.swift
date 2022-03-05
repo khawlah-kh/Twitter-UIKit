@@ -42,7 +42,21 @@ struct TweetDetailsViewModel{
         tweet.caption
     }
     
+    var shouldShowReplyLabel : Bool {
+        
+         tweet.replyingTo != nil
+    }
     
+    var replyingToText : String{
+        
+        if let to = tweet.replyingTo{
+       return " →Replying to @\(to)"
+        }
+        else{
+            return ""
+            
+        }
+    }
     var detailedTweetTime : NSAttributedString{
         let time = NSMutableAttributedString(string:"\(timestampString) • \(detailedTimestampString)", attributes: [.font : UIFont.boldSystemFont(ofSize: 14),
             .foregroundColor: UIColor.lightGray])

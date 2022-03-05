@@ -51,7 +51,6 @@ class TweetCell:UICollectionViewCell {
         let label = UILabel()
         label.textColor = .lightGray
         label.font = UIFont.systemFont(ofSize: 12)
-        label.text =  " ➡ Replying to @memo"
         return label
         
     }()
@@ -182,25 +181,34 @@ class TweetCell:UICollectionViewCell {
         let viewModel = TweetViewModel(tweet: tweet)
         userImage.sd_setImage(with: viewModel.profileImageUrl, completed: nil)
         infoLabel.attributedText = viewModel.userInfoText
-
-
-        
+        replyLabel.text = viewModel.replyingToText
         backgroundColor = .systemBackground
-        addSubview(userImage)
-        userImage.anchor(top:topAnchor, left: leftAnchor,  paddingTop: 8, paddingLeft: 8)
+       
         
         // Stak 1
         let infoCaptionStack = UIStackView(arrangedSubviews: [infoLabel,captionLabel])
         infoCaptionStack.axis = .vertical
-        addSubview(infoCaptionStack)
-        infoCaptionStack.anchor(top: userImage.topAnchor, left: userImage.rightAnchor,right: rightAnchor  ,paddingLeft: 12, paddingRight: 12)
         infoCaptionStack.distribution = .fillProportionally
         infoCaptionStack.spacing = 4
-        
+
+
         // Stask 2
         let imageCaptionStack = UIStackView(arrangedSubviews: [userImage,infoCaptionStack])
-        infoCaptionStack.distribution = .fillProportionally
-        infoCaptionStack.spacing = 4
+        imageCaptionStack.distribution = .fillProportionally
+        imageCaptionStack.spacing = 12
+        imageCaptionStack.alignment = .leading
+        
+//        addSubview(imageCaptionStack)
+//        imageCaptionStack.anchor(top: topAnchor, left: leftAnchor, right: rightAnchor, paddingTop: 8, paddingLeft: 12, paddingRight: 12)
+        
+        
+        let stack = UIStackView(arrangedSubviews: [replyLabel,imageCaptionStack])
+        stack.axis = .vertical
+        stack.distribution = .fillProportionally
+        stack.spacing = 8
+        addSubview(stack)
+        stack.anchor(top: topAnchor, left: leftAnchor, right: rightAnchor, paddingTop: 4, paddingLeft: 12, paddingRight: 12)
+        replyLabel.isHidden = !viewModel.shouldShowReplyLabel
         
        addSubview(divider)
        divider.anchor( left:leftAnchor, bottom: bottomAnchor,right:rightAnchor,height: 1)

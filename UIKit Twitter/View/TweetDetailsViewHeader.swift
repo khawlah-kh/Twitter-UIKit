@@ -24,6 +24,15 @@ class TweetDetailsViewHeader: UICollectionReusableView {
         }
     }
     
+    
+    var replyLabel : UILabel = {
+        let label = UILabel()
+        label.textColor = .lightGray
+        label.font = UIFont.systemFont(ofSize: 12)
+        return label
+        
+    }()
+    
      var userImage : UIImageView = {
        let image = UIImageView()
        image.backgroundColor = .blue
@@ -203,14 +212,12 @@ class TweetDetailsViewHeader: UICollectionReusableView {
             return
         }
         let viewModel = TweetDetailsViewModel(tweet: tweet)
+
         userImage.sd_setImage(with: viewModel.profileImageUrl)
-        addSubview(userImage)
-        
-        userImage.anchor(top: topAnchor, left: leftAnchor, paddingTop: 16, paddingLeft: 16)
-        
-        
         fullNameLabel.text = viewModel.fullName
         usernameLabel.text = viewModel.username
+        replyLabel.text = viewModel.replyingToText
+        replyLabel.isHidden = !viewModel.shouldShowReplyLabel
         
         let usernameStack = UIStackView(arrangedSubviews: [fullNameLabel,usernameLabel])
         usernameStack.axis = .vertical
@@ -218,9 +225,21 @@ class TweetDetailsViewHeader: UICollectionReusableView {
         usernameStack.distribution = .fillEqually
         usernameStack.alignment = .leading
         
-        addSubview(usernameStack)
-        usernameStack.anchor(top: topAnchor, left: userImage.rightAnchor, paddingTop: 16, paddingLeft: 16)
+        let imageUsernameStack = UIStackView(arrangedSubviews: [userImage,usernameStack])
+        imageUsernameStack.spacing = 12
         
+        let stack = UIStackView(arrangedSubviews: [replyLabel,imageUsernameStack])
+        stack.axis = .vertical
+        stack.spacing = 8
+        stack.distribution = .fillProportionally
+        
+
+        
+        addSubview(stack)
+        stack.anchor(top: topAnchor, left: leftAnchor, right: rightAnchor, paddingTop: 12, paddingLeft: 16, paddingBottom: 16, paddingRight: 16)
+        
+        
+
         addSubview(optionButton)
         optionButton.anchor(top: topAnchor, right: rightAnchor, paddingTop: 24, paddingRight: 16)
         
@@ -233,7 +252,6 @@ class TweetDetailsViewHeader: UICollectionReusableView {
         let retweetsLikesStack = UIStackView(arrangedSubviews: [retweetLabel,likesLabel])
         retweetsLikesStack.axis = .horizontal
         retweetsLikesStack.alignment = .leading
-       // retweetsLikesStack.distribution = .
         retweetsLikesStack.spacing = -8
         
         let actonButtonStack = UIStackView (arrangedSubviews: [commentButton,retweetButton,likeButton,shareButton])

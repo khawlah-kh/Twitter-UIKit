@@ -24,6 +24,22 @@ struct TweetViewModel {
         return tweet.profileImageUrl
     }
     
+    var shouldShowReplyLabel : Bool {
+        
+         tweet.replyingTo != nil 
+    }
+    
+    var replyingToText : String{
+        
+        if let to = tweet.replyingTo{
+       return " →Replying to @\(to)"
+        }
+        else{
+            return ""
+            
+        }
+           
+    }
     var userInfoText : NSAttributedString {
         
         let title = NSMutableAttributedString(string: tweet.fullname, attributes: [.font : UIFont.boldSystemFont(ofSize: 14)])

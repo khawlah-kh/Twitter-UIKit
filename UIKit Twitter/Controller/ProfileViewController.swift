@@ -96,7 +96,6 @@ class ProfileViewController: UICollectionViewController {
         TweetService.shared.fetchReplies(user: user) { replies in
             self.userTweetsAndReplies = replies
             self.userTweetsAndReplies.forEach { reply in
-                print(reply.replyingTo,"👥")
             }
             
         }
@@ -150,8 +149,6 @@ extension ProfileViewController{
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reusableCellId, for: indexPath) as! TweetCell
-//        cell.delegat = self
-       // if self.userTweets.isEmpty {return cell}
         cell.tweet = self.currentDataSource[indexPath.row]
         return cell
         
@@ -159,6 +156,10 @@ extension ProfileViewController{
 
     }
     
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let controller = TweetDetailsViewController(tweet: currentDataSource[indexPath.row])
+        navigationController?.pushViewController(controller, animated: true)
+    }
     
 }
 // MARK: Collection View UICollectionViewDelegateFlowLayout
@@ -178,8 +179,11 @@ extension ProfileViewController:UICollectionViewDelegateFlowLayout {
         
         let tweet = currentDataSource[indexPath.row]
         let viewmodel = TweetViewModel(tweet: tweet)
-        let height = viewmodel.size( forWidth: view.frame.width).height
-        return CGSize(width: view.frame.width, height: height+90)
+        var height = viewmodel.size( forWidth: view.frame.width).height + 90
+        if let _ = currentDataSource[indexPath.row].replyingTo {
+            height += 20
+        }
+        return CGSize(width: view.frame.width, height: height)
 
 
         
