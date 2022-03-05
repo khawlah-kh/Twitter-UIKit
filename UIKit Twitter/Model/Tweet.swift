@@ -29,6 +29,8 @@ struct Tweet{
     let username: String
     let profileImageUrl: URL
     let fullname: String
+    
+    var replyingTo : String?
 
         
     init(tweetId:String="",dictionary: [String: Any]) {
@@ -45,6 +47,10 @@ struct Tweet{
 
         let profileImageUrlAsString = dictionary[User.profileImageUrl]  as? String ?? "N/A"
         self.profileImageUrl = URL(string: profileImageUrlAsString)!
+        
+        if let replyingTo = dictionary[Tweet.replyingTo]  as? String {
+            self.replyingTo = replyingTo
+        }
 
     }
     
@@ -61,7 +67,10 @@ struct Tweet{
         data[Tweet.username] = self.username
         data[Tweet.profileImageUrl] = self.profileImageUrl.description
         
+        if let replyingTo = replyingTo{
+        data[Tweet.replyingTo] = replyingTo
          
+        }
         return data
         
         
@@ -78,7 +87,7 @@ struct Tweet{
     static let username = "username"
     static let fullname = "fullname"
     static let profileImageUrl = "profileImageUrl"
-    
+    static let replyingTo = "replyingTo"
     
     
     

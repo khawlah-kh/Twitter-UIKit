@@ -175,7 +175,6 @@ extension FeedController : UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
-        
         let tweet = tweets[indexPath.row]
         let viewmodel = TweetViewModel(tweet: tweet)
         let height = viewmodel.size( forWidth: view.frame.width).height

@@ -130,16 +130,12 @@ class NotificationCell : UITableViewCell{
     // MARK: - Selectors
 
     @objc func handelProfileImageTapped(){
-        print("🚗🔴🚗🎯🎊")
         self.delegate?.didTapProfileImage(self)
 
     }
     
     
     @objc func handelFollowTapped(){
-        
-        
-        
         delegate?.didTapFollow(self)
         
     }

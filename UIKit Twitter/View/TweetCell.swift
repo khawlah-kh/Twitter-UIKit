@@ -46,6 +46,16 @@ class TweetCell:UICollectionViewCell {
         
     }()
     
+    
+    var replyLabel : UILabel = {
+        let label = UILabel()
+        label.textColor = .lightGray
+        label.font = UIFont.systemFont(ofSize: 12)
+        label.text =  " ➡ Replying to @memo"
+        return label
+        
+    }()
+    
     lazy var captionLabel : UILabel = {
         let label = UILabel()
         label.text = tweet?.caption ?? ""
@@ -179,12 +189,18 @@ class TweetCell:UICollectionViewCell {
         addSubview(userImage)
         userImage.anchor(top:topAnchor, left: leftAnchor,  paddingTop: 8, paddingLeft: 8)
         
-        let stack = UIStackView(arrangedSubviews: [infoLabel,captionLabel])
-        stack.axis = .vertical
-        addSubview(stack)
-        stack.anchor(top: userImage.topAnchor, left: userImage.rightAnchor,right: rightAnchor  ,paddingLeft: 12, paddingRight: 12)
-        stack.distribution = .fillProportionally
-        stack.spacing = 4
+        // Stak 1
+        let infoCaptionStack = UIStackView(arrangedSubviews: [infoLabel,captionLabel])
+        infoCaptionStack.axis = .vertical
+        addSubview(infoCaptionStack)
+        infoCaptionStack.anchor(top: userImage.topAnchor, left: userImage.rightAnchor,right: rightAnchor  ,paddingLeft: 12, paddingRight: 12)
+        infoCaptionStack.distribution = .fillProportionally
+        infoCaptionStack.spacing = 4
+        
+        // Stask 2
+        let imageCaptionStack = UIStackView(arrangedSubviews: [userImage,infoCaptionStack])
+        infoCaptionStack.distribution = .fillProportionally
+        infoCaptionStack.spacing = 4
         
        addSubview(divider)
        divider.anchor( left:leftAnchor, bottom: bottomAnchor,right:rightAnchor,height: 1)

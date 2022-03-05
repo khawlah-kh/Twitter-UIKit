@@ -6,12 +6,17 @@
 //
 
 import UIKit
+protocol ProfileFilterViewDelegate : class {
+    
+    func handelFilterSelection (_ view : ProfileFilterView , didSelect index : Int)
+}
 
 
 class ProfileFilterView :UIView {
     
     // MARK: Properties
     
+    weak var delegate : ProfileFilterViewDelegate?
     lazy var collectionView : UICollectionView = {
         
         let layout = UICollectionViewFlowLayout()
@@ -21,6 +26,14 @@ class ProfileFilterView :UIView {
         collectionView.dataSource = self
         
         return collectionView
+    }()
+    
+    
+    var underlineView : UIView = {
+        let view = UIView()
+        view.backgroundColor = .twitterBlue
+        return view
+        
     }()
     // MARK: Lifecycle
     
@@ -40,6 +53,11 @@ class ProfileFilterView :UIView {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func layoutSubviews() {
+                addSubview(underlineView)
+        underlineView.anchor(left: leftAnchor, bottom: bottomAnchor, width: frame.width / 3, height: 2)
     }
     
     // MARK: Selectors
@@ -79,6 +97,9 @@ extension ProfileFilterView : UICollectionViewDataSource {
     }
     
 
+    
+    
+    
 }
 // MARK: Collection View UICollectionViewDelegateFlowLayout
 
@@ -95,4 +116,28 @@ extension ProfileFilterView:UICollectionViewDelegateFlowLayout {
         return 0
     }
 
+}
+
+
+
+extension ProfileFilterView {
+    
+    
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+ 
+        guard let cell = collectionView.cellForItem(at: indexPath) as? ProfileFilterCell else {return}
+        
+        
+        let xPosision = cell.frame.origin.x
+        UIView.animate(withDuration: 0.3) {
+            self.underlineView.frame.origin.x = xPosision
+        }
+        
+        
+        delegate?.handelFilterSelection(self, didSelect: indexPath.row)
+    }
+    
+    
+    
 }

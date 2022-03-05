@@ -24,9 +24,18 @@ class TweetService {
         tweetData[Tweet.username] = currentUser.userName
         tweetData[Tweet.fullname] = currentUser.fullName
         tweetData[Tweet.profileImageUrl] = currentUser.profileImageUrl.description
-
-        let tweetOrReply = Tweet( dictionary: tweetData)
         
+        let tweetOrReply : Tweet
+      
+
+       
+        switch config {
+        case .tweet:
+             tweetOrReply = Tweet( dictionary: tweetData)
+        case .reply(let tweet):
+            tweetData[Tweet.replyingTo] = tweet.username
+            tweetOrReply = Tweet( dictionary: tweetData)
+        }
         switch config {
         case .tweet:
             uploadTweet()
@@ -52,12 +61,15 @@ class TweetService {
         
         // Case : Reply
         func uploadReply(tweet : Tweet){
-            let document =   COLECTION_TWEET_REPLIES.document(tweet.tweetId)
-            document.collection(repliesCollection).document().setData(tweetOrReply.getData()){ error in
+            let document = COLECTION_TWEET_REPLIES.document(tweet.tweetId)
+            let replyRef = document.collection(repliesCollection).document()
+            replyRef.setData(tweetOrReply.getData()){ error in
                 completion(error)
-                
-                //upload reply notification
-                NotificationService.shared.uploadeNotification(type: .reply, tweet: tweet)
+                COLECTION_USER_REPLIES.document(uid).collection(userRepliesCollection).document(tweet.tweetId).setData([tweet.tweetId:replyRef.documentID]){_ in
+                    //upload reply notification
+                    NotificationService.shared.uploadeNotification(type: .reply, tweet: tweet)
+                }
+          
             }
             
             
@@ -123,6 +135,59 @@ class TweetService {
         
     }
     
+    func fetchLikes(user:User,completion: @escaping (([Tweet])->())){
+
+        var likes = [Tweet]()
+        COLECTION_USER_LIKES.document(user.id).collection(userLikesTweetCollection).getDocuments { snapshot, error in
+            
+            guard let snapshot = snapshot else {
+                return
+            }
+            snapshot.documents.forEach { doc in
+                let tweetId = doc.documentID
+                self.fetchtTweet(withId: tweetId) { tweet in
+                    var tweet = tweet
+                    tweet.didLike = true
+                    likes.append(tweet)
+                    completion(likes)
+                }
+                
+            }
+            
+            
+        }
+        
+        
+    }
+    
+    
+    func fetchReplies(user:User,completion: @escaping (([Tweet])->())){
+
+        var replies = [Tweet]()
+        COLECTION_USER_REPLIES.document(user.id).collection(userRepliesCollection).getDocuments { snapshot, error in
+            
+            guard let snapshot = snapshot else {
+                return
+            }
+            snapshot.documents.forEach { doc in
+                
+                let tweetId = doc.documentID
+                guard let replyId = doc.data()[tweetId] as? String else {return}
+                COLECTION_TWEET_REPLIES.document(tweetId).collection(repliesCollection).document(replyId).getDocument { snapshot, _ in
+                    guard let snapshot =  snapshot?.data() else {return}
+                    let reply = Tweet(tweetId: replyId, dictionary: snapshot)
+                    replies.append(reply)
+                    completion(replies)
+                }
+
+            }
+            
+            
+        }
+        
+        
+    }
+
     func fetchtTweet(withId:String,completion:@escaping((Tweet)->())){
         COLECTION_TWEETS.document(withId).getDocument { snapshot, error in
             

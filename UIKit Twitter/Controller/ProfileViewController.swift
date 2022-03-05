@@ -13,6 +13,11 @@ class ProfileViewController: UICollectionViewController {
     
     // MARK: Properties
     private var user : User
+    private var selectedFilter : ProfileHeaderOptions = .tweets {
+        didSet{
+            collectionView.reloadData()
+        }
+    }
     // MARK: Lifecycle
     init(user:User){
         
@@ -26,7 +31,29 @@ class ProfileViewController: UICollectionViewController {
         }
     }
     
+    var userTweetsAndReplies : [Tweet]=[]{
+        didSet{
+            collectionView.reloadData()
+        }
+    }
+    var userLikes : [Tweet]=[]{
+        didSet{
+            collectionView.reloadData()
+        }
+    }
+    var currentDataSource : [Tweet]{
+        
+        switch selectedFilter {
+        case .tweets:
+            return userTweets
+        case .replies:
+            return userTweetsAndReplies
+        case .likes:
+            return userLikes
+        }
+    }
 
+    
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -36,6 +63,8 @@ class ProfileViewController: UICollectionViewController {
         super.viewDidLoad()
         configureCollectionView()
         fetchTweets()
+        fetchLikedTweets()
+        fetchReplies()
         checkIfUserIsFolowed()
         getUserStates()
 
@@ -53,9 +82,25 @@ class ProfileViewController: UICollectionViewController {
     func fetchTweets(){
         TweetService.shared.fetchTweeets(user: user) { tweets in
             self.userTweets = tweets
+            self.collectionView.reloadData()
         }
     }
     
+    func fetchLikedTweets(){
+        TweetService.shared.fetchLikes(user: user) { likes in
+            self.userLikes = likes
+        }
+    }
+    
+    func fetchReplies(){
+        TweetService.shared.fetchReplies(user: user) { replies in
+            self.userTweetsAndReplies = replies
+            self.userTweetsAndReplies.forEach { reply in
+                print(reply.replyingTo,"👥")
+            }
+            
+        }
+    }
 
 
     func checkIfUserIsFolowed(){
@@ -84,6 +129,9 @@ class ProfileViewController: UICollectionViewController {
         
         collectionView.register(ProfileHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: headerId)
         
+        guard let tabBarHeight = tabBarController?.tabBar.frame.height else {return}
+        collectionView.contentInset.bottom = tabBarHeight
+        
     }
     
 }
@@ -95,7 +143,7 @@ extension ProfileViewController{
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
       
-        return userTweets.count
+        return currentDataSource.count
     }
     
     
@@ -104,7 +152,7 @@ extension ProfileViewController{
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reusableCellId, for: indexPath) as! TweetCell
 //        cell.delegat = self
        // if self.userTweets.isEmpty {return cell}
-        cell.tweet = self.userTweets[indexPath.row]
+        cell.tweet = self.currentDataSource[indexPath.row]
         return cell
         
         
@@ -127,11 +175,17 @@ extension ProfileViewController:UICollectionViewDelegateFlowLayout {
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
 
-        return CGSize(width: view.frame.width, height: 120)
+        
+        let tweet = currentDataSource[indexPath.row]
+        let viewmodel = TweetViewModel(tweet: tweet)
+        let height = viewmodel.size( forWidth: view.frame.width).height
+        return CGSize(width: view.frame.width, height: height+90)
 
 
         
     }
+    
+ 
 
 
 }
@@ -156,6 +210,7 @@ extension ProfileViewController {
 
 // MARK: ProfileHeaderDelegate
 extension ProfileViewController : ProfileHeaderDelegate{
+ 
 
     
     func handelDismissal() {
@@ -200,7 +255,10 @@ extension ProfileViewController : ProfileHeaderDelegate{
             
         }
         
-        
+    func didSelect(filter: ProfileHeaderOptions) {
+        self.selectedFilter = filter
+    }
+    
     }
 
 

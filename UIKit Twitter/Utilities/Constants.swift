@@ -22,6 +22,7 @@ let COLECTION_TWEET_LIKES = Firestore.firestore().collection("tweet-likes")
 
 let COLECTION_NOTIFICATIONS = Firestore.firestore().collection("Notifications")
 
+let COLECTION_USER_REPLIES = Firestore.firestore().collection("user-replies")
 
 
 
@@ -34,6 +35,7 @@ let repliesCollection = "tweet-replies"
 let userLikesTweetCollection = "user-likes"
 let tweetLikesTweetCollection = "tweet-likes"
 let userNotificationCollection = "user-notification"
+let userRepliesCollection = "user-replies"
 
 
 

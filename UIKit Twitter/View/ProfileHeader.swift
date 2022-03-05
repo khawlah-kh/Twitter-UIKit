@@ -11,7 +11,7 @@ protocol ProfileHeaderDelegate : class {
     
     func handelDismissal()
     func handelEditProfileFollow (_ sender : ProfileHeader)
-    
+    func didSelect(filter:ProfileHeaderOptions)
 }
 
 
@@ -114,6 +114,7 @@ class ProfileHeader : UICollectionReusableView {
     var filterView : ProfileFilterView = {
         
         let filterView = ProfileFilterView()
+        
         return filterView
     }()
     
@@ -216,7 +217,7 @@ class ProfileHeader : UICollectionReusableView {
        
         addSubview(filterView)
         filterView.anchor(top: followingFollowersStack.bottomAnchor, left: leftAnchor, bottom: bottomAnchor, right: rightAnchor, paddingTop: 20,height: 46)
-        
+        filterView.delegate = self
         
      
     }
@@ -225,4 +226,14 @@ class ProfileHeader : UICollectionReusableView {
     
     
     
+}
+
+// MARK: - ProfileFilterViewDelegate
+extension ProfileHeader : ProfileFilterViewDelegate{
+    func handelFilterSelection(_ view: ProfileFilterView, didSelect index: Int) {
+        
+        guard let filter = ProfileHeaderOptions(rawValue: index) else {return}
+        delegate?.didSelect(filter: filter)
+    }
+   
 }
