@@ -58,7 +58,7 @@ class UploadTweetController: UIViewController {
     }()
     
      lazy var captionTextView : UITextView = {
-        let textView = CaptionTextView()
+        let textView = InputTextView()
          textView.placeholderLabel.text = viewModel.placeholder
         
         return textView

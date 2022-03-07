@@ -224,7 +224,14 @@ extension ProfileViewController : ProfileHeaderDelegate{
         
         
         if user.isCurrentUser  {
-            print("Show Edit Profile Page")
+  
+                    DispatchQueue.main.async {
+                        let nav = UINavigationController(rootViewController: EditProfileController(user: self.user))
+                        nav.modalPresentationStyle = .fullScreen
+                        self.present(nav, animated: true, completion: nil)
+                    }
+
+            
             return
         }
 

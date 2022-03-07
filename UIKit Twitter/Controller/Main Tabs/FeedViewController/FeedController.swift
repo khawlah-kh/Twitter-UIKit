@@ -42,8 +42,8 @@ class FeedController : UICollectionViewController{
         super.viewDidLoad()
         configureLeftBarButton()
         configureUI()
-        fetchTweets ()
-       
+       // fetchTweets ()
+        fetchTweetForFeed()
 
     }
     override func viewWillAppear(_ animated: Bool) {
@@ -65,10 +65,18 @@ class FeedController : UICollectionViewController{
         
     }
     
+    @objc func handelRefresh(){
+        
+        fetchTweetForFeed()
+        
+    }
+    
     // MARK: API
-    func fetchTweets(){
-        TweetService.shared.fetchTweeets { tweets, error in
-            
+    
+    func fetchTweetForFeed(){
+        collectionView.refreshControl?.beginRefreshing()
+        TweetService.shared.fetchTweetForFeed{ tweets, error in
+            self.collectionView.refreshControl?.endRefreshing()
             if let error = error {
                 print("Something went wrong!\(error.localizedDescription)")
                 return
@@ -76,18 +84,21 @@ class FeedController : UICollectionViewController{
             guard let tweets = tweets else {
                 return
             }
-
+            
             self.tweets = tweets
             
             // Check Liked Tweet
-            for (index , tweet) in tweets.enumerated(){
-                
+            self.tweets = self.tweets.sorted (by: {$0.timestamp.dateValue() > $1.timestamp.dateValue()})
+            self.tweets.forEach { tweet in
                 TweetService.shared.checkIfTweetIsLiked(tweet: tweet) { isLiked in
                     guard isLiked == true else {return}
-                    self.tweets[index].didLike = isLiked
+                    if let index = self.tweets.firstIndex(where: {$0.tweetId == tweet.tweetId}){
+                        self.tweets[index].didLike = true
+                    }
+                    
                 }
-                
             }
+            
         }
         
         
@@ -104,11 +115,16 @@ class FeedController : UICollectionViewController{
         imageView.setDimensions(width: 44, height: 44)
         navigationItem.titleView = imageView
         
+        let refreshControl = UIRefreshControl()
+        collectionView.refreshControl = refreshControl
+        
+        refreshControl.addTarget(self, action: #selector(handelRefresh), for: .valueChanged)
         
         configureActionButton()
  
     }
     
+ 
     func configureCollectionView(){
         collectionView.register(TweetCell.self,forCellWithReuseIdentifier: reusableCellId)
     }
@@ -254,7 +270,7 @@ extension FeedController : TweetCellDelegate{
 extension FeedController : UploadTweetDelegate{
     func handleAfterUploading() {
     
-            self.fetchTweets()
+            self.fetchTweetForFeed()
 
     }
    

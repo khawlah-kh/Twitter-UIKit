@@ -18,6 +18,7 @@ struct User : Identifiable{
     let profileImageUrl : URL
     var isFollowed = false
     var stats = UserStats()
+    var bio : String?
     
     var isCurrentUser : Bool {
         Auth.auth().currentUser?.uid == self.id
@@ -38,6 +39,9 @@ struct User : Identifiable{
         let profileImageUrlAsString = data[User.profileImageUrl]  as? String ?? "N/A"
         self.profileImageUrl = URL(string: profileImageUrlAsString)!
         
+        
+        self.bio = data[User.bio]  as? String
+        
        
     }
     
@@ -55,7 +59,7 @@ struct User : Identifiable{
         data[User.userName] = self.userName
         
         data[User.profileImageUrl] = self.profileImageUrl.description
-        
+        data[User.bio] = self.bio
         return data
         
     }
@@ -64,6 +68,7 @@ struct User : Identifiable{
     static let email           = "email"
     static let userName     = "userName"
     static let profileImageUrl = "profileImageUrl"
+    static let bio = "bio"
 
 
     

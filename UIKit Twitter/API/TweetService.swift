@@ -12,6 +12,76 @@ class TweetService {
     
     static let shared = TweetService()
 
+    func fetchTweetForFeed(completion:@escaping (([Tweet]?,Error?)->())){
+        
+        guard let currentUserId = Auth.auth().currentUser?.uid else {return}
+        var tweets = [Tweet]()
+        
+        COLECTION_FOLLOWING.document(currentUserId).collection(userFollowingSubCollection).addSnapshotListener { snapshot, error in
+            if let error = error {
+                completion(nil,error)
+                return
+            }
+            guard let changes = snapshot?.documentChanges.filter({ $0.type == .added
+            }) else {return}
+
+            changes.forEach { change in
+                let followingId = change.document.documentID
+                COLECTION_USER_TWEETS.document(followingId).collection(tweetsCollection).addSnapshotListener { snapshot, error in
+                    if let error = error {
+                        completion(nil,error)
+                        return
+                    }
+                    guard let changes = snapshot?.documentChanges.filter({ $0.type == .added
+                    }) else {return}
+                    
+                    changes.forEach { change in
+                        let tweetIdDoc = change.document
+                        let tweetId = tweetIdDoc.documentID
+                        self.fetchtTweet(withId: tweetId) { tweet in
+                            tweets.append(tweet)
+                            completion(tweets,nil)
+                            
+                            
+                            
+                        }
+
+                    }
+                    
+                }
+                
+             
+            }
+
+        }
+        
+        
+        //Current User tweets
+        COLECTION_USER_TWEETS.document(currentUserId).collection(tweetsCollection).addSnapshotListener { snapshot, error in
+            if let error = error {
+                completion(nil,error)
+                return
+            }
+            guard let changes = snapshot?.documentChanges.filter({ $0.type == .added
+            }) else {return}
+            
+            changes.forEach { change in
+                let tweetIdDoc = change.document
+                let tweetId = tweetIdDoc.documentID
+                self.fetchtTweet(withId: tweetId) { tweet in
+                    tweets.append(tweet)
+                    completion(tweets,nil)
+                    
+                    
+                    
+                }
+
+            }
+            
+        }
+   
+    }
+
     func sendTweet(caption:String,config:UploadTweetConfiguration,completion:@escaping ((Error?)->())){
         
         guard let uid = Auth.auth().currentUser?.uid else {return}
@@ -81,32 +151,7 @@ class TweetService {
 
     
     
-    func fetchTweeets(completion:@escaping (([Tweet]?,Error?)->())){
-        
-        var tweets = [Tweet]()
-        
-        COLECTION_TWEETS.addSnapshotListener { snapshot, error in
-            if let error = error {
-                completion(nil,error)
-                return
-            }
-            guard let changes = snapshot?.documentChanges.filter({ $0.type == .added
-            }) else {return}
 
-            changes.forEach { change in
-                let tweetData = change.document.data()
-                tweets.append(Tweet(tweetId: change.document.documentID,  dictionary: tweetData))
-             
-            }
-            tweets = tweets.sorted (by: {$0.timestamp.dateValue() > $1.timestamp.dateValue()})
-            completion(tweets,nil)
-
-         
-           
-        
-        }
-        
-    }
     
     
     
@@ -350,7 +395,67 @@ class TweetService {
     }
     
     
+    
+    
+    //Not used yet
+    private func fetchUserTweets(withId : String ,completion:@escaping (([Tweet]?,Error?)->())){
+        
+        var userTweets = [Tweet]()
+        COLECTION_USER_TWEETS.document(withId).collection(tweetsCollection).getDocuments { snapshot, error in
+            
+            guard let snapshot = snapshot?.documents else {return}
+            snapshot.forEach {tweetIdDoc in
+                
+                let tweetId = tweetIdDoc.documentID
+                self.fetchtTweet(withId: tweetId) { tweet in
+                    userTweets.append(tweet)
+                    userTweets = userTweets.sorted (by: {$0.timestamp.dateValue() > $1.timestamp.dateValue()})
+                    completion(userTweets,nil)
+                    
+                    
+                    
+                }
+
+            }
+            
+        }
+        
+        
+        
+        
+        
     }
+    
+    // Old fetchTweet
+//    func fetchTweeets(completion:@escaping (([Tweet]?,Error?)->())){
+//        
+//        var tweets = [Tweet]()
+//        
+//        COLECTION_TWEETS.addSnapshotListener { snapshot, error in
+//            if let error = error {
+//                completion(nil,error)
+//                return
+//            }
+//            guard let changes = snapshot?.documentChanges.filter({ $0.type == .added
+//            }) else {return}
+//
+//            changes.forEach { change in
+//                let tweetData = change.document.data()
+//                tweets.append(Tweet(tweetId: change.document.documentID,  dictionary: tweetData))
+//             
+//            }
+//            tweets = tweets.sorted (by: {$0.timestamp.dateValue() > $1.timestamp.dateValue()})
+//            completion(tweets,nil)
+//
+//         
+//           
+//        
+//        }
+//        
+//    }
+    }
+
+
 
 
 

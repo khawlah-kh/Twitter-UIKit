@@ -33,9 +33,7 @@ class ProfileFilterCell : UICollectionViewCell {
         didSet{
         titleLabel.font = isSelected ? UIFont.boldSystemFont(ofSize: 16) : UIFont.systemFont(ofSize: 14)
         titleLabel.textColor = isSelected ? .twitterBlue : .lightGray
-         
-       // underlineView.backgroundColor = isSelected ? .twitterBlue : .lightGray
-            
+                     
             
         }
         
@@ -61,11 +59,7 @@ class ProfileFilterCell : UICollectionViewCell {
         
         addSubview(titleLabel)
          titleLabel.center(inView: self)
-
-//        addSubview(underlineView)
-//        underlineView.anchor(top: titleLabel.bottomAnchor, left: leftAnchor, bottom: bottomAnchor, right: rightAnchor, paddingTop: 6,paddingLeft: 2, paddingBottom:2,paddingRight: 2, width:20, height: 2)
-     
-        
+   
         
     }
     
