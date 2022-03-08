@@ -25,6 +25,16 @@ class EditProfileController: UITableViewController {
         super.init(style: .plain)
     }
     
+    private var profileImage:UIImage?{
+        didSet{
+        headerView.profileImageView.image = profileImage
+        }
+    }
+    private let imagePicker : UIImagePickerController = {
+        let imagePicker = UIImagePickerController()
+        return imagePicker
+    }()
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -32,7 +42,7 @@ class EditProfileController: UITableViewController {
         super.viewDidLoad()
         configureNavBar()
         configureTableView()
-        //configureUI()
+        configureUI()
        
        
     }
@@ -49,9 +59,11 @@ class EditProfileController: UITableViewController {
     // MARK: - Helpers
     
     func configureUI(){
-        label.text = user.fullName
-        view.addSubview(label)
-        label.anchor(top: view.topAnchor, left: view.leftAnchor, paddingTop: 100, paddingLeft: 100)
+//        label.text = user.fullName
+//        view.addSubview(label)
+//        label.anchor(top: view.topAnchor, left: view.leftAnchor, paddingTop: 100, paddingLeft: 100)
+        imagePicker.delegate = self
+        imagePicker.allowsEditing = true
         
     }
 
@@ -95,16 +107,6 @@ class EditProfileController: UITableViewController {
 }
 
 
-extension EditProfileController : EditProfileHeaderDelegate{
-    func didTabChangeProfilePhoto() {
-        print("Show image picker")
-    }
-    
-    
-    
-    
-}
-
 extension EditProfileController {
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -129,3 +131,33 @@ extension EditProfileController{
     }
     
 }
+
+
+// MARK: - EditProfileHeaderDelegate
+
+extension EditProfileController : EditProfileHeaderDelegate{
+    func didTabChangeProfilePhoto() {
+        present(imagePicker, animated: true, completion: nil)
+    }
+    
+    
+    
+    
+}
+
+
+// MARK: UIImagePickerControllerDelegate
+
+extension EditProfileController : UIImagePickerControllerDelegate,UINavigationControllerDelegate{
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        
+        guard let profileImage = info[.editedImage] as? UIImage else {return}
+        self.profileImage = profileImage
+        dismiss(animated: true, completion: nil)
+    }
+    
+    
+    
+}
+
