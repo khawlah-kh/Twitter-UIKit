@@ -190,6 +190,7 @@ class ProfileHeader : UICollectionReusableView {
         
         fullNameLabel.text = viewModel.fullName
         usernameLabel.text = viewModel.username
+        bioLabel.text = viewModel.bio
         let userInfoStack = UIStackView(arrangedSubviews: [fullNameLabel,usernameLabel,bioLabel])
         userInfoStack.axis = .vertical
         userInfoStack.distribution = .fillProportionally

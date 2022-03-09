@@ -74,6 +74,7 @@ class ProfileViewController: UICollectionViewController {
         super.viewWillAppear(animated)
         navigationController?.navigationBar.barStyle = .black
         navigationController?.navigationBar.isHidden = true
+    configureCollectionView()
     }
     
     // MARK: Selectors
@@ -226,7 +227,9 @@ extension ProfileViewController : ProfileHeaderDelegate{
         if user.isCurrentUser  {
   
                     DispatchQueue.main.async {
-                        let nav = UINavigationController(rootViewController: EditProfileController(user: self.user))
+                        let controller = EditProfileController(user: self.user)
+                        controller.delegate = self
+                        let nav = UINavigationController(rootViewController:controller )
                         nav.modalPresentationStyle = .fullScreen
                         self.present(nav, animated: true, completion: nil)
                     }
@@ -273,3 +276,13 @@ extension ProfileViewController : ProfileHeaderDelegate{
     }
 
 
+
+
+extension ProfileViewController : EditProfileControllerDelegate{
+    func didFinishUpdateProfile(forUser: User) {
+        self.user = forUser
+        collectionView.reloadData()
+    }
+    
+    
+}

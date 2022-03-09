@@ -51,6 +51,7 @@ class FeedController : UICollectionViewController{
    
             navigationController?.navigationBar.isHidden = false
             navigationController?.navigationBar.barStyle = .default
+        configureLeftBarButton()
     }
     
     
@@ -140,7 +141,7 @@ class FeedController : UICollectionViewController{
     
     func configureLeftBarButton(){
         
-        guard let user = user else {return}
+        guard let user = AuthService.shared.user else {return}
         let userImgeView = UIImageView()
         userImgeView.setDimensions(width: 32, height: 32)
         userImgeView.layer.cornerRadius = 32 / 2

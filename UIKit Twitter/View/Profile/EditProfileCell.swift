@@ -7,10 +7,15 @@
 
 import UIKit
 
+protocol EditProfileCellDelegate : class{
+    func handelUpdateUserInfo(_ cell : EditProfileCell)
+    
+    
+}
 class EditProfileCell: UITableViewCell {
 
  //MARK: - Properties
-    
+    weak var delegate : EditProfileCellDelegate?
     var viewModel : EditProfileViewModel? {
         
         didSet{
@@ -41,7 +46,8 @@ class EditProfileCell: UITableViewCell {
     var bioTextField : InputTextView = {
         let textView = InputTextView()
         textView.font = UIFont.systemFont(ofSize: 14)
-       // textView.placeholderLabel.text = "bio"
+
+        textView.placeholderLabel.text = "Say something . . . "
         return textView
         
         
@@ -64,7 +70,7 @@ class EditProfileCell: UITableViewCell {
    @objc func handelUpdateUserInfo(){
         
         
-        
+       delegate?.handelUpdateUserInfo(self)
         
     }
     
@@ -81,7 +87,7 @@ class EditProfileCell: UITableViewCell {
         
         bioTextField.isHidden = viewModel.shouldHideTextView
         bioTextField.text = viewModel.textFieldText
-
+        bioTextField.placeholderLabel.isHidden = viewModel.shouldHideBioPlaceholder
         
         addSubview(titleLabel)
         titleLabel.anchor(top: topAnchor, left: leftAnchor, paddingTop: 16, paddingLeft: 16)
@@ -91,5 +97,8 @@ class EditProfileCell: UITableViewCell {
         infoTextField.anchor(top: topAnchor, left: titleLabel.rightAnchor,bottom: bottomAnchor,right: rightAnchor,paddingTop: 8,paddingLeft: 16,paddingRight: 8)
         addSubview(bioTextField)
         bioTextField.anchor(top: topAnchor, left: titleLabel.rightAnchor,bottom: bottomAnchor,right: rightAnchor,paddingTop: 8,paddingLeft: 16,paddingRight: 8)
+        
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(handelUpdateUserInfo), name: UITextView.textDidEndEditingNotification, object: nil)
     }
 }

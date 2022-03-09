@@ -13,9 +13,9 @@ struct User : Identifiable{
     
     let id :String
     let email : String
-    let fullName : String
-    let userName : String
-    let profileImageUrl : URL
+    var fullName : String
+    var userName : String
+    var profileImageUrl : URL
     var isFollowed = false
     var stats = UserStats()
     var bio : String?
@@ -59,7 +59,7 @@ struct User : Identifiable{
         data[User.userName] = self.userName
         
         data[User.profileImageUrl] = self.profileImageUrl.description
-        data[User.bio] = self.bio
+        data[User.bio] = self.bio ?? ""
         return data
         
     }

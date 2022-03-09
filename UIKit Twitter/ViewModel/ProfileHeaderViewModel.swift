@@ -61,6 +61,11 @@ struct ProfileHeaderViewModel{
         
         "@\(user.userName)"
     }
+    
+    var bio : String {
+        
+        user.bio ?? ""
+    }
     var followingString:NSAttributedString {
         
         

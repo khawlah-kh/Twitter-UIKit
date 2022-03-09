@@ -6,6 +6,7 @@
 //
 
 import Firebase
+import UIKit
 
 
 class UserService {
@@ -139,5 +140,50 @@ class UserService {
         
     }
     
-   
+    func updateUserData(user:User,completion:@escaping(()->())){
+        
+        
+        guard let uid = Auth.auth().currentUser?.uid else {return}
+        let updatedValues:[String:String] = [User.fullName:user.fullName,
+                             User.userName:user.userName,
+                             User.bio:user.bio ?? "jjj"
+        ]
+        print(updatedValues,"👍🏻")
+        COLECTION_USERS.document(uid).updateData(updatedValues)
+        completion()
+    }
+    
+    
+    func updateUserImage(image : UIImage,completion : @escaping((String)->())) {
+        
+        guard let uid = Auth.auth().currentUser?.uid else { return }
+        let ref = Storage.storage().reference(withPath: uid)
+        guard let imageData = image.jpegData(compressionQuality: 0.5) else { return }
+        
+        ref.putData(imageData, metadata: nil) { metadata, err in
+            if let err = err {
+                // self.loginStatusMessage = "Failed to push image to Storage: \(err)"
+                print("Failed to push image to Storage: \(err)")
+                return
+            }
+            
+            ref.downloadURL { url, err in
+                if let err = err {
+                    print("Failed to retrieve downloadURL: \(err)")
+                    return
+                }
+                print("Successfully stored image with url: \(url?.absoluteString ?? "")")
+                print("url for the image :\(url?.absoluteString)")
+                //self.loginStatusMessage = "Successfully stored image with url: \(url?.absoluteString ?? "")"
+                //self.loginStatusMessage="url for the image :\(url?.absoluteString)"
+                
+                //Complete the process by store user data in firestore
+                guard let url=url else{return}
+                let imageURL = url.absoluteString
+                COLECTION_USERS.document(uid).updateData([User.profileImageUrl:imageURL])
+                completion(imageURL)
+                
+            }
+        }
+    }
 }

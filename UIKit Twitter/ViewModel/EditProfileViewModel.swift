@@ -50,6 +50,13 @@ struct EditProfileViewModel {
         option != .bio 
 
     }
+    var shouldHideBioPlaceholder : Bool{
+        
+        if let bio = user.bio
+        {return !bio.isEmpty}
+        return  false
+
+    }
 
     var cellLabelText : String{
         return option.description
