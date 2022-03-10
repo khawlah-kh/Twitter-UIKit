@@ -7,11 +7,19 @@
 
 import UIKit
 
+
+enum ExploreControllerConfiguration {
+    
+    case search
+    case message
+    
+}
 class ExploreController : UITableViewController{
     
 
     // MARK: - Properties
     
+    let config : ExploreControllerConfiguration
     var users : [User] = []{
         
         didSet{
@@ -32,11 +40,23 @@ class ExploreController : UITableViewController{
     private var searchController =  UISearchController(searchResultsController: nil)
     
     // MARK: - Lifecycle
+    init(config : ExploreControllerConfiguration){
+        self.config = config
+        super.init(style: .plain)
+    
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         configureUI()
         fetchUser()
-        configureSearchContrpller()
+        configureSearchController()
+        if config == .message{
+        confugureNavigationBar()
+        }
        
     }
     
@@ -47,7 +67,12 @@ class ExploreController : UITableViewController{
             navigationController?.navigationBar.barStyle = .default
     }
     
-    
+    //MARK: Selectors
+    @objc func handleCancle(){
+        
+        self.dismiss(animated: true, completion: nil)
+        
+    }
     // MARK: - Helper Functions
     func configureUI(){
         
@@ -55,17 +80,25 @@ class ExploreController : UITableViewController{
         tableView.register(UserCell.self, forCellReuseIdentifier:userCellId )
         tableView.rowHeight = 48 + 8 + 8
         //tableView.separatorStyle = .none
-        navigationItem.title = "Explore"
+        navigationItem.title = (config == .search) ? "Explore" :"New Message"
     }
     
     
-    func configureSearchContrpller(){
+    func configureSearchController(){
         searchController.searchResultsUpdater = self
         searchController.obscuresBackgroundDuringPresentation = false
         searchController.hidesNavigationBarDuringPresentation = false
         searchController.searchBar.placeholder = "Search for a user"
         navigationItem.searchController = searchController
         definesPresentationContext = false
+    }
+    func confugureNavigationBar(){
+        
+        navigationController?.navigationBar.barTintColor = UIColor.systemBackground
+        navigationController?.navigationBar.isTranslucent = true
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target:self, action: #selector(handleCancle))
+        
+        
     }
     func fetchUser(){
         

@@ -9,11 +9,26 @@ import UIKit
 import SwiftUI
 import Firebase
 
+enum ActionButtonCinfiguration {
+    case tweet
+    case message
+}
 class MainTabViewController: UITabBarController {
 
-    
+  
     
     // MARK: - Properties
+    private var buttonConfig : ActionButtonCinfiguration = .tweet{
+        didSet{
+            switch buttonConfig{
+            case .tweet:
+                actionButton.setImage(UIImage(systemName: "rectangle.and.pencil.and.ellipsis"), for: .normal)
+            case .message:
+                actionButton.setImage(UIImage(systemName: "envelope"), for: .normal)
+            }
+            
+        }
+    }
     var user : User? {
         
         didSet{
@@ -22,20 +37,19 @@ class MainTabViewController: UITabBarController {
             feed.user = self.user
         }
     }
-//    let actionButton : UIButton = {
-//        let button = UIButton(type: .system)
-//        button.tintColor = .white
-//        button.backgroundColor = .twitterBlue
-//        button.setImage(UIImage(systemName: "rectangle.and.pencil.and.ellipsis"), for: .normal)
-//        button.addTarget(self, action: #selector(actionButonTapped), for: .touchUpInside)
-//        return button
-//    }()
+    let actionButton : UIButton = {
+        let button = UIButton(type: .system)
+        button.tintColor = .white
+        button.backgroundColor = .twitterBlue
+        button.setImage(UIImage(systemName: "rectangle.and.pencil.and.ellipsis"), for: .normal)
+        button.addTarget(self, action: #selector(actionButonTapped), for: .touchUpInside)
+        return button
+    }()
     
     // MARK: = Lifecycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
-       //AuthService.shared.signUserOut()
         view.backgroundColor = .twitterBlue
         authenticateUserAndConfigureUI()
        
@@ -67,25 +81,44 @@ class MainTabViewController: UITabBarController {
 
     // MARK: Selectors (Action Handlers)
     @objc func actionButonTapped(){
+        
+        switch buttonConfig {
+            
+            
+        case .tweet:
+            handelTweet()
+        case .message:
+            handelMessage()
+        }
+        func handelTweet(){
         guard let user = user else {return}
         let controller =  UploadTweetController(user: user, config: .tweet)
         
-//        guard let feedNav = viewControllers?[0] as? UINavigationController else {return}
-//        guard let feed = feedNav.viewControllers.first as? FeedController else {return}
-//        controller.delegat = feed
+        guard let feedNav = viewControllers?[0] as? UINavigationController else {return}
+        guard let feed = feedNav.viewControllers.first as? FeedController else {return}
+        controller.delegat = feed
         let nav = UINavigationController(rootViewController:controller )
         
         present(nav , animated: true, completion: nil)
+        }
         
+        func handelMessage(){
+           
+        let controller = ExploreController(config: .message)
+        let nav = UINavigationController(rootViewController:controller )
+        present(nav , animated: true, completion: nil)
+            
+        }
     }
     
    // MARK: - Helper Functions
     
     func configureUI(){
-//        view.addSubview(actionButton)
-//
-//        actionButton.anchor(bottom:view.safeAreaLayoutGuide.bottomAnchor, right:view.rightAnchor,  paddingBottom: 64, paddingRight: 16, width: 56, height: 56)
-//        actionButton.layer.cornerRadius = 56 / 2
+        self.delegate = self
+        view.addSubview(actionButton)
+
+        actionButton.anchor(bottom:view.safeAreaLayoutGuide.bottomAnchor, right:view.rightAnchor,  paddingBottom: 64, paddingRight: 16, width: 56, height: 56)
+        actionButton.layer.cornerRadius = 56 / 2
     }
 
     func configureViewControllers(){
@@ -94,7 +127,7 @@ class MainTabViewController: UITabBarController {
         let feed = FeedController(collectionViewLayout: UICollectionViewFlowLayout())
         let nav1 = templateNavigationController(imageName: "house.fill", title: "Home", rootViewController: feed)
 
-        let explore = ExploreController()
+        let explore = ExploreController(config: .search)
         let nav2 = templateNavigationController(imageName: "magnifyingglass", title: "Explore", rootViewController: explore)
 
         
@@ -162,3 +195,19 @@ struct MainPreview: PreviewProvider {
 }
 
 
+
+// MARK: - UITabBarControllerDelegate
+
+extension MainTabViewController : UITabBarControllerDelegate{
+    
+    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
+        
+        let index = viewControllers?.firstIndex(of: viewController)
+        guard let index = index else {return}
+        if index == 3 {self.buttonConfig = .message}
+        else {self.buttonConfig = .tweet}
+        
+        
+    }
+    
+}

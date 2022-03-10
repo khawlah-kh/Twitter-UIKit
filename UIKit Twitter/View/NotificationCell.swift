@@ -27,30 +27,25 @@ class NotificationCell : UITableViewCell{
     
     weak var delegate : NotificationCellDelegate?
     // MARK: - Properties
-     lazy var userImage : UIImageView = {
-       let image = UIImageView()
-       image.backgroundColor = .blue
-       image.contentMode = .scaleAspectFill
-       image.setDimensions(width: 48, height: 48)
-       image.layer.masksToBounds = true
-       image.layer.cornerRadius = 48/2
+    lazy var userImage : UIImageView = {
+        let image = UIImageView()
+        image.backgroundColor = .blue
+        image.contentMode = .scaleAspectFill
+        image.setDimensions(width: 48, height: 48)
+        image.layer.masksToBounds = true
+        image.layer.cornerRadius = 48/2
         
-//        let tap = UITapGestureRecognizer(target: self, action:#selector(handelProfileImageTapped) )
-//        image.addGestureRecognizer(tap)
-//        image.isUserInteractionEnabled = true
+        return image
         
-       return image
-       
-       
-   }()
+        
+    }()
     lazy var notificationLabel : UILabel = {
         
         let label = UILabel()
         label.numberOfLines = 2
         label.font = UIFont.systemFont(ofSize: 14)
-        label.text = "User has started following you "
         return label
-  
+        
     }()
     
     var timeLabel : UILabel = {
@@ -72,7 +67,7 @@ class NotificationCell : UITableViewCell{
         
         button.addTarget(self, action: #selector(handelFollowTapped), for: .touchUpInside)
         return button
-   
+        
     }()
     
     // MARK: - Lifecycle
@@ -88,11 +83,11 @@ class NotificationCell : UITableViewCell{
     
     
     func configureUI(){
-
+        
         guard let notification = notification else {
             return
         }
-
+        
         let viewModel = NotificationViewModel(notification: notification)
         userImage.sd_setImage(with: viewModel.profileImageUrl, completed: nil)
         
@@ -108,11 +103,11 @@ class NotificationCell : UITableViewCell{
         stack.axis = .horizontal
         stack.spacing = 8
         stack.alignment = .center
-
+        
         addSubview(stack)
         stack.centerY(inView: self, leftAnchor: leftAnchor, paddingLeft: 12)
         
-
+        
         addSubview(followButton)
         followButton.centerY(inView: self)
         followButton.anchor(right: rightAnchor, paddingRight: 16)
@@ -123,15 +118,15 @@ class NotificationCell : UITableViewCell{
         
         
         
-
+        
     }
     
     
     // MARK: - Selectors
-
+    
     @objc func handelProfileImageTapped(){
         self.delegate?.didTapProfileImage(self)
-
+        
     }
     
     

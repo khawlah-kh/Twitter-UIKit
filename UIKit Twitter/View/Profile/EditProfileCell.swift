@@ -10,11 +10,10 @@ import UIKit
 protocol EditProfileCellDelegate : class{
     func handelUpdateUserInfo(_ cell : EditProfileCell)
     
-    
 }
 class EditProfileCell: UITableViewCell {
-
- //MARK: - Properties
+    
+    //MARK: - Properties
     weak var delegate : EditProfileCellDelegate?
     var viewModel : EditProfileViewModel? {
         
@@ -28,7 +27,7 @@ class EditProfileCell: UITableViewCell {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 14)
         return label
-  
+        
     }()
     
     var infoTextField : UITextField = {
@@ -46,7 +45,7 @@ class EditProfileCell: UITableViewCell {
     var bioTextField : InputTextView = {
         let textView = InputTextView()
         textView.font = UIFont.systemFont(ofSize: 14)
-
+        
         textView.placeholderLabel.text = "Say something . . . "
         return textView
         
@@ -67,10 +66,10 @@ class EditProfileCell: UITableViewCell {
     //MARK: - Selectors
     
     
-   @objc func handelUpdateUserInfo(){
+    @objc func handelUpdateUserInfo(){
         
         
-       delegate?.handelUpdateUserInfo(self)
+        delegate?.handelUpdateUserInfo(self)
         
     }
     
@@ -92,7 +91,7 @@ class EditProfileCell: UITableViewCell {
         addSubview(titleLabel)
         titleLabel.anchor(top: topAnchor, left: leftAnchor, paddingTop: 16, paddingLeft: 16)
         titleLabel.widthAnchor.constraint(equalToConstant: 100).isActive = true
-       
+        
         addSubview(infoTextField)
         infoTextField.anchor(top: topAnchor, left: titleLabel.rightAnchor,bottom: bottomAnchor,right: rightAnchor,paddingTop: 8,paddingLeft: 16,paddingRight: 8)
         addSubview(bioTextField)

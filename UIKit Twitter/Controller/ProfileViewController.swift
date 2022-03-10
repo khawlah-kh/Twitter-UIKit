@@ -6,7 +6,7 @@
 //
 
 import UIKit
-
+import Firebase
 class ProfileViewController: UICollectionViewController {
 
     
@@ -172,7 +172,18 @@ extension ProfileViewController:UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
         
-        return CGSize(width: view.frame.width, height: 350)
+        var height : CGFloat = 320
+        if let bio = user.bio{
+            if bio != ""{
+            height += 50
+            }
+            
+        }
+            
+           
+            
+        
+        return CGSize(width: view.frame.width, height: height)
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -279,9 +290,20 @@ extension ProfileViewController : ProfileHeaderDelegate{
 
 
 extension ProfileViewController : EditProfileControllerDelegate{
+   
     func didFinishUpdateProfile(forUser: User) {
         self.user = forUser
         collectionView.reloadData()
+    }
+    
+    func handelLogout() {
+        AuthService.shared.signUserOut()
+        DispatchQueue.main.async {
+            let nav = UINavigationController(rootViewController: LoginController())
+            nav.modalPresentationStyle = .fullScreen
+            self.present(nav, animated: true, completion: nil)
+        }
+
     }
     
     

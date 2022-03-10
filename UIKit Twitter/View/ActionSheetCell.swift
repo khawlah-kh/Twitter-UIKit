@@ -8,7 +8,7 @@
 import UIKit
 
 class ActionSheetCell: UITableViewCell {
-
+    
     
     var option : ActionSheetOption? {
         
@@ -39,7 +39,7 @@ class ActionSheetCell: UITableViewCell {
     }()
     
     // MARK: - Lifecycle
-
+    
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -52,18 +52,18 @@ class ActionSheetCell: UITableViewCell {
     
     // MARK: - Helpers
     
-  func  configureUI(){
+    func  configureUI(){
         
         addSubview(optionImageView)
         optionImageView.centerY(inView: self)
         optionImageView.anchor(left:leftAnchor,paddingLeft: 8)
         optionImageView.setDimensions(width: 36, height: 36)
-      
+        
         addSubview(titleLabel)
-       titleLabel.text = option?.description
-       titleLabel.centerY(inView: self)
-       titleLabel.anchor( left: optionImageView.rightAnchor ,paddingLeft: 16)
-      
+        titleLabel.text = option?.description
+        titleLabel.centerY(inView: self)
+        titleLabel.anchor( left: optionImageView.rightAnchor ,paddingLeft: 16)
+        
         
         
     }

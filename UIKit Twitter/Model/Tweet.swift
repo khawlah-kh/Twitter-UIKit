@@ -13,7 +13,7 @@ struct Tweet{
     
     
     static let MockData = Tweet(dictionary: ["fullName" : "Khalid",
-                                             "userName":"kkhh",
+                                             "userName":"Kh2354",
                                              "uid": "12345",
                                              "caption" : "test test test"
                                             ])
@@ -36,14 +36,14 @@ struct Tweet{
     init(tweetId:String="",dictionary: [String: Any]) {
      
         self.tweetId = tweetId
-        self.caption = dictionary["caption"] as? String ?? ""
-        self.likes = dictionary["likes"] as? Int ?? 0
-        self.retweet = dictionary["retweet"] as? Int ?? 0
-        self.uid = dictionary["uid"] as? String ?? ""
-        self.timestamp = dictionary["timestamp"] as? Timestamp ?? Timestamp(date: Date())
+        self.caption = dictionary[Tweet.caption] as? String ?? ""
+        self.likes = dictionary[Tweet.likes] as? Int ?? 0
+        self.retweet = dictionary[Tweet.retweet] as? Int ?? 0
+        self.uid = dictionary[Tweet.uid] as? String ?? ""
+        self.timestamp = dictionary[Tweet.timestamp] as? Timestamp ?? Timestamp(date: Date())
         
-        self.username = dictionary["username"] as? String ?? ""
-        self.fullname = dictionary["fullname"] as? String ?? ""
+        self.username = dictionary[Tweet.username] as? String ?? ""
+        self.fullname = dictionary[Tweet.fullname] as? String ?? ""
 
         let profileImageUrlAsString = dictionary[User.profileImageUrl]  as? String ?? "N/A"
         self.profileImageUrl = URL(string: profileImageUrlAsString)!

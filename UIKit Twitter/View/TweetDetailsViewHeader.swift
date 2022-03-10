@@ -28,30 +28,29 @@ class TweetDetailsViewHeader: UICollectionReusableView {
     
     var replyLabel : ActiveLabel = {
         let label = ActiveLabel()
-        //label.textColor = .lightGray
         label.mentionColor = .twitterBlue
         label.font = UIFont.systemFont(ofSize: 12)
         return label
         
     }()
     
-     var userImage : UIImageView = {
-       let image = UIImageView()
-       image.backgroundColor = .blue
-       image.contentMode = .scaleAspectFill
-       image.setDimensions(width: 70, height: 70)
-       image.layer.masksToBounds = true
-       image.layer.cornerRadius = 70/2
-         
-         let tap = UITapGestureRecognizer(target: self, action:#selector(handelProfileImageTapped) )
-         image.addGestureRecognizer(tap)
-         image.isUserInteractionEnabled = true
-       
-       return image
-       
-       
-   }()
-   
+    var userImage : UIImageView = {
+        let image = UIImageView()
+        image.backgroundColor = .blue
+        image.contentMode = .scaleAspectFill
+        image.setDimensions(width: 70, height: 70)
+        image.layer.masksToBounds = true
+        image.layer.cornerRadius = 70/2
+        
+        let tap = UITapGestureRecognizer(target: self, action:#selector(handelProfileImageTapped) )
+        image.addGestureRecognizer(tap)
+        image.isUserInteractionEnabled = true
+        
+        return image
+        
+        
+    }()
+    
     var fullNameLabel : UILabel = {
         let label = UILabel()
         label.font = UIFont.boldSystemFont(ofSize: 20)
@@ -62,7 +61,7 @@ class TweetDetailsViewHeader: UICollectionReusableView {
     } ()
     
     
-   lazy var usernameLabel :  ActiveLabel = {
+    lazy var usernameLabel :  ActiveLabel = {
         let label = ActiveLabel()
         label.font = UIFont.systemFont(ofSize: 16)
         label.mentionColor = .twitterBlue
@@ -78,19 +77,18 @@ class TweetDetailsViewHeader: UICollectionReusableView {
         button.setDimensions(width: 20, height: 20)
         button.addTarget(self, action: #selector(showActionSheet), for: .touchUpInside)
         return button
-  
+        
     }()
     
     lazy var captionLabel : ActiveLabel = {
         let label = ActiveLabel()
-       // label.text = tweet?.caption ?? ""
         label.font=UIFont.systemFont(ofSize: 20)
         label.numberOfLines = 0
         label.mentionColor = .twitterBlue
         label.hashtagColor = .twitterBlue
         label.handleMentionTap(handleMentionTap)
         return label
-   
+        
     }()
     
     var detailedTweetTimeLabel : UILabel = {
@@ -99,8 +97,8 @@ class TweetDetailsViewHeader: UICollectionReusableView {
         return label
     }()
     
-
-   lazy var statsView : UIView = {
+    
+    lazy var statsView : UIView = {
         let view = UIView()
         let divider1 = UIView()
         divider1.backgroundColor = .systemGroupedBackground
@@ -111,38 +109,30 @@ class TweetDetailsViewHeader: UICollectionReusableView {
         let retweetsLikesStack = UIStackView(arrangedSubviews: [retweetLabel,likesLabel])
         retweetsLikesStack.axis = .horizontal
         retweetsLikesStack.spacing = 12
-       
-       view.addSubview(retweetsLikesStack)
-       retweetsLikesStack.centerY(inView: view)
-       retweetsLikesStack.anchor(left: view.leftAnchor,paddingLeft: 16)
         
-       
-       let divider2 = UIView()
-       divider2.backgroundColor = .systemGroupedBackground
-
-       view.addSubview(divider2)
-       divider2.anchor(left: view.leftAnchor, bottom:view.bottomAnchor, right: view.rightAnchor, paddingLeft: 8, height: 1)
-       
+        view.addSubview(retweetsLikesStack)
+        retweetsLikesStack.centerY(inView: view)
+        retweetsLikesStack.anchor(left: view.leftAnchor,paddingLeft: 16)
+        
+        
+        let divider2 = UIView()
+        divider2.backgroundColor = .systemGroupedBackground
+        
+        view.addSubview(divider2)
+        divider2.anchor(left: view.leftAnchor, bottom:view.bottomAnchor, right: view.rightAnchor, paddingLeft: 8, height: 1)
+        
         
         return view
     }()
     var retweetLabel : UILabel = {
         let label = UILabel()
-//        label.text = "2 following"
-//        let tap = UITapGestureRecognizer(target: self, action:#selector(handelFollowingLabelTapped) )
-//        label.addGestureRecognizer(tap)
-//        label.isUserInteractionEnabled = true
         
         return label
     }()
     
     var likesLabel : UILabel = {
         let label = UILabel()
-//        label.text = "2 followers"
-//        let tap = UITapGestureRecognizer(target: self, action:#selector(handelFollowersLabelTapped) )
-//        label.addGestureRecognizer(tap)
-//        label.isUserInteractionEnabled = true
-//        
+
         return label
     }()
     
@@ -153,17 +143,17 @@ class TweetDetailsViewHeader: UICollectionReusableView {
         button.setDimensions(width: 20, height: 20)
         //button.addTarget(self, action: #selector(handelComment), for: .touchUpInside)
         return button
-  
+        
     }()
     
-   lazy  var retweetButton : UIButton = {
+    lazy  var retweetButton : UIButton = {
         let button = UIButton(type: .system)
         button.setImage(UIImage(systemName: "arrow.left.arrow.right"), for: .normal)
         button.tintColor = .darkGray
         button.setDimensions(width: 20, height: 20)
-       // button.addTarget(self, action: #selector(handelretweet), for: .touchUpInside)
+        // button.addTarget(self, action: #selector(handelretweet), for: .touchUpInside)
         return button
-  
+        
     }()
     
     
@@ -172,9 +162,9 @@ class TweetDetailsViewHeader: UICollectionReusableView {
         button.setImage(UIImage(systemName: "heart"), for: .normal)
         button.tintColor = .darkGray
         button.setDimensions(width: 20, height: 20)
-       // button.addTarget(self, action: #selector(handellike), for: .touchUpInside)
+        // button.addTarget(self, action: #selector(handellike), for: .touchUpInside)
         return button
-  
+        
     }()
     
     
@@ -183,9 +173,9 @@ class TweetDetailsViewHeader: UICollectionReusableView {
         button.setImage(UIImage(systemName: "square.and.arrow.up"), for: .normal)
         button.tintColor = .darkGray
         button.setDimensions(width: 20, height: 20)
-       // button.addTarget(self, action: #selector(handelShare), for: .touchUpInside)
+        // button.addTarget(self, action: #selector(handelShare), for: .touchUpInside)
         return button
-  
+        
     }()
     
     
@@ -212,12 +202,12 @@ class TweetDetailsViewHeader: UICollectionReusableView {
     
     // MARK: - Helpers
     func configureUI(){
-
+        
         guard let tweet = tweet else {
             return
         }
         let viewModel = TweetDetailsViewModel(tweet: tweet)
-
+        
         userImage.sd_setImage(with: viewModel.profileImageUrl)
         fullNameLabel.text = viewModel.fullName
         usernameLabel.text = viewModel.username
@@ -238,13 +228,13 @@ class TweetDetailsViewHeader: UICollectionReusableView {
         stack.spacing = 8
         stack.distribution = .fillProportionally
         
-
+        
         
         addSubview(stack)
         stack.anchor(top: topAnchor, left: leftAnchor, right: rightAnchor, paddingTop: 12, paddingLeft: 16, paddingBottom: 16, paddingRight: 16)
         
         
-
+        
         addSubview(optionButton)
         optionButton.anchor(top: topAnchor, right: rightAnchor, paddingTop: 24, paddingRight: 16)
         
@@ -278,27 +268,24 @@ class TweetDetailsViewHeader: UICollectionReusableView {
         addSubview(statsView)
         statsView.anchor(top: detailedTweetTimeLabel.bottomAnchor, left: leftAnchor, right: rightAnchor, paddingTop: 16, paddingLeft: 16, paddingRight: 16,height: 40)
         
-
+        
         
         addSubview(actonButtonStack)
         actonButtonStack.anchor(top: statsView.bottomAnchor, paddingTop: 16)
         actonButtonStack.centerX(inView: self)
-      //  actonButtonStack.anchor( bottom: bottomAnchor, paddingBottom: 12)
         
         
         
-      
+        
         
     }
     
     
     func handleMentionTap(userName:String){
         
-        
-        AuthService.shared.fetchtUser(userName: userName) { user in
-        self.delegate?.handelMentionTapped(mentionedUser: user)
-        
+            AuthService.shared.fetchtUser(userName: userName) { user in
+            self.delegate?.handelMentionTapped(mentionedUser: user)
+            
         }
-        
     }
 }

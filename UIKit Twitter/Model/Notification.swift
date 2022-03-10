@@ -30,12 +30,12 @@ struct Notification {
     var timestamp: Timestamp
     var user : User
     
-   
-   
+    
+    
     
     init(user:User,tweet:Tweet?=nil,dictionary:[String:Any]){
         
-       
+        
         
         self.user = user
         self.tweet=tweet
@@ -46,10 +46,10 @@ struct Notification {
         self.type = NotificationType(rawValue: type)
         
         
-  
+        
         
     }
-
+    
     
     
     

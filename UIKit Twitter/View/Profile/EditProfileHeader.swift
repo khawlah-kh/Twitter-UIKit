@@ -23,7 +23,7 @@ class EditProfileHeader : UIView{
         
         self.user = user
         super.init(frame: .zero)
-       configureUI()
+        configureUI()
     }
     
     required init?(coder: NSCoder) {
@@ -34,18 +34,18 @@ class EditProfileHeader : UIView{
     
     
     
-var profileImageView: UIImageView = {
-    let profileImageView = UIImageView()
-    profileImageView.contentMode = .scaleAspectFill
-    profileImageView.clipsToBounds = true
-    profileImageView.backgroundColor = .lightGray
-    profileImageView.layer.borderColor = UIColor.white.cgColor
-    profileImageView.layer.borderWidth = 3.0
-    profileImageView.setDimensions(width: 100, height: 100)
-    profileImageView.layer.cornerRadius = 100 / 2
-    return profileImageView
-    
-}()
+    var profileImageView: UIImageView = {
+        let profileImageView = UIImageView()
+        profileImageView.contentMode = .scaleAspectFill
+        profileImageView.clipsToBounds = true
+        profileImageView.backgroundColor = .lightGray
+        profileImageView.layer.borderColor = UIColor.white.cgColor
+        profileImageView.layer.borderWidth = 3.0
+        profileImageView.setDimensions(width: 100, height: 100)
+        profileImageView.layer.cornerRadius = 100 / 2
+        return profileImageView
+        
+    }()
     
     
     private var changePhotoButton : UIButton = {
@@ -59,7 +59,7 @@ var profileImageView: UIImageView = {
         return button
         
     }()
-
+    
     
     //MARK: - Selectors
     @objc func handelChangeProfilePhoto(){
@@ -78,7 +78,7 @@ var profileImageView: UIImageView = {
         
         addSubview(changePhotoButton)
         changePhotoButton.centerX(inView: self, topAnchor: profileImageView.bottomAnchor, paddingTop: 8)
-
+        
         
         
     }

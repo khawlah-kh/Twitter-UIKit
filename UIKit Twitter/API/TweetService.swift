@@ -17,6 +17,13 @@ class TweetService {
         guard let currentUserId = Auth.auth().currentUser?.uid else {return}
         var tweets = [Tweet]()
         
+        COLECTION_FOLLOWING.document(currentUserId).getDocument { snapshot, _ in
+            guard let snapshot = snapshot else {return}
+            if !snapshot.exists{
+                completion(tweets, nil)
+            }
+        }
+        
         COLECTION_FOLLOWING.document(currentUserId).collection(userFollowingSubCollection).addSnapshotListener { snapshot, error in
             if let error = error {
                 completion(nil,error)

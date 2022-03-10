@@ -19,7 +19,7 @@ enum ActionSheetOption  {
         
         switch self {
         case .follow(let user):
-          return  "Follow @\(user.userName)"
+            return  "Follow @\(user.userName)"
         case .unfollow(let user):
             return "Unfollow @\(user.userName)"
         case .delete_tweet:
@@ -39,8 +39,7 @@ class ActionSheetViewModel {
     init(user:User){
         self.user = user
     }
-
-    //weak var delegate : ActionSheetLauncherDelegate?
+    
     
     var options : [ActionSheetOption] {
         
@@ -79,20 +78,12 @@ class ActionSheetViewModel {
         case .delete_tweet:
             print("delete_tweet")
             completion()
-
+            
         case .report_tweet:
             print("report_tweet")
             completion()
-
+            
         }
-        
-        
-        
-        
-        
-        
     }
-
-   
 }
 

@@ -17,9 +17,9 @@ enum ProfileHeaderOptions : Int , CaseIterable{
     var description : String {
         
         switch self{
-
+            
         case .tweets:
-           return "Tweets"
+            return "Tweets"
         case .replies:
             return "Tweets & Replies"
         case .likes:
@@ -81,11 +81,11 @@ struct ProfileHeaderViewModel{
     }
     
     var actionButtonTitle : String? {
-
+        
         if user.isCurrentUser {
             return FollowingFollowers.EditProfile.rawValue
         }
-
+        
         else if user.isFollowed{
             return FollowingFollowers.Following.rawValue
         }
@@ -101,8 +101,8 @@ struct ProfileHeaderViewModel{
         
         attributedTitle.append(NSAttributedString(string: " \(text)", attributes: [.font : UIFont.systemFont(ofSize: 14)
                                                                                    ,.foregroundColor : UIColor.lightGray
-                                                                                   ]))
-
+                                                                                  ]))
+        
         return attributedTitle
     }
     

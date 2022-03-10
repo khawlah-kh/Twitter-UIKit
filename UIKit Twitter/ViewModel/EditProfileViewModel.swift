@@ -29,7 +29,7 @@ enum EditProfileOption : Int,CaseIterable{
 }
 struct EditProfileViewModel {
     
-   private var user : User
+    private var user : User
     let option : EditProfileOption
     init(user:User,option:EditProfileOption){
         self.user = user
@@ -38,26 +38,26 @@ struct EditProfileViewModel {
     
     
     
-   var shouldHideTextField : Bool{
-       
-       
-       option == .bio
-       
-   }
+    var shouldHideTextField : Bool{
+        
+        
+        option == .bio
+        
+    }
     var shouldHideTextView : Bool{
         
         
-        option != .bio 
-
+        option != .bio
+        
     }
     var shouldHideBioPlaceholder : Bool{
         
         if let bio = user.bio
         {return !bio.isEmpty}
         return  false
-
+        
     }
-
+    
     var cellLabelText : String{
         return option.description
     }
@@ -69,9 +69,9 @@ struct EditProfileViewModel {
         case .userName:
             return user.userName
         case .bio:
-            return user.bio ?? "Tell peple something . . . "
+            return user.bio ?? ""
         }
     }
-
+    
     
 }

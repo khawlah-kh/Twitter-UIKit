@@ -24,7 +24,7 @@ class ProfileHeader : UICollectionReusableView {
         }
     }
     
-   weak var delegate : ProfileHeaderDelegate?
+    weak var delegate : ProfileHeaderDelegate?
     
     lazy var containerView : UIView = {
         
@@ -51,7 +51,7 @@ class ProfileHeader : UICollectionReusableView {
     
     var profileImageView : UIImageView = {
         
-      let image = UIImageView()
+        let image = UIImageView()
         image.backgroundColor = .cyan
         image.setDimensions(width: 80, height: 80)
         image.layer.cornerRadius = 80 / 2
@@ -76,7 +76,7 @@ class ProfileHeader : UICollectionReusableView {
         button.addTarget(self, action: #selector(handelEditProfileFollow), for: .touchUpInside)
         button.setDimensions(width: 100, height: 36)
         button.layer.cornerRadius = 36 / 2
-
+        
         return button
         
         
@@ -102,7 +102,6 @@ class ProfileHeader : UICollectionReusableView {
     
     var bioLabel : UILabel = {
         let label = UILabel()
-        label.text = "Test bio Test bio Test bio Test bio Test bio Test bio Test bio Test bio Test bio Test bio Test bio Test bio "
         label.numberOfLines = 3
         label.font = UIFont.systemFont(ofSize: 16)
         label.textColor = .label
@@ -120,7 +119,6 @@ class ProfileHeader : UICollectionReusableView {
     
     var followingLabel : UILabel = {
         let label = UILabel()
-        label.text = "2 following"
         let tap = UITapGestureRecognizer(target: self, action:#selector(handelFollowingLabelTapped) )
         label.addGestureRecognizer(tap)
         label.isUserInteractionEnabled = true
@@ -130,14 +128,13 @@ class ProfileHeader : UICollectionReusableView {
     
     var followersLabel : UILabel = {
         let label = UILabel()
-        label.text = "2 followers"
         let tap = UITapGestureRecognizer(target: self, action:#selector(handelFollowersLabelTapped) )
         label.addGestureRecognizer(tap)
         label.isUserInteractionEnabled = true
         
         return label
     }()
-     
+    
     // MARK: Lifecycle
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -174,7 +171,7 @@ class ProfileHeader : UICollectionReusableView {
         
         guard let user = user else {return}
         let viewModel = ProfileHeaderViewModel(user: user)
-
+        
         addSubview(containerView)
         containerView.anchor(top: topAnchor, left: leftAnchor, right: rightAnchor,height: 108)
         profileImageView.sd_setImage(with:viewModel.profileImageUrl , completed: nil
@@ -215,12 +212,12 @@ class ProfileHeader : UICollectionReusableView {
         
         
         
-       
+        
         addSubview(filterView)
         filterView.anchor(top: followingFollowersStack.bottomAnchor, left: leftAnchor, bottom: bottomAnchor, right: rightAnchor, paddingTop: 20,height: 46)
         filterView.delegate = self
         
-     
+        
     }
     
     
@@ -236,5 +233,5 @@ extension ProfileHeader : ProfileFilterViewDelegate{
         guard let filter = ProfileHeaderOptions(rawValue: index) else {return}
         delegate?.didSelect(filter: filter)
     }
-   
+    
 }

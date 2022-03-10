@@ -45,10 +45,10 @@ class ProfileFilterView :UIView {
         collectionView.addConstraintsToFillView(self)
         
         
-
+        
         let firstCellIndex = IndexPath(row: 0, section: 0)
         collectionView.selectItem(at: firstCellIndex, animated: true, scrollPosition: .left)
-
+        
     }
     
     required init?(coder: NSCoder) {
@@ -56,30 +56,18 @@ class ProfileFilterView :UIView {
     }
     
     override func layoutSubviews() {
-                addSubview(underlineView)
+        addSubview(underlineView)
         underlineView.anchor(left: leftAnchor, bottom: bottomAnchor, width: frame.width / 3, height: 2)
     }
     
     // MARK: Selectors
     // MARK: Helpers
     
-    func  configureUI(){
-        
-        
-    }
-    
-    
-    
-    
-    
-    
-    
-    
 }
 
 extension ProfileFilterView : UICollectionViewDelegate {
     
-
+    
     
 }
 extension ProfileFilterView : UICollectionViewDataSource {
@@ -89,14 +77,14 @@ extension ProfileFilterView : UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: filterButtonCellId, for: indexPath) as! ProfileFilterCell
-
-            let option = ProfileHeaderOptions(rawValue: indexPath.row)!
-            cell.titleLabel.text = option.description
-
+        
+        let option = ProfileHeaderOptions(rawValue: indexPath.row)!
+        cell.titleLabel.text = option.description
+        
         return cell
     }
     
-
+    
     
     
     
@@ -105,27 +93,25 @@ extension ProfileFilterView : UICollectionViewDataSource {
 
 
 extension ProfileFilterView:UICollectionViewDelegateFlowLayout {
-
+    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-
+        
         return CGSize(width:frame.width / CGFloat(ProfileHeaderOptions.allCases.count) , height: frame.height)
- 
+        
     }
-
+    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         return 0
     }
-
+    
 }
 
 
 
 extension ProfileFilterView {
-    
-    
-    
+
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
- 
+        
         guard let cell = collectionView.cellForItem(at: indexPath) as? ProfileFilterCell else {return}
         
         

@@ -31,23 +31,23 @@ class ProfileFilterCell : UICollectionViewCell {
     
     override var isSelected: Bool {
         didSet{
-        titleLabel.font = isSelected ? UIFont.boldSystemFont(ofSize: 16) : UIFont.systemFont(ofSize: 14)
-        titleLabel.textColor = isSelected ? .twitterBlue : .lightGray
-                     
+            titleLabel.font = isSelected ? UIFont.boldSystemFont(ofSize: 16) : UIFont.systemFont(ofSize: 14)
+            titleLabel.textColor = isSelected ? .twitterBlue : .lightGray
+            
             
         }
         
     }
-
-
+    
+    
     
     
     // MARK: Lifecycle
     override init(frame: CGRect) {
         super.init(frame: frame)
         configureUI()
-
-       
+        
+        
     }
     
     required init?(coder: NSCoder) {
@@ -58,8 +58,8 @@ class ProfileFilterCell : UICollectionViewCell {
     func configureUI(){
         
         addSubview(titleLabel)
-         titleLabel.center(inView: self)
-   
+        titleLabel.center(inView: self)
+        
         
     }
     

@@ -26,24 +26,12 @@ class FeedController : UICollectionViewController{
             configureLeftBarButton()
         }
     }
-    
-    let actionButton : UIButton = {
-        let button = UIButton(type: .system)
-        button.tintColor = .white
-        button.backgroundColor = .twitterBlue
-        button.setImage(UIImage(systemName: "rectangle.and.pencil.and.ellipsis"), for: .normal)
-        button.addTarget(self, action: #selector(actionButonTapped), for: .touchUpInside)
-        return button
-    }()
-    
-    
-   
+
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         configureLeftBarButton()
         configureUI()
-       // fetchTweets ()
         fetchTweetForFeed()
 
     }
@@ -72,6 +60,12 @@ class FeedController : UICollectionViewController{
         fetchTweetForFeed()
         
     }
+    @objc func handelLeftBarButtonTapped (){
+        
+        guard let currentUser = user else {return}
+        let controller = ProfileViewController(user: currentUser)
+     navigationController?.pushViewController(controller, animated: true)
+    }
     
     // MARK: API
     
@@ -81,9 +75,11 @@ class FeedController : UICollectionViewController{
             self.collectionView.refreshControl?.endRefreshing()
             if let error = error {
                 print("Something went wrong!\(error.localizedDescription)")
+                self.collectionView.refreshControl?.endRefreshing()
                 return
             }
             guard let tweets = tweets else {
+                self.collectionView.refreshControl?.endRefreshing()
                 return
             }
             
@@ -122,7 +118,6 @@ class FeedController : UICollectionViewController{
         
         refreshControl.addTarget(self, action: #selector(handelRefresh), for: .valueChanged)
         
-        configureActionButton()
  
     }
     
@@ -131,15 +126,7 @@ class FeedController : UICollectionViewController{
         collectionView.register(TweetCell.self,forCellWithReuseIdentifier: reusableCellId)
     }
     
-    func configureActionButton(){
-        
-        view.addSubview(actionButton)
 
-        actionButton.anchor(bottom:view.safeAreaLayoutGuide.bottomAnchor, right:view.rightAnchor,  paddingBottom: 32, paddingRight: 16, width: 56, height: 56)
-        actionButton.layer.cornerRadius = 56 / 2
-        
-    }
-    
     func configureLeftBarButton(){
         
         guard let user = AuthService.shared.user else {return}
@@ -149,7 +136,10 @@ class FeedController : UICollectionViewController{
         userImgeView.layer.masksToBounds = true
         let imageURL = user.profileImageUrl
         userImgeView.sd_setImage(with: imageURL,completed: nil)
- 
+        let tap = UITapGestureRecognizer(target: self, action:#selector(handelLeftBarButtonTapped) )
+        userImgeView.addGestureRecognizer(tap)
+        userImgeView.isUserInteractionEnabled = true
+        
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: userImgeView)
 
     }
@@ -214,11 +204,9 @@ extension FeedController : TweetCellDelegate{
         guard let  tweet = cell.tweet else {
                 return
             }
-        print(tweet.didLike,"🔴")
             if tweet.didLike {
                 TweetService.shared.unLikeTweet(tweet:tweet) {
                     cell.tweet?.didLike = false
-                    print(cell.tweet?.didLike,"🔴🔴")
                     let likes = tweet.likes - 1
                     cell.tweet?.likes = likes
                 }
@@ -227,10 +215,8 @@ extension FeedController : TweetCellDelegate{
             else{
                 TweetService.shared.likeTweet(tweet:tweet) {
                     cell.tweet?.didLike = true
-                    print( cell.tweet?.didLike,"🔴🔴")
                     let likes = tweet.likes + 1
                     cell.tweet?.likes = likes
-                    
                     guard let tweet = cell.tweet else {return}
                     guard tweet.didLike else {return}
                     NotificationService.shared.uploadeNotification(type: .like, tweet: tweet)

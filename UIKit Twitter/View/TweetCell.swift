@@ -15,11 +15,11 @@ protocol TweetCellDelegate :class {
     func handelProfileImageTapped(_ cell : TweetCell)
     func handelRetweetTapped(_ cell : TweetCell)
     func handelMentionTapped(mentionedUser:User)
-   
+    
 }
 
 class TweetCell:UICollectionViewCell {
-
+    
     var tweet : Tweet?{
         
         didSet{
@@ -30,18 +30,18 @@ class TweetCell:UICollectionViewCell {
     weak var delegat : TweetCellDelegate?
     
     // MARK: Properties
-     lazy var userImage : UIImageView = {
+    lazy var userImage : UIImageView = {
         let image = UIImageView()
         image.backgroundColor = .blue
         image.contentMode = .scaleAspectFill
         image.setDimensions(width: 48, height: 48)
         image.layer.masksToBounds = true
         image.layer.cornerRadius = 48/2
-         
-         let tap = UITapGestureRecognizer(target: self, action:#selector(handelProfileImageTapped) )
-         image.addGestureRecognizer(tap)
-         image.isUserInteractionEnabled = true
-         
+        
+        let tap = UITapGestureRecognizer(target: self, action:#selector(handelProfileImageTapped) )
+        image.addGestureRecognizer(tap)
+        image.isUserInteractionEnabled = true
+        
         return image
         
         
@@ -66,14 +66,14 @@ class TweetCell:UICollectionViewCell {
         label.hashtagColor = .twitterBlue
         label.handleMentionTap(handleMentionTap)
         return label
-   
+        
     }()
     
     lazy var infoLabel : UILabel = {
         
         let label = UILabel()
         return label
-  
+        
     }()
     
     var divider : UIView = {
@@ -90,17 +90,17 @@ class TweetCell:UICollectionViewCell {
         button.setDimensions(width: 20, height: 20)
         button.addTarget(self, action: #selector(handelComment), for: .touchUpInside)
         return button
-  
+        
     }()
     
-   lazy  var retweetButton : UIButton = {
+    lazy  var retweetButton : UIButton = {
         let button = UIButton(type: .system)
         button.setImage(UIImage(systemName: "arrow.left.arrow.right"), for: .normal)
         button.tintColor = .darkGray
         button.setDimensions(width: 20, height: 20)
         button.addTarget(self, action: #selector(handelretweet), for: .touchUpInside)
         return button
-  
+        
     }()
     
     
@@ -111,7 +111,7 @@ class TweetCell:UICollectionViewCell {
         button.setDimensions(width: 20, height: 20)
         button.addTarget(self, action: #selector(handellike), for: .touchUpInside)
         return button
-  
+        
     }()
     
     
@@ -122,7 +122,7 @@ class TweetCell:UICollectionViewCell {
         button.setDimensions(width: 20, height: 20)
         button.addTarget(self, action: #selector(handelShare), for: .touchUpInside)
         return button
-  
+        
     }()
     
     
@@ -130,7 +130,7 @@ class TweetCell:UICollectionViewCell {
     // MARK: Lifecycle
     override init(frame: CGRect) {
         super.init(frame: frame)
-       
+        
     }
     
     required init?(coder: NSCoder) {
@@ -145,32 +145,32 @@ class TweetCell:UICollectionViewCell {
     
     @objc func handelComment(){
         delegat?.handelRetweetTapped(self)
-
+        
         print("handelComment")
-  
+        
     }
     
     @objc func handellike(){
- 
+        
         delegat?.handelLikeTweet(self)
-
+        
     }
     
     @objc func handelretweet(){
         print("handelretweet")
-  
+        
     }
     
     @objc func handelShare(){
         print("handelShare")
-  
+        
     }
     
     
     @objc func handelProfileImageTapped(){
         
         self.delegat?.handelProfileImageTapped(self)
-
+        
     }
     
     // MARK: Helpers
@@ -188,25 +188,22 @@ class TweetCell:UICollectionViewCell {
         infoLabel.attributedText = viewModel.userInfoText
         replyLabel.text = viewModel.replyingToText
         backgroundColor = .systemBackground
-       
+        
         
         // Stak 1
         let infoCaptionStack = UIStackView(arrangedSubviews: [infoLabel,captionLabel])
         infoCaptionStack.axis = .vertical
         infoCaptionStack.distribution = .fillProportionally
         infoCaptionStack.spacing = 4
-
-
+        
+        
         // Stask 2
         let imageCaptionStack = UIStackView(arrangedSubviews: [userImage,infoCaptionStack])
         imageCaptionStack.distribution = .fillProportionally
         imageCaptionStack.spacing = 12
         imageCaptionStack.alignment = .leading
         
-//        addSubview(imageCaptionStack)
-//        imageCaptionStack.anchor(top: topAnchor, left: leftAnchor, right: rightAnchor, paddingTop: 8, paddingLeft: 12, paddingRight: 12)
-        
-        
+  
         let stack = UIStackView(arrangedSubviews: [replyLabel,imageCaptionStack])
         stack.axis = .vertical
         stack.distribution = .fillProportionally
@@ -215,8 +212,8 @@ class TweetCell:UICollectionViewCell {
         stack.anchor(top: topAnchor, left: leftAnchor, right: rightAnchor, paddingTop: 4, paddingLeft: 12, paddingRight: 12)
         replyLabel.isHidden = !viewModel.shouldShowReplyLabel
         
-       addSubview(divider)
-       divider.anchor( left:leftAnchor, bottom: bottomAnchor,right:rightAnchor,height: 1)
+        addSubview(divider)
+        divider.anchor( left:leftAnchor, bottom: bottomAnchor,right:rightAnchor,height: 1)
         
         let actonButtonStack = UIStackView (arrangedSubviews: [commentButton,retweetButton,likeButton,shareButton])
         actonButtonStack.axis = .horizontal
@@ -230,7 +227,7 @@ class TweetCell:UICollectionViewCell {
         likeButton.tintColor = viewModel.likeButtonTintColor
         likeButton.setImage(viewModel.likeButtonImage, for: .normal)
         
-
+        
         
     }
     
@@ -239,7 +236,7 @@ class TweetCell:UICollectionViewCell {
         
         AuthService.shared.fetchtUser(userName: userName) { user in
             self.delegat?.handelMentionTapped(mentionedUser: user)
-        
+            
         }
         
     }

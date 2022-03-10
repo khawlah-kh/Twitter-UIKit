@@ -9,18 +9,18 @@ import UIKit
 
 
 class InputTextView : UITextView{
-var placeholderLabel : UILabel = {
+    var placeholderLabel : UILabel = {
+        
+        let label = UILabel()
+        label.font=UIFont.systemFont(ofSize: 16)
+        label.textColor = .darkGray
+        return label
+        
+    }()
     
-    let label = UILabel()
-    label.font=UIFont.systemFont(ofSize: 16)
-    label.textColor = .darkGray
-    return label
-    
-}()
     
     
-
-// MARK: lifecycle
+    // MARK: lifecycle
     
     override init(frame: CGRect, textContainer: NSTextContainer?) {
         super.init(frame: frame, textContainer: textContainer)
@@ -39,7 +39,7 @@ var placeholderLabel : UILabel = {
         fatalError("init(coder:) has not been implemented")
     }
     
-
+    
     @objc func handelTextInputChange(){
         placeholderLabel.isHidden = !text.isEmpty
     }

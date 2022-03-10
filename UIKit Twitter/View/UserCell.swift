@@ -18,8 +18,8 @@ class UserCell : UITableViewCell{
             configureUI()
         }
     }
-
-  
+    
+    
     // MARK: Properties
     var userImage : UIImageView = {
         let image = UIImageView()
@@ -35,14 +35,12 @@ class UserCell : UITableViewCell{
     
     var username : UILabel = {
         let label = UILabel()
-        label.text = "@sara"
         label.font = UIFont.boldSystemFont(ofSize: 14)
         return label
     }()
     
     var userFullName : UILabel = {
         let label = UILabel()
-        label.text = "Sara Khalid"
         label.font = UIFont.systemFont(ofSize: 14)
         return label
     }()
@@ -67,7 +65,7 @@ class UserCell : UITableViewCell{
         guard let user = user else {
             return
         }
-
+        
         userImage.sd_setImage(with: user.profileImageUrl)
         addSubview(userImage)
         userImage.centerY(inView: self, leftAnchor: leftAnchor, paddingLeft: 8)
@@ -86,11 +84,6 @@ class UserCell : UITableViewCell{
         addSubview(stack)
         stack.centerY(inView: self, leftAnchor: userImage.rightAnchor, paddingLeft: 8)
         
-      
-    }
-    
-    
-    
-    
-    
+        
+    }   
 }

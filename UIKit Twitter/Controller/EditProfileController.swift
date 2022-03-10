@@ -10,6 +10,7 @@ import UIKit
 protocol  EditProfileControllerDelegate : class {
     
     func didFinishUpdateProfile(forUser : User)
+    func handelLogout()
 }
 
 class EditProfileController: UITableViewController {
@@ -21,6 +22,7 @@ class EditProfileController: UITableViewController {
     var userImageChanged = false
 
     private lazy var headerView = EditProfileHeader(user: user)
+    private  var footerView = EditProfileFooterView()
 
     // MARK: - Properties
     var label : UILabel = {
@@ -55,7 +57,12 @@ class EditProfileController: UITableViewController {
        
        
     }
-
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+   
+            navigationController?.navigationBar.isHidden = false
+            navigationController?.navigationBar.barStyle = .default
+    }
     // MARK: - Selectors
     @objc func handelCancel(){
 
@@ -121,10 +128,7 @@ class EditProfileController: UITableViewController {
     }
 
     func configureNavBar(){
-//
-        
-        
-        
+
         let appearance = UINavigationBarAppearance()
         appearance.configureWithOpaqueBackground()
         appearance.backgroundColor = .twitterBlue
@@ -152,7 +156,10 @@ class EditProfileController: UITableViewController {
         headerView.delegate = self
         tableView.tableHeaderView = headerView
         headerView.frame = CGRect(x: 0, y: 0, width: view.frame.width, height:180)
-        tableView.tableFooterView = UIView()
+        footerView.frame = CGRect(x: 0, y: 0, width: view.frame.width, height:50)
+
+        footerView.delegate = self
+        tableView.tableFooterView = footerView
         tableView.rowHeight = 70
         tableView.register(EditProfileCell.self, forCellReuseIdentifier: EditProfileCellId)
     }
@@ -242,5 +249,32 @@ extension EditProfileController : EditProfileCellDelegate{
     }
     
     
+    
+}
+
+
+
+// MARK: - EditProfileFooterViewDelegate
+extension EditProfileController : EditProfileFooterViewDelegate {
+    func handelLogout() {
+       
+        let alert = UIAlertController(title: nil, message: "Are you sure you want to log out ?", preferredStyle: .actionSheet)
+        
+        alert.addAction(UIAlertAction(title: "Log out", style: .destructive, handler: { _ in
+            
+            
+            self.dismiss(animated: true) {
+                self.delegate?.handelLogout()
+            }
+           
+        }))
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler:nil))
+
+        present(alert, animated: true) {
+            
+        }
+
+    }
+  
     
 }

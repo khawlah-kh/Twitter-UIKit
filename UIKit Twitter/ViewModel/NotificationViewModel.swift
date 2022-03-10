@@ -21,13 +21,13 @@ struct NotificationViewModel{
     
     var notificationText : NSAttributedString {
         
-       return attributedText(userName: userName, notificationText: notificationTypeText)
+        return attributedText(userName: userName, notificationText: notificationTypeText)
     }
     
     
     var detailedNotificationTime : NSAttributedString{
         let time = NSMutableAttributedString(string:"\(timestampString)", attributes: [.font : UIFont.boldSystemFont(ofSize: 14),
-            .foregroundColor: UIColor.lightGray])
+                                                                                       .foregroundColor: UIColor.lightGray])
         
         return time
         
@@ -50,7 +50,7 @@ struct NotificationViewModel{
     
     
     var notificationTypeText : String {
-      
+        
         var text = ""
         switch notification.type {
         case .follow:
@@ -68,7 +68,7 @@ struct NotificationViewModel{
             text = ""
         }
         
-
+        
         return text
     }
     
@@ -76,7 +76,7 @@ struct NotificationViewModel{
     
     //MARK: - Lifecycle
     init(notification:Notification){
-
+        
         self.notification = notification
         self.user = notification.user
     }
@@ -88,7 +88,7 @@ struct NotificationViewModel{
         let attributedTitle = NSMutableAttributedString(string: "\(userName)", attributes: [.font : UIFont.boldSystemFont(ofSize: 14)])
         
         attributedTitle.append(NSAttributedString(string: " \(notificationText)", attributes: [.font : UIFont.systemFont(ofSize: 14)]))
-
+        
         return attributedTitle
     }
     

@@ -14,12 +14,8 @@ struct TweetDetailsViewModel{
     
     // MARK: - Prroperties
     let tweet : Tweet
-  //  let user : User
     init(tweet:Tweet){
-        
-        
         self.tweet = tweet
-      //  self.user = tweet.user
     }
     
     
@@ -35,7 +31,7 @@ struct TweetDetailsViewModel{
     
     
     var username:String{
-       "@\(tweet.username)"
+        "@\(tweet.username)"
     }
     
     var caption :String{
@@ -44,13 +40,13 @@ struct TweetDetailsViewModel{
     
     var shouldShowReplyLabel : Bool {
         
-         tweet.replyingTo != nil
+        tweet.replyingTo != nil
     }
     
     var replyingToText : String{
         
         if let to = tweet.replyingTo{
-       return " →Replying to @\(to)"
+            return " →Replying to @\(to)"
         }
         else{
             return ""
@@ -59,7 +55,7 @@ struct TweetDetailsViewModel{
     }
     var detailedTweetTime : NSAttributedString{
         let time = NSMutableAttributedString(string:"\(timestampString) • \(detailedTimestampString)", attributes: [.font : UIFont.boldSystemFont(ofSize: 14),
-            .foregroundColor: UIColor.lightGray])
+                                                                                                                    .foregroundColor: UIColor.lightGray])
         
         return time
         
@@ -106,8 +102,8 @@ struct TweetDetailsViewModel{
         
         attributedTitle.append(NSAttributedString(string: " \(text)", attributes: [.font : UIFont.systemFont(ofSize: 14)
                                                                                    ,.foregroundColor : UIColor.lightGray
-                                                                                   ]))
-
+                                                                                  ]))
+        
         return attributedTitle
     }
     
@@ -125,5 +121,5 @@ struct TweetDetailsViewModel{
         return formatter.string(from: tweet.timestamp.dateValue())
     }
     
-
+    
 }
