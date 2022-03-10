@@ -12,7 +12,7 @@ enum UploadTweetConfiguration {
     case tweet
     case reply(Tweet)
 }
-struct UploadReplyViewController{
+struct UploadReplyViewModel{
     
     let config : UploadTweetConfiguration
     
@@ -29,8 +29,8 @@ struct UploadReplyViewController{
             placeholder = "Tweet yourt reply"
             shouldShowReplyLabel = true
             replyText = NSMutableAttributedString(string: "Replying to ", attributes: [.font : UIFont.systemFont(ofSize: 14) ,.foregroundColor: UIColor.lightGray])
-            replyText?.append(NSAttributedString(string:"@\(tweet.user.userName)" , attributes:[.font : UIFont.systemFont(ofSize: 14),.foregroundColor: UIColor.systemBlue]))
-//
+            replyText?.append(NSAttributedString(string:"@\(tweet.username)" , attributes:[.font : UIFont.systemFont(ofSize: 14),.foregroundColor: UIColor.systemBlue]))
+            //
         }
     }
     
@@ -38,7 +38,7 @@ struct UploadReplyViewController{
     let placeholder : String
     var shouldShowReplyLabel : Bool
     var replyText : NSMutableAttributedString? = nil
-  
-
+    
+    
     
 }

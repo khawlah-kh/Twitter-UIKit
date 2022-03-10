@@ -13,21 +13,22 @@ struct User : Identifiable{
     
     let id :String
     let email : String
-    let fullName : String
-    let userName : String
-    let profileImageUrl : URL
+    var fullName : String
+    var userName : String
+    var profileImageUrl : URL
     var isFollowed = false
     var stats = UserStats()
+    var bio : String?
     
     var isCurrentUser : Bool {
         Auth.auth().currentUser?.uid == self.id
     }
-
+    
     
     init(data:[String:Any],id:String){
-
+        
         self.id = (id == "") ? UUID().uuidString : id
-
+        
         self.fullName = data[User.fullName]  as? String ?? "N/A"
         
         
@@ -38,11 +39,14 @@ struct User : Identifiable{
         let profileImageUrlAsString = data[User.profileImageUrl]  as? String ?? "N/A"
         self.profileImageUrl = URL(string: profileImageUrlAsString)!
         
-       
+        
+        self.bio = data[User.bio]  as? String
+        
+        
     }
     
     
-  
+    
     
     func getUserData()->([String:String]){
         
@@ -55,7 +59,10 @@ struct User : Identifiable{
         data[User.userName] = self.userName
         
         data[User.profileImageUrl] = self.profileImageUrl.description
-        
+        if let bio = bio {
+            data[User.bio] = bio 
+        }
+       
         return data
         
     }
@@ -64,8 +71,9 @@ struct User : Identifiable{
     static let email           = "email"
     static let userName     = "userName"
     static let profileImageUrl = "profileImageUrl"
-
-
+    static let bio = "bio"
+    
+    
     
     
 }

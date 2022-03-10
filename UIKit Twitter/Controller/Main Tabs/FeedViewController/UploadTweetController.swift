@@ -6,19 +6,24 @@
 //
 
 import UIKit
-
-
+import ActiveLabel
+protocol UploadTweetDelegate : class{
+    
+    func handleAfterUploading ()
+}
 
 
 class UploadTweetController: UIViewController {
     
     
     // MARK: Properties
-
+    
     var user : User
     let config : UploadTweetConfiguration
-    lazy var viewModel = UploadReplyViewController(config: self.config)
-
+    lazy var viewModel = UploadReplyViewModel(config: self.config)
+    
+    weak var delegat : UploadTweetDelegate?
+    
     
     lazy var  tweetButton : UIButton={
         
@@ -40,7 +45,6 @@ class UploadTweetController: UIViewController {
         let imageURL = user.profileImageUrl
         let image = UIImageView()
         image.contentMode = .scaleAspectFill
-        //image.clipsToBounds = true
         image.setDimensions(width: 48, height: 48)
         image.layer.masksToBounds = true
         image.layer.cornerRadius = 48/2
@@ -52,16 +56,17 @@ class UploadTweetController: UIViewController {
         
     }()
     
-     lazy var captionTextView : UITextView = {
-        let textView = CaptionTextView()
-         textView.placeholderLabel.text = viewModel.placeholder
+    lazy var captionTextView : UITextView = {
+        let textView = InputTextView()
+        textView.placeholderLabel.text = viewModel.placeholder
         
         return textView
     }()
     
-    lazy var replyLabel : UILabel = {
-        let label = UILabel()
+    lazy var replyLabel : ActiveLabel = {
+        let label = ActiveLabel()
         label.textColor = .systemGray
+        label.mentionColor = .twitterBlue
         label.attributedText = viewModel.replyText ?? NSAttributedString(string: "", attributes: nil)
         return label
         
@@ -73,7 +78,7 @@ class UploadTweetController: UIViewController {
         self.user = user
         self.config = config
         super.init(nibName: nil, bundle: nil)
-       
+        
     }
     
     required init?(coder: NSCoder) {
@@ -82,14 +87,13 @@ class UploadTweetController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-       // title = "Hello"
         confugureUI()
-      
+        
     }
     
     //MARK: Selectors
     @objc func handleCancle(){
-
+        
         self.dismiss(animated: true, completion: nil)
         
     }
@@ -105,15 +109,18 @@ class UploadTweetController: UIViewController {
                 print("Something went wrong \(error.localizedDescription)")
             }
             else{
-                self.dismiss(animated: true) 
-            
+                self.delegat?.handleAfterUploading()
+                self.dismiss(animated: true)
+                
+                
+                
             }
         }
-      
+        
         
     }
-  
-
+    
+    
     // MARK: API
     // MARK: Helpers
     func confugureUI(){
@@ -122,7 +129,7 @@ class UploadTweetController: UIViewController {
         
         view.backgroundColor = UIColor.systemBackground
         confugureNavigationBar()
-
+        
         
         let imageCaptionstack = UIStackView(arrangedSubviews: [userImage,captionTextView])
         imageCaptionstack.axis = .horizontal
@@ -134,13 +141,13 @@ class UploadTweetController: UIViewController {
         stack.axis = .vertical
         stack.alignment = .fill
         stack.spacing = 12
-
+        
         view.addSubview(stack)
         stack.anchor(top: view.safeAreaLayoutGuide.topAnchor,left: view.safeAreaLayoutGuide.leftAnchor, right: view.safeAreaLayoutGuide.rightAnchor, paddingTop: 16, paddingLeft: 16,paddingRight: 16)
-       
+        
         replyLabel.isHidden = !viewModel.shouldShowReplyLabel
         
-      
+        
     }
     
     
@@ -153,7 +160,7 @@ class UploadTweetController: UIViewController {
         
         
     }
- 
-
+    
+    
 }
 

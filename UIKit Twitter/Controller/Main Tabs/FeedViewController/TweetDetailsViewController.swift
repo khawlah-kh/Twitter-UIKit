@@ -8,16 +8,25 @@
 import UIKit
 
 class TweetDetailsViewController: UICollectionViewController {
-
+    
     
     
     // MARK: - Properties
     
     let tweet : Tweet
+    var user : User? {
+        didSet{
+            guard let user = user else {
+                return
+            }
+            actionSheetLauncher=ActionSheetLauncher(user: user)
+        }
+    }
+    var actionSheetLauncher : ActionSheetLauncher?
     var replies : [Tweet]=[]{
         didSet{
             collectionView.reloadData()
-    
+            
         }
     }
     
@@ -26,6 +35,7 @@ class TweetDetailsViewController: UICollectionViewController {
     init (tweet:Tweet){
         
         self.tweet = tweet
+        //self.actionSheet = ActionSheetLauncher(user: <#T##User#>)
         super.init(collectionViewLayout: UICollectionViewFlowLayout())
     }
     
@@ -35,9 +45,16 @@ class TweetDetailsViewController: UICollectionViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-      
-        configureCollectionView()
         
+        configureCollectionView()
+        fetchUser()
+        
+    }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        navigationController?.navigationBar.isHidden = false
+        navigationController?.navigationBar.barStyle = .default
     }
     
     
@@ -48,7 +65,7 @@ class TweetDetailsViewController: UICollectionViewController {
         collectionView.register(TweetCell.self,forCellWithReuseIdentifier: reusableCellId)
         fetchReplies()
     }
-
+    
     //MARK: API
     func fetchReplies (){
         
@@ -56,13 +73,21 @@ class TweetDetailsViewController: UICollectionViewController {
             guard let replies = replies else {
                 return
             }
-
+            
             self.replies = replies
         }
         
         
     }
-
+    
+    func fetchUser(){
+        AuthService.shared.fetchtUser(withId: tweet.uid) { tweetUser in
+            // guard let user = tweetUser else {return}
+            self.user = tweetUser
+            
+        }
+    }
+    
 }
 
 
@@ -71,7 +96,7 @@ class TweetDetailsViewController: UICollectionViewController {
 extension TweetDetailsViewController{
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-      
+        
         return replies.count
     }
     
@@ -83,7 +108,7 @@ extension TweetDetailsViewController{
         return cell
         
         
-
+        
     }
     
     
@@ -97,11 +122,12 @@ extension TweetDetailsViewController {
     override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         
         let header = collectionView.dequeueReusableSupplementaryView(ofKind:kind, withReuseIdentifier: tweetDetailsHeaderId, for: indexPath) as! TweetDetailsViewHeader
-
+        
         header.tweet = tweet
-       
-    return header
-}
+        header.delegate = self
+        
+        return header
+    }
 }
 
 
@@ -117,19 +143,30 @@ extension TweetDetailsViewController:UICollectionViewDelegateFlowLayout {
         let height = viewmodel.size(forWidth: view.frame.width).height
         return CGSize(width: view.frame.width, height: height + 260)
     }
-
+    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-
-        return CGSize(width: view.frame.width, height: 120)
-
-
+        
+        return CGSize(width: view.frame.width, height: 120)    
         
     }
-
-
  
+}
+
+
+
+// MARK: - TweetDetailsViewHeaderDelegaate
+
+extension TweetDetailsViewController : TweetDetailsViewHeaderDelegaate {
     
+    func handelShowActionSheet() {
+        
+        actionSheetLauncher?.show()
+    }
     
+    func handelMentionTapped(mentionedUser: User) {
+        let controller = ProfileViewController(user: mentionedUser)
+        navigationController?.pushViewController(controller, animated: true)
+    }
     
     
 }

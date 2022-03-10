@@ -14,38 +14,48 @@ struct TweetDetailsViewModel{
     
     // MARK: - Prroperties
     let tweet : Tweet
-    let user : User
     init(tweet:Tweet){
-        
-        
         self.tweet = tweet
-        self.user = tweet.user
     }
     
     
     
     var profileImageUrl : URL {
-        return user.profileImageUrl
+        return tweet.profileImageUrl
     }
     
     
     var fullName:String{
-        user.fullName
+        tweet.fullname
     }
     
     
     var username:String{
-       "@\(user.userName)"
+        "@\(tweet.username)"
     }
     
     var caption :String{
         tweet.caption
     }
     
+    var shouldShowReplyLabel : Bool {
+        
+        tweet.replyingTo != nil
+    }
     
+    var replyingToText : String{
+        
+        if let to = tweet.replyingTo{
+            return " →Replying to @\(to)"
+        }
+        else{
+            return ""
+            
+        }
+    }
     var detailedTweetTime : NSAttributedString{
         let time = NSMutableAttributedString(string:"\(timestampString) • \(detailedTimestampString)", attributes: [.font : UIFont.boldSystemFont(ofSize: 14),
-            .foregroundColor: UIColor.lightGray])
+                                                                                                                    .foregroundColor: UIColor.lightGray])
         
         return time
         
@@ -67,6 +77,24 @@ struct TweetDetailsViewModel{
         
     }
     
+    var likeButtonTintColor : UIColor {
+        
+        return tweet.didLike ? .red : .gray
+        
+    }
+    
+    var likeButtonImage : UIImage {
+        
+        if tweet.didLike{
+            return UIImage(systemName: "suit.heart.fill")!
+        }
+        else{
+            return UIImage(systemName: "heart")!
+        }
+        
+    }
+    
+    
     // MARK: - Helpers
     func attributedText(value:Int,text:String)->NSAttributedString{
         
@@ -74,8 +102,8 @@ struct TweetDetailsViewModel{
         
         attributedTitle.append(NSAttributedString(string: " \(text)", attributes: [.font : UIFont.systemFont(ofSize: 14)
                                                                                    ,.foregroundColor : UIColor.lightGray
-                                                                                   ]))
-
+                                                                                  ]))
+        
         return attributedTitle
     }
     
@@ -93,5 +121,5 @@ struct TweetDetailsViewModel{
         return formatter.string(from: tweet.timestamp.dateValue())
     }
     
-
+    
 }

@@ -1,0 +1,16 @@
+PODS:
+  - ActiveLabel (1.0.1)
+
+DEPENDENCIES:
+  - ActiveLabel
+
+SPEC REPOS:
+  trunk:
+    - ActiveLabel
+
+SPEC CHECKSUMS:
+  ActiveLabel: b8b2396fe25308d563601437d6605bf691c3b5db
+
+PODFILE CHECKSUM: 32a921aa12485556889edd111ace02593fa73dea
+
+COCOAPODS: 1.11.2
