@@ -58,11 +58,9 @@ class AuthService{
                 
                 ref.downloadURL { url, err in
                     if let err = err {
-                        print("Failed to retrieve downloadURL: \(err)")
                         return
                     }
-                    print("Successfully stored image with url: \(url?.absoluteString ?? "")")
-                    print("url for the image :\(url?.absoluteString)")
+
                     
                     
                     //Complete the process by store user data in firestore

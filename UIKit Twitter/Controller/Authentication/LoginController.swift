@@ -116,9 +116,7 @@ class LoginController : UIViewController{
             
             
         }
-//        print(Auth.auth().currentUser?.email)
-//        print("💜")
-//
+
     }
     @objc func handeShowingSignUp(){
         let registrationController = RegistrationController()

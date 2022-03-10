@@ -68,19 +68,15 @@ class ActionSheetViewModel {
                 self.user.isFollowed = true
                 completion()
             }
-            print("follow")
         case .unfollow(let user):
             UserService.shared.unFollow(uid: user.id) {
                 self.user.isFollowed = false
                 completion()
             }
-            print("unfollow")
         case .delete_tweet:
-            print("delete_tweet")
             completion()
             
         case .report_tweet:
-            print("report_tweet")
             completion()
             
         }

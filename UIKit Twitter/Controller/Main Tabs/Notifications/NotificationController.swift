@@ -46,7 +46,6 @@ class NotificationController : UITableViewController{
                 if notification.type == .follow {
                     UserService.shared.checkIfuserIsFollowed(uid: notification.user.id) { isFollowed  in
                         self.nitifications[index].user.isFollowed = isFollowed
-                        print(isFollowed)
                     }
                     
                 }
