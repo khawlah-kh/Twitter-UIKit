@@ -165,9 +165,16 @@ extension TweetDetailsViewController:UICollectionViewDelegateFlowLayout {
 // MARK: - TweetDetailsViewHeaderDelegaate
 
 extension TweetDetailsViewController : TweetDetailsViewHeaderDelegaate {
+ 
     func handelShowActionSheet() {
         
         actionSheetLauncher?.show()
     }
+    
+    func handelMentionTapped(mentionedUser: User) {
+        let controller = ProfileViewController(user: mentionedUser)
+     navigationController?.pushViewController(controller, animated: true)
+    }
+    
      
 }

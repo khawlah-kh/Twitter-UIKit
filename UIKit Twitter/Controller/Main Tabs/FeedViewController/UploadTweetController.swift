@@ -6,7 +6,7 @@
 //
 
 import UIKit
-
+import ActiveLabel
 protocol UploadTweetDelegate : class{
     
     func handleAfterUploading ()
@@ -64,9 +64,14 @@ class UploadTweetController: UIViewController {
         return textView
     }()
     
-    lazy var replyLabel : UILabel = {
-        let label = UILabel()
+    lazy var replyLabel : ActiveLabel = {
+        let label = ActiveLabel()
         label.textColor = .systemGray
+        label.mentionColor = .twitterBlue
+        label.handleMentionTap { string in
+            print(string,"👍🏻")
+        }
+        //label .text = "reply to @memo"
         label.attributedText = viewModel.replyText ?? NSAttributedString(string: "", attributes: nil)
         return label
         

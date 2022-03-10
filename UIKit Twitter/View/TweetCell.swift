@@ -7,13 +7,14 @@
 
 import UIKit
 import SwiftUI
-
+import ActiveLabel
 
 protocol TweetCellDelegate :class {
     
     func handelLikeTweet(_ cell : TweetCell)
     func handelProfileImageTapped(_ cell : TweetCell)
     func handelRetweetTapped(_ cell : TweetCell)
+    func handelMentionTapped(mentionedUser:User)
    
 }
 
@@ -47,19 +48,23 @@ class TweetCell:UICollectionViewCell {
     }()
     
     
-    var replyLabel : UILabel = {
-        let label = UILabel()
+    var replyLabel : ActiveLabel = {
+        let label = ActiveLabel()
         label.textColor = .lightGray
+        label.mentionColor = .twitterBlue
         label.font = UIFont.systemFont(ofSize: 12)
         return label
         
     }()
     
-    lazy var captionLabel : UILabel = {
-        let label = UILabel()
+    lazy var captionLabel : ActiveLabel = {
+        let label = ActiveLabel()
         label.text = tweet?.caption ?? ""
         label.font=UIFont.systemFont(ofSize: 14)
         label.numberOfLines = 0
+        label.mentionColor = .twitterBlue
+        label.hashtagColor = .twitterBlue
+        label.handleMentionTap(handleMentionTap)
         return label
    
     }()
@@ -229,5 +234,14 @@ class TweetCell:UICollectionViewCell {
         
     }
     
+    func handleMentionTap(userName:String){
+        
+        
+        AuthService.shared.fetchtUser(userName: userName) { user in
+            self.delegat?.handelMentionTapped(mentionedUser: user)
+        
+        }
+        
+    }
     
 }

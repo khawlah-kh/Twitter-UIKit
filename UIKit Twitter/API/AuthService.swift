@@ -173,6 +173,25 @@ class AuthService{
     
     
     
+    func fetchtUser(userName:String,completion:@escaping((User)->())){
+  
+        
+        
+        COLECTION_USERS.whereField(User.userName, isEqualTo: userName)
+            .getDocuments() { (querySnapshot, err) in
+                if let err = err {
+                    print("Error getting documents: \(err)")
+                } else {
+                    for document in querySnapshot!.documents {
+                        let user = User(data: document.data(), id: document.documentID)
+                        completion(user)
+                    }
+                }
+        }
+        //For now it is a pretty good solution, but it would be better if there is a collection called usernames , where it saves the usernames with the crosponding document id (which leads to the whole document in User collection), that solution will increase the perfomance incredibly. . 
+        
+    }
+    
     
     
     

@@ -6,10 +6,11 @@
 //
 
 import UIKit
-
+import ActiveLabel
 protocol TweetDetailsViewHeaderDelegaate : class {
     
     func handelShowActionSheet ()
+    func handelMentionTapped(mentionedUser: User)
     
 }
 
@@ -25,9 +26,10 @@ class TweetDetailsViewHeader: UICollectionReusableView {
     }
     
     
-    var replyLabel : UILabel = {
-        let label = UILabel()
-        label.textColor = .lightGray
+    var replyLabel : ActiveLabel = {
+        let label = ActiveLabel()
+        //label.textColor = .lightGray
+        label.mentionColor = .twitterBlue
         label.font = UIFont.systemFont(ofSize: 12)
         return label
         
@@ -59,11 +61,12 @@ class TweetDetailsViewHeader: UICollectionReusableView {
         
     } ()
     
-    var usernameLabel : UILabel = {
-        let label = UILabel()
+    
+   lazy var usernameLabel :  ActiveLabel = {
+        let label = ActiveLabel()
         label.font = UIFont.systemFont(ofSize: 16)
-        label.textColor = .lightGray
-        
+        label.mentionColor = .twitterBlue
+        label.handleMentionTap(handleMentionTap)
         return label
         
     } ()
@@ -78,12 +81,14 @@ class TweetDetailsViewHeader: UICollectionReusableView {
   
     }()
     
-    lazy var captionLabel : UILabel = {
-        let label = UILabel()
+    lazy var captionLabel : ActiveLabel = {
+        let label = ActiveLabel()
        // label.text = tweet?.caption ?? ""
         label.font=UIFont.systemFont(ofSize: 20)
         label.numberOfLines = 0
-        
+        label.mentionColor = .twitterBlue
+        label.hashtagColor = .twitterBlue
+        label.handleMentionTap(handleMentionTap)
         return label
    
     }()
@@ -283,6 +288,17 @@ class TweetDetailsViewHeader: UICollectionReusableView {
         
         
       
+        
+    }
+    
+    
+    func handleMentionTap(userName:String){
+        
+        
+        AuthService.shared.fetchtUser(userName: userName) { user in
+        self.delegate?.handelMentionTapped(mentionedUser: user)
+        
+        }
         
     }
 }

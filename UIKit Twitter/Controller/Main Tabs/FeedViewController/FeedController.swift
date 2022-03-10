@@ -1,3 +1,4 @@
+
 //
 //  FeedViewController.swift
 //  UIKit Twitter
@@ -207,6 +208,7 @@ extension FeedController : UICollectionViewDelegateFlowLayout {
 
 // MARK: - TweetCellDelegate
 extension FeedController : TweetCellDelegate{
+
  
     func handelLikeTweet(_ cell: TweetCell) {
         guard let  tweet = cell.tweet else {
@@ -260,6 +262,12 @@ extension FeedController : TweetCellDelegate{
         let nav = UINavigationController(rootViewController: controller)
         nav.modalPresentationStyle = .fullScreen
         present(nav, animated: true, completion: nil)
+
+    }
+    func handelMentionTapped(mentionedUser: User) {
+        
+           let controller = ProfileViewController(user: mentionedUser)
+        navigationController?.pushViewController(controller, animated: true)
 
     }
     
