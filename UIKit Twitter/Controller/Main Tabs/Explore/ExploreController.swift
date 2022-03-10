@@ -16,7 +16,7 @@ enum ExploreControllerConfiguration {
 }
 class ExploreController : UITableViewController{
     
-
+    
     // MARK: - Properties
     
     let config : ExploreControllerConfiguration
@@ -43,7 +43,7 @@ class ExploreController : UITableViewController{
     init(config : ExploreControllerConfiguration){
         self.config = config
         super.init(style: .plain)
-    
+        
     }
     
     required init?(coder: NSCoder) {
@@ -55,16 +55,16 @@ class ExploreController : UITableViewController{
         fetchUser()
         configureSearchController()
         if config == .message{
-        confugureNavigationBar()
+            confugureNavigationBar()
         }
-       
+        
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-   
-            navigationController?.navigationBar.isHidden = false
-            navigationController?.navigationBar.barStyle = .default
+        
+        navigationController?.navigationBar.isHidden = false
+        navigationController?.navigationBar.barStyle = .default
     }
     
     //MARK: Selectors
@@ -132,7 +132,6 @@ extension ExploreController {
     
     
     
-    //Handel Cell Selection
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         let user = inSearchMode ? filteredUsers[indexPath.row] : users[indexPath.row]
@@ -150,19 +149,17 @@ extension ExploreController:UISearchResultsUpdating{
     //this function get called every single time user types or delete in the search bar
     func updateSearchResults(for searchController: UISearchController) {
         guard let query = searchController.searchBar.text?.lowercased() else {return}
-          filteredUsers =  self.users.filter({ user in
+        filteredUsers =  self.users.filter({ user in
             user.fullName.lowercased().contains(query) ||   user.userName.lowercased().contains(query)
-       }
-                             
-       
-)
-      
+        }
+        )
+        
         tableView.reloadData()
         
         
-    
+        
         
     }
- 
+    
     
 }

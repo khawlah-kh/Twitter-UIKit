@@ -168,6 +168,72 @@
 			path = FeedViewController;
 			sourceTree = "<group>";
 		};
+		902F7B0627DA03160075ACBE /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				90906FFF27BA37440058F254 /* TweetCell.swift */,
+				904D5E6C27D1CF00000F44DC /* NotificationCell.swift */,
+				905EC1C227C0B98100BD1CB2 /* UserCell.swift */,
+				906105D427C9FD700084AF95 /* ActionSheetCell.swift */,
+				907D6D1527D5E5A8007DF0E5 /* EditProfileCell.swift */,
+				908DE4D027BCEACA00B7407A /* ProfileFilterCell.swift */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
+		902F7B0727DA03410075ACBE /* Headers and Footers */ = {
+			isa = PBXGroup;
+			children = (
+				902D48BE27C34AE800B9192B /* TweetDetailsViewHeader.swift */,
+				907D6D1127D5CFDA007DF0E5 /* EditProfileHeader.swift */,
+				906D338527BBEA040085A91F /* ProfileHeader.swift */,
+				902F7B0427D9D50C0075ACBE /* EditProfileFooterView.swift */,
+			);
+			path = "Headers and Footers";
+			sourceTree = "<group>";
+		};
+		902F7B0827DA034E0075ACBE /* Custom Views */ = {
+			isa = PBXGroup;
+			children = (
+				903A2B3F27B8CED00037B592 /* InputTextView.swift */,
+				908DE4CE27BCE58F00B7407A /* ProfileFilterView.swift */,
+			);
+			path = "Custom Views";
+			sourceTree = "<group>";
+		};
+		902F7B0927DA03D90075ACBE /* Explore */ = {
+			isa = PBXGroup;
+			children = (
+				903388E727AE7F5E00D63F2A /* ExploreController.swift */,
+			);
+			path = Explore;
+			sourceTree = "<group>";
+		};
+		902F7B0A27DA03E80075ACBE /* Notifications */ = {
+			isa = PBXGroup;
+			children = (
+				903388E927AE7F9000D63F2A /* NotificationController.swift */,
+			);
+			path = Notifications;
+			sourceTree = "<group>";
+		};
+		902F7B0B27DA03F80075ACBE /* Conversations */ = {
+			isa = PBXGroup;
+			children = (
+				903388EB27AE7FC200D63F2A /* ConversationController.swift */,
+			);
+			path = Conversations;
+			sourceTree = "<group>";
+		};
+		902F7B0C27DA04550075ACBE /* Other Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				907D6D0E27D5BF7B007DF0E5 /* EditProfileController.swift */,
+				906D338227BBCDE10085A91F /* ProfileViewController.swift */,
+			);
+			path = "Other Controllers";
+			sourceTree = "<group>";
+		};
 		903388BD27AE745900D63F2A = {
 			isa = PBXGroup;
 			children = (
@@ -219,13 +285,9 @@
 		903388DE27AE754000D63F2A /* View */ = {
 			isa = PBXGroup;
 			children = (
-				907D6D1027D5CF76007DF0E5 /* Profile */,
-				904D5E6C27D1CF00000F44DC /* NotificationCell.swift */,
-				906105D427C9FD700084AF95 /* ActionSheetCell.swift */,
-				902D48BE27C34AE800B9192B /* TweetDetailsViewHeader.swift */,
-				903A2B3F27B8CED00037B592 /* InputTextView.swift */,
-				90906FFF27BA37440058F254 /* TweetCell.swift */,
-				905EC1C227C0B98100BD1CB2 /* UserCell.swift */,
+				902F7B0827DA034E0075ACBE /* Custom Views */,
+				902F7B0727DA03410075ACBE /* Headers and Footers */,
+				902F7B0627DA03160075ACBE /* Cells */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -249,8 +311,7 @@
 			children = (
 				906D338427BBDFBA0085A91F /* Main Tabs */,
 				9008619C27AF9A7400C2D8F9 /* Authentication */,
-				906D338227BBCDE10085A91F /* ProfileViewController.swift */,
-				907D6D0E27D5BF7B007DF0E5 /* EditProfileController.swift */,
+				902F7B0C27DA04550075ACBE /* Other Controllers */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -282,24 +343,11 @@
 			children = (
 				903388E327AE7AEC00D63F2A /* MainTabViewController.swift */,
 				902D48BB27C347DA00B9192B /* FeedViewController */,
-				903388E727AE7F5E00D63F2A /* ExploreController.swift */,
-				903388E927AE7F9000D63F2A /* NotificationController.swift */,
-				903388EB27AE7FC200D63F2A /* ConversationController.swift */,
+				902F7B0927DA03D90075ACBE /* Explore */,
+				902F7B0A27DA03E80075ACBE /* Notifications */,
+				902F7B0B27DA03F80075ACBE /* Conversations */,
 			);
 			path = "Main Tabs";
-			sourceTree = "<group>";
-		};
-		907D6D1027D5CF76007DF0E5 /* Profile */ = {
-			isa = PBXGroup;
-			children = (
-				907D6D1527D5E5A8007DF0E5 /* EditProfileCell.swift */,
-				907D6D1127D5CFDA007DF0E5 /* EditProfileHeader.swift */,
-				908DE4D027BCEACA00B7407A /* ProfileFilterCell.swift */,
-				906D338527BBEA040085A91F /* ProfileHeader.swift */,
-				908DE4CE27BCE58F00B7407A /* ProfileFilterView.swift */,
-				902F7B0427D9D50C0075ACBE /* EditProfileFooterView.swift */,
-			);
-			path = Profile;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

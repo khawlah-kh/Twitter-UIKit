@@ -8,7 +8,7 @@
 import UIKit
 import Firebase
 class ProfileViewController: UICollectionViewController {
-
+    
     
     
     // MARK: Properties
@@ -52,7 +52,7 @@ class ProfileViewController: UICollectionViewController {
             return userLikes
         }
     }
-
+    
     
     
     required init?(coder: NSCoder) {
@@ -67,14 +67,14 @@ class ProfileViewController: UICollectionViewController {
         fetchReplies()
         checkIfUserIsFolowed()
         getUserStates()
-
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.navigationBar.barStyle = .black
         navigationController?.navigationBar.isHidden = true
-    configureCollectionView()
+        configureCollectionView()
     }
     
     // MARK: Selectors
@@ -101,8 +101,8 @@ class ProfileViewController: UICollectionViewController {
             
         }
     }
-
-
+    
+    
     func checkIfUserIsFolowed(){
         
         UserService.shared.checkIfuserIsFollowed(uid: user.id) { isFollowed in
@@ -113,13 +113,13 @@ class ProfileViewController: UICollectionViewController {
         
     }
     
-   func getUserStates(){
-       UserService.shared.fetchUserStats(uid: user.id) {stats in
-           
-           self.user.stats = stats
-           
-           self.collectionView.reloadData()
-       }
+    func getUserStates(){
+        UserService.shared.fetchUserStats(uid: user.id) {stats in
+            
+            self.user.stats = stats
+            
+            self.collectionView.reloadData()
+        }
     }
     
     // MARK: Helpers
@@ -142,7 +142,7 @@ class ProfileViewController: UICollectionViewController {
 extension ProfileViewController{
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-      
+        
         return currentDataSource.count
     }
     
@@ -154,7 +154,7 @@ extension ProfileViewController{
         return cell
         
         
-
+        
     }
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
@@ -175,19 +175,19 @@ extension ProfileViewController:UICollectionViewDelegateFlowLayout {
         var height : CGFloat = 320
         if let bio = user.bio{
             if bio != ""{
-            height += 50
+                height += 50
             }
             
         }
-            
-           
-            
+        
+        
+        
         
         return CGSize(width: view.frame.width, height: height)
     }
-
+    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-
+        
         
         let tweet = currentDataSource[indexPath.row]
         let viewmodel = TweetViewModel(tweet: tweet)
@@ -196,14 +196,14 @@ extension ProfileViewController:UICollectionViewDelegateFlowLayout {
             height += 20
         }
         return CGSize(width: view.frame.width, height: height)
-
-
+        
+        
         
     }
     
- 
-
-
+    
+    
+    
 }
 
 
@@ -215,19 +215,19 @@ extension ProfileViewController {
     override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         
         let header = collectionView.dequeueReusableSupplementaryView(ofKind:kind, withReuseIdentifier: headerId, for: indexPath) as! ProfileHeader
-
+        
         
         header.user=self.user
         header.delegate = self
-    return header
-}
+        return header
+    }
 }
 
 
 // MARK: ProfileHeaderDelegate
 extension ProfileViewController : ProfileHeaderDelegate{
- 
-
+    
+    
     
     func handelDismissal() {
         navigationController?.popViewController(animated: true)
@@ -236,61 +236,61 @@ extension ProfileViewController : ProfileHeaderDelegate{
         
         
         if user.isCurrentUser  {
-  
-                    DispatchQueue.main.async {
-                        let controller = EditProfileController(user: self.user)
-                        controller.delegate = self
-                        let nav = UINavigationController(rootViewController:controller )
-                        nav.modalPresentationStyle = .fullScreen
-                        self.present(nav, animated: true, completion: nil)
-                    }
-
+            
+            DispatchQueue.main.async {
+                let controller = EditProfileController(user: self.user)
+                controller.delegate = self
+                let nav = UINavigationController(rootViewController:controller )
+                nav.modalPresentationStyle = .fullScreen
+                self.present(nav, animated: true, completion: nil)
+            }
+            
             
             return
         }
-
+        
         
         let uid = self.user.id
-
-         
-            if user.isFollowed{
         
-                UserService.shared.unFollow(uid: uid){
-                    
-                    self.user.isFollowed = false
-                    self.user.stats.followers -= 1
-                    self.collectionView.reloadData()
-                    
-                }
-      
-            }
-            else {UserService.shared.follow(uid: uid){
+        
+        if user.isFollowed{
+            
+            UserService.shared.unFollow(uid: uid){
                 
-                self.user.isFollowed = true
-                self.user.stats.followers += 1
+                self.user.isFollowed = false
+                self.user.stats.followers -= 1
                 self.collectionView.reloadData()
-                NotificationService.shared.uploadeNotification(type: .follow, tweet: nil, userId:uid)
-    
-            }
-                
-                
-                
                 
             }
             
         }
+        else {UserService.shared.follow(uid: uid){
+            
+            self.user.isFollowed = true
+            self.user.stats.followers += 1
+            self.collectionView.reloadData()
+            NotificationService.shared.uploadeNotification(type: .follow, tweet: nil, userId:uid)
+            
+        }
+            
+            
+            
+            
+        }
         
+    }
+    
     func didSelect(filter: ProfileHeaderOptions) {
         self.selectedFilter = filter
     }
     
-    }
+}
 
 
 
 
 extension ProfileViewController : EditProfileControllerDelegate{
-   
+    
     func didFinishUpdateProfile(forUser: User) {
         self.user = forUser
         collectionView.reloadData()
@@ -303,7 +303,7 @@ extension ProfileViewController : EditProfileControllerDelegate{
             nav.modalPresentationStyle = .fullScreen
             self.present(nav, animated: true, completion: nil)
         }
-
+        
     }
     
     

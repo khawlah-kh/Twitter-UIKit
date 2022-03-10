@@ -11,7 +11,7 @@ import Firebase
 class TweetService {
     
     static let shared = TweetService()
-
+    
     func fetchTweetForFeed(completion:@escaping (([Tweet]?,Error?)->())){
         
         guard let currentUserId = Auth.auth().currentUser?.uid else {return}
@@ -31,7 +31,7 @@ class TweetService {
             }
             guard let changes = snapshot?.documentChanges.filter({ $0.type == .added
             }) else {return}
-
+            
             changes.forEach { change in
                 let followingId = change.document.documentID
                 COLECTION_USER_TWEETS.document(followingId).collection(tweetsCollection).addSnapshotListener { snapshot, error in
@@ -48,18 +48,16 @@ class TweetService {
                         self.fetchtTweet(withId: tweetId) { tweet in
                             tweets.append(tweet)
                             completion(tweets,nil)
-                            
-                            
-                            
-                        }
 
+                        }
+                        
                     }
                     
                 }
                 
-             
+                
             }
-
+            
         }
         
         
@@ -78,37 +76,35 @@ class TweetService {
                 self.fetchtTweet(withId: tweetId) { tweet in
                     tweets.append(tweet)
                     completion(tweets,nil)
-                    
-                    
-                    
-                }
 
+                }
+                
             }
             
         }
-   
+        
     }
-
+    
     func sendTweet(caption:String,config:UploadTweetConfiguration,completion:@escaping ((Error?)->())){
         
         guard let uid = Auth.auth().currentUser?.uid else {return}
         var tweetData :  [String : Any] = [:]
         tweetData[Tweet.caption] = caption
         tweetData[Tweet.uid] = uid
-       
+        
         guard let currentUser = AuthService.shared.user else {return}
-       
+        
         tweetData[Tweet.username] = currentUser.userName
         tweetData[Tweet.fullname] = currentUser.fullName
         tweetData[Tweet.profileImageUrl] = currentUser.profileImageUrl.description
         
         let tweetOrReply : Tweet
-      
-
-       
+        
+        
+        
         switch config {
         case .tweet:
-             tweetOrReply = Tweet( dictionary: tweetData)
+            tweetOrReply = Tweet( dictionary: tweetData)
         case .reply(let tweet):
             tweetData[Tweet.replyingTo] = tweet.username
             tweetOrReply = Tweet( dictionary: tweetData)
@@ -120,19 +116,18 @@ class TweetService {
             uploadReply(tweet: tweet)
             
         }
-
+        
         // Case : Tweet
         func uploadTweet(){
             let document =   COLECTION_TWEETS.document()
             document.setData(tweetOrReply.getData()) { error in
-                print(" Uploading 🔴")
                 if let error = error {completion(error)
                     return
                 }
                 COLECTION_USER_TWEETS.document(uid).collection(tweetsCollection).document(document.documentID).setData([ :]) { error in
                     completion(error)
                 }
-    
+                
             }
         }
         
@@ -146,7 +141,7 @@ class TweetService {
                     //upload reply notification
                     NotificationService.shared.uploadeNotification(type: .reply, tweet: tweet)
                 }
-          
+                
             }
             
             
@@ -155,17 +150,8 @@ class TweetService {
     
     typealias completion = (([Tweet]?,Error?)->())
     
-
-    
-    
-
-    
-    
-    
-    
-    
     func fetchTweeets(user:User,completion: @escaping (([Tweet])->())){
-
+        
         var tweets = [Tweet]()
         COLECTION_USER_TWEETS.document(user.id).collection(tweetsCollection).getDocuments { snapshot, error in
             
@@ -188,7 +174,7 @@ class TweetService {
     }
     
     func fetchLikes(user:User,completion: @escaping (([Tweet])->())){
-
+        
         var likes = [Tweet]()
         COLECTION_USER_LIKES.document(user.id).collection(userLikesTweetCollection).getDocuments { snapshot, error in
             
@@ -214,7 +200,7 @@ class TweetService {
     
     
     func fetchReplies(user:User,completion: @escaping (([Tweet])->())){
-
+        
         var replies = [Tweet]()
         COLECTION_USER_REPLIES.document(user.id).collection(userRepliesCollection).getDocuments { snapshot, error in
             
@@ -231,7 +217,7 @@ class TweetService {
                     replies.append(reply)
                     completion(replies)
                 }
-
+                
             }
             
             
@@ -239,22 +225,22 @@ class TweetService {
         
         
     }
-
+    
     func fetchtTweet(withId:String,completion:@escaping((Tweet)->())){
         COLECTION_TWEETS.document(withId).getDocument { snapshot, error in
             
             guard let tweetData = snapshot?.data() else {return}
             let tweet = Tweet(tweetId: withId, dictionary: tweetData)
             completion(tweet)
-          
-    
+            
+            
         }
-
+        
         
     }
-
     
- 
+    
+    
     
     
     
@@ -269,23 +255,23 @@ class TweetService {
                 let tweetData = tweet.data()
                 guard let tweetUserId  = tweetData["uid"] as? String else {return}
                 
-                  AuthService.shared.fetchtUser(withId: tweetUserId){ user in
-                      replies.append(Tweet(tweetId:tweet.documentID,dictionary: tweetData))
-                      replies = replies.sorted (by: {$0.timestamp.dateValue() > $1.timestamp.dateValue()})
-                      completion(replies,nil)
-                     
-                  }
-               
+                AuthService.shared.fetchtUser(withId: tweetUserId){ user in
+                    replies.append(Tweet(tweetId:tweet.documentID,dictionary: tweetData))
+                    replies = replies.sorted (by: {$0.timestamp.dateValue() > $1.timestamp.dateValue()})
+                    completion(replies,nil)
                     
                 }
                 
+                
             }
-            
             
         }
         
         
-        
+    }
+    
+    
+    
     
     
     func likeTweet(tweet : Tweet , completion : @escaping ()->Void){
@@ -297,21 +283,19 @@ class TweetService {
         
         //1
         COLECTION_TWEETS.document(tweet.tweetId).updateData(["likes" : likes]){_ in
-        
-        //2
-        COLECTION_USER_LIKES.document(uid).collection(userLikesTweetCollection).document(tweet.tweetId).setData([:]){ _ in
-        
-        //3
-            COLECTION_TWEET_LIKES.document(tweet.tweetId).collection(tweetLikesTweetCollection).document(uid).setData([:]){ _ in
+            
+            //2
+            COLECTION_USER_LIKES.document(uid).collection(userLikesTweetCollection).document(tweet.tweetId).setData([:]){ _ in
                 
+                //3
+                COLECTION_TWEET_LIKES.document(tweet.tweetId).collection(tweetLikesTweetCollection).document(uid).setData([:]){ _ in
+
+                    completion()
+                }
                 
-                
-                completion()
             }
-        
+            
         }
-        
-    }
     }
     
     func unLikeTweet(tweet : Tweet , completion : @escaping ()->Void){
@@ -323,45 +307,44 @@ class TweetService {
         
         //1
         COLECTION_TWEETS.document(tweet.tweetId).updateData(["likes" : likes]){_ in
-        
-        //2
-        COLECTION_USER_LIKES.document(uid).collection(userLikesTweetCollection).document(tweet.tweetId).delete{ _ in
             
-            //3
-            COLECTION_TWEET_LIKES.document(tweet.tweetId).collection(tweetLikesTweetCollection).document(uid).delete
-            {_ in
-                completion()
+            //2
+            COLECTION_USER_LIKES.document(uid).collection(userLikesTweetCollection).document(tweet.tweetId).delete{ _ in
+                
+                //3
+                COLECTION_TWEET_LIKES.document(tweet.tweetId).collection(tweetLikesTweetCollection).document(uid).delete
+                {_ in
+                    completion()
+                }
             }
-        }
-        
-       
+            
+            
         }
         
         
     }
-        
+    
     
     
     func checkIfTweetIsLiked(tweet : Tweet , completion : @escaping (Bool)->Void){
         
         guard let uid = Auth.auth().currentUser?.uid else {return }
-
+        
         let likesRef = COLECTION_USER_LIKES.document(uid).collection(userLikesTweetCollection)
         
         likesRef.document(tweet.tweetId).getDocument { snapshot, _ in
             
             guard let didLike = snapshot?.exists else {return }
             
-            print(didLike,"🤍")
             completion(didLike)
             
         }
     }
     
-
     
     
-// For test
+    
+    // For test
     func fetchTweeets2(completion:@escaping completion){
         
         var tweetsID = [String]()
@@ -375,30 +358,24 @@ class TweetService {
             }
             guard let changes = snapshot?.documentChanges.filter({ $0.type == .added
             }) else {return}
-
+            
             changes.forEach { change in
                 let tweetData = change.document.data()
                 guard let tweetUserId  = tweetData["uid"] as? String else {return}
-              
+                
                 AuthService.shared.fetchtUser(withId: tweetUserId){ user in
                     tweets.append(Tweet(tweetId: change.document.documentID,dictionary: tweetData))
                     tweets = tweets.sorted (by: {$0.timestamp.dateValue() > $1.timestamp.dateValue()})
                     completion(tweets,nil)
-                   
+                    
                 }
-             
-             
+                
+                
             }
-         
-           
+            
+            
         }
-      
-
-        
-        
-     
-      
-        
+    
     }
     
     
@@ -422,45 +399,14 @@ class TweetService {
                     
                     
                 }
-
+                
             }
             
         }
         
-        
-        
-        
-        
     }
     
-    // Old fetchTweet
-//    func fetchTweeets(completion:@escaping (([Tweet]?,Error?)->())){
-//        
-//        var tweets = [Tweet]()
-//        
-//        COLECTION_TWEETS.addSnapshotListener { snapshot, error in
-//            if let error = error {
-//                completion(nil,error)
-//                return
-//            }
-//            guard let changes = snapshot?.documentChanges.filter({ $0.type == .added
-//            }) else {return}
-//
-//            changes.forEach { change in
-//                let tweetData = change.document.data()
-//                tweets.append(Tweet(tweetId: change.document.documentID,  dictionary: tweetData))
-//             
-//            }
-//            tweets = tweets.sorted (by: {$0.timestamp.dateValue() > $1.timestamp.dateValue()})
-//            completion(tweets,nil)
-//
-//         
-//           
-//        
-//        }
-//        
-//    }
-    }
+}
 
 
 

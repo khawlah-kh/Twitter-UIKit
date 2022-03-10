@@ -58,7 +58,7 @@ struct NotificationService {
                 completion(notifications, nil)
             }
         }
-
+        
         COLECTION_NOTIFICATIONS.document(uid).collection(userNotificationCollection).addSnapshotListener { snapshot, error in
             if let error = error {
                 completion(nil,error)
@@ -81,7 +81,7 @@ struct NotificationService {
                 }
                 
             }
-  
+            
         }
         
     }

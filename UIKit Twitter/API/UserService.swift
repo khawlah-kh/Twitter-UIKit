@@ -38,7 +38,7 @@ class UserService {
             
         }
         
-
+        
         
     }
     
@@ -50,14 +50,13 @@ class UserService {
         let followersRef = COLECTION_FOLLOWERS.document(uid).collection(userFollowersSubCollection)
         
         followingRef.document(uid).setData([ : ]) { [self] _ in
-
+            
             followersRef.document(cuurentUid).setData([ : ]) { _ in
-              //is this user is followed by the current user ?
-               
-                completion()
-               // uid.isFollowed = true
+                //is this user is followed by the current user ?
                 
-               
+                completion()
+                
+                
                 
             }
             
@@ -80,7 +79,6 @@ class UserService {
             
             followersRef.document(cuurentUid).delete { _ in
                 completion()
-               // self.user.isFollowed = false
             }
         }
         
@@ -94,24 +92,23 @@ class UserService {
     
     
     func checkIfuserIsFollowed(uid:String,completion:@escaping(((Bool)->Void))){
-
+        
         guard let cuurentUid = Auth.auth().currentUser?.uid else {return }
-
+        
         
         guard cuurentUid != uid else {return }
         let followingRef = COLECTION_FOLLOWING.document(cuurentUid).collection(userFollowingSubCollection)
-
+        
         
         followingRef.document(uid)
             .getDocument { snapshot, _ in
-
+                
                 guard let snapshot = snapshot else {return}
                 let isFollowed = snapshot.exists
                 completion(isFollowed)
               
-               // self.user.isFollowed = isFollowed
-      }
-      
+            }
+        
     }
     
     
@@ -120,23 +117,22 @@ class UserService {
         
         
         let followingRef = COLECTION_FOLLOWING.document(uid).collection(userFollowingSubCollection)
-
+        
         let followersRef = COLECTION_FOLLOWERS.document(uid).collection(userFollowersSubCollection)
         
         
         followingRef.getDocuments{ snapshot, _ in
             guard let  NoOfFollowing = snapshot?.documents.count else {return}
+            
+            followersRef.getDocuments{ snapshot, _ in
+                guard let  NoOfFollowers = snapshot?.documents.count else {return}
+                
+                let stats = UserStats(followers: NoOfFollowers, following: NoOfFollowing)
+                completion(stats)
+                
+            }
+        }
         
-        followersRef.getDocuments{ snapshot, _ in
-            guard let  NoOfFollowers = snapshot?.documents.count else {return}
-
-            let stats = UserStats(followers: NoOfFollowers, following: NoOfFollowing)
-            completion(stats)
-          
-            //self.user.stats =  UserStats(followers: NoOfFollowers, following: NoOfFollowing)
-        }
-        }
- 
         
     }
     
@@ -145,10 +141,9 @@ class UserService {
         
         guard let uid = Auth.auth().currentUser?.uid else {return}
         let updatedValues:[String:String] = [User.fullName:user.fullName,
-                             User.userName:user.userName,
-                             User.bio:user.bio ?? "jjj"
+                                             User.userName:user.userName,
+                                             User.bio:user.bio ?? "jjj"
         ]
-        print(updatedValues,"👍🏻")
         COLECTION_USERS.document(uid).updateData(updatedValues)
         completion()
     }
@@ -172,10 +167,6 @@ class UserService {
                     print("Failed to retrieve downloadURL: \(err)")
                     return
                 }
-                print("Successfully stored image with url: \(url?.absoluteString ?? "")")
-                print("url for the image :\(url?.absoluteString)")
-                //self.loginStatusMessage = "Successfully stored image with url: \(url?.absoluteString ?? "")"
-                //self.loginStatusMessage="url for the image :\(url?.absoluteString)"
                 
                 //Complete the process by store user data in firestore
                 guard let url=url else{return}

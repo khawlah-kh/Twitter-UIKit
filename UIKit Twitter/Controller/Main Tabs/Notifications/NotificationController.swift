@@ -10,26 +10,26 @@ import UIKit
 
 
 class NotificationController : UITableViewController{
-  
+    
     // MARK: - Properties
     private var nitifications : [Notification] = []
     {
-            didSet{
-                    self.tableView.reloadData()
-            }
+        didSet{
+            self.tableView.reloadData()
+        }
     }
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         configureUI()
         fetchNotifications()
-
+        
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-   
-            navigationController?.navigationBar.isHidden = false
-            navigationController?.navigationBar.barStyle = .default
+        
+        navigationController?.navigationBar.isHidden = false
+        navigationController?.navigationBar.barStyle = .default
     }
     
     //MARK: - API
@@ -91,17 +91,17 @@ extension NotificationController{
         
         let cell = tableView.dequeueReusableCell(withIdentifier: notificationCellId, for: indexPath) as! NotificationCell
         
-       
+        
         cell.notification = nitifications[indexPath.row]
         cell.delegate = self
         return cell
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
- 
+        
         guard let tweetId = nitifications[indexPath.row].tweetId else {return}
         TweetService.shared.fetchtTweet(withId: tweetId) { tweet in
-           let controller = TweetDetailsViewController(tweet: tweet)
+            let controller = TweetDetailsViewController(tweet: tweet)
             self.navigationController?.pushViewController(controller, animated: true)
         }
         
@@ -112,7 +112,7 @@ extension NotificationController{
 // MARK: - NotificationCellDelegate
 
 extension NotificationController : NotificationCellDelegate {
-  
+    
     func didTapProfileImage(_ cell: NotificationCell) {
         
         guard let  user = cell.notification?.user else {return}
@@ -121,7 +121,7 @@ extension NotificationController : NotificationCellDelegate {
     }
     
     func didTapFollow(_ cell: NotificationCell) {
-    
+        
         guard let user = cell.notification?.user else {return}
         if user.isFollowed {
             
@@ -139,9 +139,5 @@ extension NotificationController : NotificationCellDelegate {
         }
         
     }
-    
-   
-    
-
-    
+  
 }

@@ -14,20 +14,20 @@ protocol  EditProfileControllerDelegate : class {
 }
 
 class EditProfileController: UITableViewController {
-
-
+    
+    
     var user : User
     weak var delegate : EditProfileControllerDelegate?
     var userInfoChanged = false
     var userImageChanged = false
-
+    
     private lazy var headerView = EditProfileHeader(user: user)
     private  var footerView = EditProfileFooterView()
-
+    
     // MARK: - Properties
     var label : UILabel = {
         let label = UILabel()
-      
+        
         return label
     }()
     // MARK: - Lifecycle
@@ -38,7 +38,7 @@ class EditProfileController: UITableViewController {
     
     private var profileImage:UIImage?{
         didSet{
-        headerView.profileImageView.image = profileImage
+            headerView.profileImageView.image = profileImage
         }
     }
     private let imagePicker : UIImagePickerController = {
@@ -54,18 +54,18 @@ class EditProfileController: UITableViewController {
         configureNavBar()
         configureTableView()
         configureUI()
-       
-       
+        
+        
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-   
-            navigationController?.navigationBar.isHidden = false
-            navigationController?.navigationBar.barStyle = .default
+        
+        navigationController?.navigationBar.isHidden = false
+        navigationController?.navigationBar.barStyle = .default
     }
     // MARK: - Selectors
     @objc func handelCancel(){
-
+        
         dismiss(animated: true, completion: nil)
     }
     @objc func handelSave(){
@@ -75,19 +75,19 @@ class EditProfileController: UITableViewController {
             return}
         
         updateUserData()
-      
+        
     }
     
     func updateUserData(){
         
         if userImageChanged && !userInfoChanged{
             if let profileImage = self.profileImage {
-            UserService.shared.updateUserImage(image: profileImage) { profileImageURL in
-                self.user.profileImageUrl = URL(string: profileImageURL)!
-                AuthService.shared.user?.profileImageUrl = URL(string: profileImageURL)!
-            self.handelCancel()
+                UserService.shared.updateUserImage(image: profileImage) { profileImageURL in
+                    self.user.profileImageUrl = URL(string: profileImageURL)!
+                    AuthService.shared.user?.profileImageUrl = URL(string: profileImageURL)!
+                    self.handelCancel()
+                }
             }
-        }
             
             
         }
@@ -95,7 +95,7 @@ class EditProfileController: UITableViewController {
             UserService.shared.updateUserData(user: user) {
                 self.delegate?.didFinishUpdateProfile(forUser: self.user)
                 self.handelCancel()
-
+                
             }
             
         }
@@ -121,14 +121,14 @@ class EditProfileController: UITableViewController {
     // MARK: - Helpers
     
     func configureUI(){
-
+        
         imagePicker.delegate = self
         imagePicker.allowsEditing = true
         
     }
-
+    
     func configureNavBar(){
-
+        
         let appearance = UINavigationBarAppearance()
         appearance.configureWithOpaqueBackground()
         appearance.backgroundColor = .twitterBlue
@@ -140,24 +140,24 @@ class EditProfileController: UITableViewController {
         UINavigationBar.appearance().tintColor = UIColor.white
         UINavigationBar.appearance().titleTextAttributes = [NSAttributedString.Key.foregroundColor : UIColor.white]
         
-       
+        
         
         
         navigationItem.title = "Edit Profile"
         navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(handelCancel))
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(handelSave))
         //navigationItem.rightBarButtonItem?.isEnabled = userInfoChanged
-
+        
     }
-
-
+    
+    
     
     func configureTableView(){
         headerView.delegate = self
         tableView.tableHeaderView = headerView
         headerView.frame = CGRect(x: 0, y: 0, width: view.frame.width, height:180)
         footerView.frame = CGRect(x: 0, y: 0, width: view.frame.width, height:50)
-
+        
         footerView.delegate = self
         tableView.tableFooterView = footerView
         tableView.rowHeight = 70
@@ -187,7 +187,7 @@ extension EditProfileController{
     
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-       guard let option = EditProfileOption(rawValue: indexPath.row) else  {return 0}
+        guard let option = EditProfileOption(rawValue: indexPath.row) else  {return 0}
         return option == .bio ? 100 : 48
     }
     
@@ -234,7 +234,7 @@ extension EditProfileController : EditProfileCellDelegate{
         switch(option){
             
         case .fullName:
-          
+            
             guard let updatedFullname = cell.infoTextField.text else {return}
             user.fullName = updatedFullname
         case .userName:
@@ -244,7 +244,7 @@ extension EditProfileController : EditProfileCellDelegate{
         case .bio:
             user.bio = cell.bioTextField.text
         }
-
+        
         
     }
     
@@ -257,7 +257,7 @@ extension EditProfileController : EditProfileCellDelegate{
 // MARK: - EditProfileFooterViewDelegate
 extension EditProfileController : EditProfileFooterViewDelegate {
     func handelLogout() {
-       
+        
         let alert = UIAlertController(title: nil, message: "Are you sure you want to log out ?", preferredStyle: .actionSheet)
         
         alert.addAction(UIAlertAction(title: "Log out", style: .destructive, handler: { _ in
@@ -266,15 +266,15 @@ extension EditProfileController : EditProfileFooterViewDelegate {
             self.dismiss(animated: true) {
                 self.delegate?.handelLogout()
             }
-           
+            
         }))
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler:nil))
-
+        
         present(alert, animated: true) {
             
         }
-
+        
     }
-  
+    
     
 }

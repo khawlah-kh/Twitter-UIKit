@@ -12,10 +12,10 @@ import CoreMIDI
 
 class FeedController : UICollectionViewController{
     
-
+    
     var tweets : [Tweet]=[]{
         didSet{
-                self.collectionView.reloadData()
+            self.collectionView.reloadData()
             
             
         }
@@ -26,20 +26,20 @@ class FeedController : UICollectionViewController{
             configureLeftBarButton()
         }
     }
-
+    
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         configureLeftBarButton()
         configureUI()
         fetchTweetForFeed()
-
+        
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-   
-            navigationController?.navigationBar.isHidden = false
-            navigationController?.navigationBar.barStyle = .default
+        
+        navigationController?.navigationBar.isHidden = false
+        navigationController?.navigationBar.barStyle = .default
         configureLeftBarButton()
     }
     
@@ -50,7 +50,7 @@ class FeedController : UICollectionViewController{
         let controller =  UploadTweetController(user: user, config: .tweet)
         controller.delegat = self
         let nav = UINavigationController(rootViewController:controller )
-
+        
         present(nav , animated: true, completion: nil)
         
     }
@@ -64,7 +64,7 @@ class FeedController : UICollectionViewController{
         
         guard let currentUser = user else {return}
         let controller = ProfileViewController(user: currentUser)
-     navigationController?.pushViewController(controller, animated: true)
+        navigationController?.pushViewController(controller, animated: true)
     }
     
     // MARK: API
@@ -105,7 +105,7 @@ class FeedController : UICollectionViewController{
     // MARK: - Helper Functions
     
     func configureUI(){
-
+        
         configureCollectionView()
         view.backgroundColor = UIColor.systemBackground
         let imageView = UIImageView(image: UIImage(named: "logo"))
@@ -118,15 +118,15 @@ class FeedController : UICollectionViewController{
         
         refreshControl.addTarget(self, action: #selector(handelRefresh), for: .valueChanged)
         
- 
+        
     }
     
- 
+    
     func configureCollectionView(){
         collectionView.register(TweetCell.self,forCellWithReuseIdentifier: reusableCellId)
     }
     
-
+    
     func configureLeftBarButton(){
         
         guard let user = AuthService.shared.user else {return}
@@ -141,7 +141,7 @@ class FeedController : UICollectionViewController{
         userImgeView.isUserInteractionEnabled = true
         
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: userImgeView)
-
+        
     }
 }
 
@@ -156,9 +156,9 @@ extension FeedController {
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reusableCellId, for: indexPath) as! TweetCell
-
+        
         DispatchQueue.main.async {
-
+            
             cell.tweet = self.tweets[indexPath.row]
             cell.delegat = self
         }
@@ -168,9 +168,9 @@ extension FeedController {
     
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-         
+        
         let controller = TweetDetailsViewController(tweet:tweets[indexPath.row])
-
+        
         controller.navigationItem.title = "Tweet"
         navigationController?.pushViewController(controller, animated: true)
         
@@ -198,37 +198,37 @@ extension FeedController : UICollectionViewDelegateFlowLayout {
 
 // MARK: - TweetCellDelegate
 extension FeedController : TweetCellDelegate{
-
- 
+    
+    
     func handelLikeTweet(_ cell: TweetCell) {
         guard let  tweet = cell.tweet else {
-                return
+            return
+        }
+        if tweet.didLike {
+            TweetService.shared.unLikeTweet(tweet:tweet) {
+                cell.tweet?.didLike = false
+                let likes = tweet.likes - 1
+                cell.tweet?.likes = likes
             }
-            if tweet.didLike {
-                TweetService.shared.unLikeTweet(tweet:tweet) {
-                    cell.tweet?.didLike = false
-                    let likes = tweet.likes - 1
-                    cell.tweet?.likes = likes
-                }
+            
+        }
+        else{
+            TweetService.shared.likeTweet(tweet:tweet) {
+                cell.tweet?.didLike = true
+                let likes = tweet.likes + 1
+                cell.tweet?.likes = likes
+                guard let tweet = cell.tweet else {return}
+                guard tweet.didLike else {return}
+                NotificationService.shared.uploadeNotification(type: .like, tweet: tweet)
+                
                 
             }
-            else{
-                TweetService.shared.likeTweet(tweet:tweet) {
-                    cell.tweet?.didLike = true
-                    let likes = tweet.likes + 1
-                    cell.tweet?.likes = likes
-                    guard let tweet = cell.tweet else {return}
-                    guard tweet.didLike else {return}
-                    NotificationService.shared.uploadeNotification(type: .like, tweet: tweet)
-
-               
-            }
-            }
+        }
         
         
     }
     
-  
+    
     func handelProfileImageTapped(_ cell: TweetCell) {
         guard let  userID = cell.tweet?.uid else {
             return
@@ -237,24 +237,24 @@ extension FeedController : TweetCellDelegate{
             let controller = ProfileViewController(user: tweetUser)
             self.navigationController?.pushViewController(controller, animated: true)
         }
-       
+        
     }
     func handelRetweetTapped(_ cell: TweetCell) {
         
-     
+        
         guard let tweet = cell.tweet else {return}
         guard  let currentUser = AuthService.shared.user else {return}
         let controller = UploadTweetController(user: currentUser, config: .reply(tweet))
         let nav = UINavigationController(rootViewController: controller)
         nav.modalPresentationStyle = .fullScreen
         present(nav, animated: true, completion: nil)
-
+        
     }
     func handelMentionTapped(mentionedUser: User) {
         
-           let controller = ProfileViewController(user: mentionedUser)
+        let controller = ProfileViewController(user: mentionedUser)
         navigationController?.pushViewController(controller, animated: true)
-
+        
     }
     
     
@@ -264,9 +264,9 @@ extension FeedController : TweetCellDelegate{
 // MARK: UploadTweetDelegate
 extension FeedController : UploadTweetDelegate{
     func handleAfterUploading() {
-    
-            self.fetchTweetForFeed()
-
+        
+        self.fetchTweetForFeed()
+        
     }
-   
+    
 }
